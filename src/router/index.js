@@ -3,11 +3,11 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import PostsManager from '@/components/PostsManager'
 import Auth from '@okta/okta-vue'
-import keys from '../../apiKeys.env'
+import keys from '../../apiKeys.js'
 
 Vue.use(Auth, {
-  issuer: 'https://' + keys.oktaURL + '/oauth2/default',
-  client_id: keys.clientId,
+  issuer: 'https://' + keys.domain + '/oauth2/default',
+  client_id: keys.id,
   redirect_uri: 'http://localhost:8080/implicit/callback',
   scope: 'openid profile email'
 })
