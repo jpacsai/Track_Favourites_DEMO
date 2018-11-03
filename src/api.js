@@ -21,19 +21,21 @@ export default {
       return req.data
     })
   },
-  getPosts () {
-    return this.execute('get', '/posts')
+  getBooks () {
+    const a = this.execute('get', '/books')
+    console.log(a)
+    return this.execute('get', '/books')
   },
-  getPost (id) {
-    return this.execute('get', `/posts/${id}`)
+  getBook (id) {
+    return this.execute('get', `/books/${id}`)
   },
-  createPost (data) {
-    return this.execute('post', '/posts', data)
+  createBook (data) {
+    return this.execute('post', '/books', data)
   },
-  updatePost (id, data) {
-    return this.execute('put', `/posts/${id}`, data)
+  updateBook (id, data) {
+    return this.execute('put', `/books/${id}`, data)
   },
-  deletePost (id) {
-    return this.execute('delete', `/posts/${id}`)
+  deleteBook (id) {
+    return this.execute('delete', `/books/${id}`)
   }
 }

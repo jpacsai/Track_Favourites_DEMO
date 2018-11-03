@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid mt-4">
-    <h1 class="h1">Posts Manager</h1>
+    <h1 class="h1">Book Manager</h1>
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
       <b-col>
@@ -14,21 +14,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="post in posts" :key="post.id">
-              <td>{{ post.id }}</td>
-              <td>{{ post.title }}</td>
-              <td>{{ post.updatedAt }}</td>
+            <tr v-for="book in books" :key="book.id">
+              <td>{{ book.id }}</td>
+              <td>{{ book.title }}</td>
+              <td>{{ book.updatedAt }}</td>
               <td class="text-right">
-                <a href="#" @click.prevent="populatePostToEdit(post)">Edit</a> -
-                <a href="#" @click.prevent="deletePost(post.id)">Delete</a>
+                <a href="#" @click.prevent="populateBookToEdit(book)">Edit</a> -
+                <a href="#" @click.prevent="deleteBook(book.id)">Delete</a>
               </td>
             </tr>
           </tbody>
         </table>
       </b-col>
       <b-col lg="3">
-        <b-card :title="(model.id ? 'Edit Post ID#' + model.id : 'New Post')">
-          <form @submit.prevent="savePost">
+        <b-card :title="(model.id ? 'Edit Book ID#' + model.id : 'New Book')">
+          <form @submit.prevent="saveBook">
             <b-form-group label="Title">
               <b-form-input type="text" v-model="model.title"></b-form-input>
             </b-form-group>
@@ -36,7 +36,7 @@
               <b-form-textarea rows="4" v-model="model.body"></b-form-textarea>
             </b-form-group>
             <div>
-              <b-btn type="submit" variant="success">Save Post</b-btn>
+              <b-btn type="submit" variant="success">Save Book</b-btn>
             </div>
           </form>
         </b-card>
@@ -51,39 +51,39 @@ export default {
   data () {
     return {
       loading: false,
-      posts: [],
+      books: [],
       model: {}
     }
   },
   async created () {
-    this.refreshPosts()
+    this.refreshBooks()
   },
   methods: {
-    async refreshPosts () {
+    async refreshBooks () {
       this.loading = true
-      this.posts = await api.getPosts()
+      this.books = await api.getBooks()
       this.loading = false
     },
-    async populatePostToEdit (post) {
-      this.model = Object.assign({}, post)
+    async populateBooksToEdit (book) {
+      this.model = Object.assign({}, book)
     },
-    async savePost () {
+    async saveBook () {
       if (this.model.id) {
-        await api.updatePost(this.model.id, this.model)
+        await api.updateBook(this.model.id, this.model)
       } else {
-        await api.createPost(this.model)
+        await api.createBook(this.model)
       }
       this.model = {} // reset form
-      await this.refreshPosts()
+      await this.refreshBooks()
     },
-    async deletePost (id) {
-      if (confirm('Are you sure you want to delete this post?')) {
-        // if we are editing a post we deleted, remove it from the form
+    async deleteBook (id) {
+      if (confirm('Are you sure you want to delete this book?')) {
+        // if we are editing a book we deleted, remove it from the form
         if (this.model.id === id) {
           this.model = {}
         }
-        await api.deletePost(id)
-        await this.refreshPosts()
+        await api.deleteBook(id)
+        await this.refreshBooks()
       }
     }
   }
