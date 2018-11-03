@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const Sequelize = require('sequelize')
 const epilogue = require('epilogue')
 const OktaJwtVerifier = require('@okta/jwt-verifier')
-var {id, domain} = require('../apiKeys')
+const {id, domain} = require('../apiKeys')
 
 const oktaJwtVerifier = new OktaJwtVerifier({
   clientId: id,
