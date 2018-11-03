@@ -14,6 +14,7 @@
     </b-navbar>
     <!-- routes will be rendered here -->
     <router-view />
+
   </div>
 </template>
 
