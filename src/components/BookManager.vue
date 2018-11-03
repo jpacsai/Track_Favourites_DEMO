@@ -1,7 +1,11 @@
 <template>
   <div class="container-fluid mt-4">
     <h1 class="h1">Book Manager</h1>
-    
+    <form @submit.prevent="searchBooks">
+      <input type="text" />
+      <button type='submit' @click="searchBooks">Search</button>
+    </form>
+    <div class="search-results"></div>
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
       <b-col>
@@ -48,6 +52,8 @@
 
 <script>
 import api from '@/api'
+import keys from '../../apiKeys.js'
+
 export default {
   data () {
     return {
@@ -60,6 +66,9 @@ export default {
     this.refreshBooks()
   },
   methods: {
+    searchBooks () {
+      fetch('https://www.goodreads.com/search/index.xml?key=' + keys.bookKey + '&q=Ender%27s+Game', { mode: 'cors' }).then(data => { console.log(data) })
+    },
     async refreshBooks () {
       this.loading = true
       this.books = await api.getBooks()
@@ -90,3 +99,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .search-results {
+    width: 100%;
+    min-height: 200px;
+    margin: 10px 0;
+    border: 1px solid #DFDFDF;
+  }
+</style>
