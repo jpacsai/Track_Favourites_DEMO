@@ -53,6 +53,7 @@
 <script>
 import api from '@/api'
 import keys from '../../apiKeys.js'
+// import { XMLMapping } from 'xml-mapping'
 
 export default {
   data () {
@@ -67,9 +68,18 @@ export default {
   },
   methods: {
     searchBooks () {
-      fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' + keys.bookKey + '&q=Ender%27s+Game').then(data => { console.log(data) }).catch(function (error) {
-        console.log('Looks like there was a problem: \n', error)
-      })
+      fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' + keys.bookKey + '&q=Ender%27s+Game').then(data => data.blob())
+        .then(data => {
+          console.log(data)
+          const reader = new FileReader()
+          reader.onload = function (e) {
+            const text = reader.result
+            return text
+          }
+          reader.readAsText(data)
+        }).catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
     },
     async refreshBooks () {
       this.loading = true
