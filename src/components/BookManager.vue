@@ -5,7 +5,13 @@
       <input type="text" />
       <button type='submit' @click="searchBooks">Search</button>
     </form>
-    <div class="search-results"></div>
+    <div class="search-results">
+      <ul>
+        <li v-for="s in search" v-bind:key='s.id'>
+          {{ s.id }}
+        </li>
+      </ul>
+    </div>
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
       <b-col>
@@ -53,14 +59,15 @@
 <script>
 import api from '@/api'
 import keys from '../../apiKeys.js'
-const parser = require('fast-xml-parser')
+// const parser = require('fast-xml-parser')
 
 export default {
   data () {
     return {
       loading: false,
       books: [],
-      model: {}
+      model: {},
+      search: []
     }
   },
   async created () {
@@ -75,17 +82,36 @@ export default {
       )
         .then(data => data.blob())
         .then(data => {
-          const reader = new FileReader()
-          reader.onload = function (e) {
-            const text = reader.result
-            var jsonObj = parser.parse(text)
-            console.log(jsonObj)
-          }
-          reader.readAsText(data)
+          const text = this.handleUpload(data)
+          return text
         })
+        .then(text => console.log(text))
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
+    },
+    readUploadedFileAsText (inputFile) {
+      const temporaryFileReader = new FileReader()
+
+      return new Promise((resolve, reject) => {
+        temporaryFileReader.onerror = () => {
+          temporaryFileReader.abort()
+          reject(new DOMException('Problem parsing input file.'))
+        }
+        temporaryFileReader.onload = () => {
+          resolve(temporaryFileReader.result)
+        }
+        temporaryFileReader.readAsText(inputFile)
+      })
+    },
+    async handleUpload (data) {
+      const file = data
+      try {
+        const fileContents = await this.readUploadedFileAsText(file)
+        return fileContents
+      } catch (e) {
+        console.warn(e.message)
+      }
     },
     async refreshBooks () {
       this.loading = true
