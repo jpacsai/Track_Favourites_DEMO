@@ -67,7 +67,9 @@ export default {
   },
   methods: {
     searchBooks () {
-      fetch('https://www.goodreads.com/search/index.xml?key=' + keys.bookKey + '&q=Ender%27s+Game', { mode: 'cors' }).then(data => { console.log(data) })
+      fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' + keys.bookKey + '&q=Ender%27s+Game').then(data => { console.log(data) }).catch(function (error) {
+        console.log('Looks like there was a problem: \n', error)
+      })
     },
     async refreshBooks () {
       this.loading = true
