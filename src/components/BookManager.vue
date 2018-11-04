@@ -2,12 +2,12 @@
   <div class="container-fluid mt-4">
     <h1 class="h1">Book Manager</h1>
     <form @submit.prevent="searchBooks">
-      <input type="text" />
+      <input type="text" v-model='search' required/>
       <button type='submit' @click="searchBooks">Search</button>
     </form>
     <div class="search-results">
       <ul>
-        <li v-for="s in search" v-bind:key='s.id'>
+        <li v-for="s in searchResult" v-bind:key='s.id'>
           {{ s.best_book.author.name + ' - ' + s.best_book.title }}
         </li>
       </ul>
@@ -67,7 +67,8 @@ export default {
       loading: false,
       books: [],
       model: {},
-      search: []
+      search: '',
+      searchResult: []
     }
   },
   async created () {
@@ -75,10 +76,10 @@ export default {
   },
   methods: {
     searchBooks () {
+      console.log()
       fetch(
         'https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' +
-          keys.bookKey +
-          '&q=Ender%27s+Game'
+          keys.bookKey + '&q=' + this.search
       )
         .then(data => data.blob())
         .then(data => {
@@ -89,7 +90,7 @@ export default {
           var jsonObj = parser.parse(text)
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
-          this.search = res
+          this.searchResult = res
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
