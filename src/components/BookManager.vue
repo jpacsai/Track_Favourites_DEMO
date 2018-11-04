@@ -8,7 +8,7 @@
     <div class="search-results">
       <ul>
         <li v-for="s in search" v-bind:key='s.id'>
-          {{ s.id }}
+          {{ s.best_book.author.name + ' - ' + s.best_book.title }}
         </li>
       </ul>
     </div>
@@ -59,7 +59,7 @@
 <script>
 import api from '@/api'
 import keys from '../../apiKeys.js'
-// const parser = require('fast-xml-parser')
+const parser = require('fast-xml-parser')
 
 export default {
   data () {
@@ -85,7 +85,12 @@ export default {
           const text = this.handleUpload(data)
           return text
         })
-        .then(text => console.log(text))
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          const res = jsonObj.GoodreadsResponse.search.results.work
+          console.log(res)
+          this.search = res
+        })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
