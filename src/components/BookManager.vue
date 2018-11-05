@@ -206,7 +206,21 @@ export default {
 
 <style scoped>
   .top {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 218px;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: 1fr 90px;
+  }
+  
+  input[type='text'] {
+    padding-left: 10px;
+  }
+
+  input[type='submit'] {
+    margin-left: 15px;
   }
 
   .searchNums {
@@ -217,15 +231,14 @@ export default {
     align-items: center;
   }
 
+  ul {
+    padding-left: 0;
+  }
+
   .search-results {
     width: 100%;
     min-height: 200px;
     margin: 10px 0;
-    border: 1px solid #dfdfdf;
-  }
-
-  input[type='text'] {
-    padding-left: 10px;
   }
 
   .nav-btn-container {
