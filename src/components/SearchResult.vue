@@ -5,7 +5,7 @@
       </div>
       <div class='details'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by {{ this.author}}</p>
+        <p class="author">by {{ this.author}} - {{ this.year }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div>
@@ -25,7 +25,8 @@ export default {
     author: String,
     title: String,
     image: String,
-    rating: Number
+    rating: Number,
+    year: Number
   },
   data () {
     return {

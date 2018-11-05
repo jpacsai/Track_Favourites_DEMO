@@ -18,7 +18,8 @@
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.title"
           v-bind:image="s.best_book.small_image_url"
-          v-bind:rating="s.average_rating"/>
+          v-bind:rating="s.average_rating"
+          v-bind:year="s.original_publication_year"/>
       </ul>
     </div>
     <div class="nav-btn-container" v-if="this.allResult !== 0">
