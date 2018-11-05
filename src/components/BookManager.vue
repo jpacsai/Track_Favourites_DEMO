@@ -3,7 +3,7 @@
     <h1 class="h1">Book Manager</h1>
     <form @submit.prevent="searchBooks">
       <input type="text" v-model='search' required/>
-      <button type='submit' @click="searchBooks">Search</button>
+      <input type='submit' value="Search" />
     </form>
     <div class="search-results">
       <ul>
@@ -11,7 +11,8 @@
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.title"
-          v-bind:image="s.best_book.small_image_url" />
+          v-bind:image="s.best_book.small_image_url"
+          v-bind:rating="s.average_rating"/>
       </ul>
     </div>
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -97,6 +98,7 @@ export default {
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           this.searchResult = res
+          // this.getBookDetails()
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
@@ -157,10 +159,10 @@ export default {
 </script>
 
 <style scoped>
-.search-results {
-  width: 100%;
-  min-height: 200px;
-  margin: 10px 0;
-  border: 1px solid #dfdfdf;
-}
+  .search-results {
+    width: 100%;
+    min-height: 200px;
+    margin: 10px 0;
+    border: 1px solid #dfdfdf;
+  }
 </style>
