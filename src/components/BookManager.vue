@@ -7,9 +7,10 @@
     </form>
     <div class="search-results">
       <ul>
-        <li v-for="s in searchResult" v-bind:key='s.id'>
-          {{ s.best_book.author.name + ' - ' + s.best_book.title }}
-        </li>
+        <searchresult v-for="s in searchResult" 
+          v-bind:key='s.id'
+          v-bind:author="s.best_book.author.name"
+          v-bind:title="s.best_book.title"/>
       </ul>
     </div>
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -57,11 +58,15 @@
 </template>
 
 <script>
+import searchresult from './SearchResult'
 import api from '@/api'
 import keys from '../../apiKeys.js'
 const parser = require('fast-xml-parser')
 
 export default {
+  components: {
+    searchresult
+  },
   data () {
     return {
       loading: false,
