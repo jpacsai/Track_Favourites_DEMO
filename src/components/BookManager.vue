@@ -1,10 +1,16 @@
 <template>
   <div class="container-fluid mt-4">
     <h1 class="h1">Book Manager</h1>
-    <form @submit.prevent="newSearch">
-      <input type="text" v-model='search' required/>
-      <input type='submit' value="Search" />
-    </form>
+    <div class="top">
+      <form @submit.prevent="newSearch">
+        <input type="text" v-model='search' required/>
+        <input type='submit' value="Search" />
+      </form>
+      <p class="searchNums" v-if="this.allResult !== 0">
+        <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResult }}</span>
+      </p>
+    </div>
+    
     <div class="search-results">
       <ul>
         <searchresult v-for="s in searchResult" 
@@ -15,7 +21,7 @@
           v-bind:rating="s.average_rating"/>
       </ul>
     </div>
-    <div>
+    <div class="nav-btn-container" v-if="this.allResult !== 0">
       <button class="nav-btn" @click="pageBackward">«</button>
       <span>{{ this.page }}</span>
       <button class="nav-btn" @click="pageForward">»</button>
@@ -83,6 +89,9 @@ export default {
       search: '',
       page: 1,
       allPage: 0,
+      resultsFrom: 0,
+      resultsTo: 0,
+      allResult: 0,
       searchResult: []
     }
   }, /*
@@ -107,9 +116,12 @@ export default {
         .then(text => {
           var jsonObj = parser.parse(text)
           const allResults = jsonObj.GoodreadsResponse.search['total-results']
+          this.allResult = allResults
+          this.resultsFrom = jsonObj.GoodreadsResponse.search['results-start']
+          this.resultsTo = jsonObj.GoodreadsResponse.search['results-end']
           this.allPage = Math.ceil(allResults / 20)
           const res = jsonObj.GoodreadsResponse.search.results.work
-          console.log(res)
+          console.log(jsonObj)
           this.searchResult = res
         })
         .catch(function (error) {
@@ -193,6 +205,18 @@ export default {
 </script>
 
 <style scoped>
+  .top {
+    display: flex;
+  }
+
+  .searchNums {
+    margin: 0 0 0 15px;
+    color: gray;
+    font-size: 80%;
+    display: flex;
+    align-items: center;
+  }
+
   .search-results {
     width: 100%;
     min-height: 200px;
@@ -202,6 +226,10 @@ export default {
 
   input[type='text'] {
     padding-left: 10px;
+  }
+
+  .nav-btn-container {
+    padding-left: 60px;
   }
 
   .nav-btn {
