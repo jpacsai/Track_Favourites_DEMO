@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid mt-4">
     <h1 class="h1">Book Manager</h1>
-    <form @submit.prevent="searchBooks">
+    <form @submit.prevent="newSearch">
       <input type="text" v-model='search' required/>
       <input type='submit' value="Search" />
     </form>
@@ -14,6 +14,11 @@
           v-bind:image="s.best_book.small_image_url"
           v-bind:rating="s.average_rating"/>
       </ul>
+    </div>
+    <div>
+      <button class="nav-btn" @click="pageBackward">«</button>
+      <span>{{ this.page }}</span>
+      <button class="nav-btn" @click="pageForward">»</button>
     </div>
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -62,7 +67,7 @@
 
 <script>
 import searchresult from './SearchResult'
-import api from '@/api'
+// import api from '@/api'
 import keys from '../../apiKeys.js'
 const parser = require('fast-xml-parser')
 
@@ -80,13 +85,16 @@ export default {
       allPage: 0,
       searchResult: []
     }
-  },
+  }, /*
   async created () {
     this.refreshBooks()
-  },
+  }, */
   methods: {
+    newSearch () {
+      this.page = 1
+      this.searchBooks()
+    },
     searchBooks () {
-      console.log()
       fetch(
         'https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' +
           keys.bookKey + '&q=' + this.search + '&page=' + this.page
@@ -103,11 +111,31 @@ export default {
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           this.searchResult = res
-          // this.getBookDetails()
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
+    },
+    pageForward () {
+      if (this.page < this.allPage) {
+        this.page++
+        this.searchBooks()
+        this.scrollUp()
+      }
+    },
+    pageBackward () {
+      if (this.page > 1) {
+        this.page--
+        this.searchBooks()
+        this.scrollUp()
+      }
+    },
+    scrollUp () {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      })
     },
     readUploadedFileAsText (inputFile) {
       const temporaryFileReader = new FileReader()
@@ -131,7 +159,8 @@ export default {
       } catch (e) {
         console.warn(e.message)
       }
-    },
+    }
+    /*
     async refreshBooks () {
       this.loading = true
       this.books = await api.getBooks()
@@ -158,7 +187,7 @@ export default {
         await api.deleteBook(id)
         await this.refreshBooks()
       }
-    }
+    } */
   }
 }
 </script>
@@ -173,5 +202,9 @@ export default {
 
   input[type='text'] {
     padding-left: 10px;
+  }
+
+  .nav-btn {
+    width: 60px;
   }
 </style>
