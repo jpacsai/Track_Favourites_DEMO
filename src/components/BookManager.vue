@@ -19,7 +19,8 @@
           v-bind:title="s.best_book.title"
           v-bind:image="s.best_book.small_image_url"
           v-bind:rating="s.average_rating"
-          v-bind:year="s.original_publication_year"/>
+          v-bind:year="s.original_publication_year"
+          v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"/>
       </ul>
     </div>
     <div class="nav-btn-container" v-if="this.allResult !== 0">

@@ -1,7 +1,7 @@
 <template>
     <li>
       <div class="img-container">
-        <img :src="image"/>
+        <a :href='url' target='_blank'><img :src="image"/></a>
       </div>
       <div class='details'>
         <p class='title'>{{ this.title }}</p>
@@ -26,7 +26,8 @@ export default {
     title: String,
     image: String,
     rating: Number,
-    year: Number
+    year: Number,
+    url: String
   },
   data () {
     return {
