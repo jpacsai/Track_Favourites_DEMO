@@ -10,7 +10,8 @@
         <searchresult v-for="s in searchResult" 
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
-          v-bind:title="s.best_book.title"/>
+          v-bind:title="s.best_book.title"
+          v-bind:image="s.best_book.small_image_url" />
       </ul>
     </div>
     <b-alert :show="loading" variant="info">Loading...</b-alert>
