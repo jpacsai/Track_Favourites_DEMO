@@ -10,7 +10,8 @@
       </div>
       <div>
         <button @click='getBookDetails'>Details</button>
-        <p></p>
+        <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
+        <img class='heart' v-if='this.liked === true' src="../assets/heart_red.svg" alt="heart" @click='likeToggle'>
       </div>
     </li>
 </template>
@@ -28,7 +29,8 @@ export default {
   },
   data () {
     return {
-      ISBN: ''
+      ISBN: '',
+      liked: false
     }
   },
   methods: {
@@ -42,6 +44,9 @@ export default {
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
+    },
+    likeToggle () {
+      this.liked = !this.liked
     }
   }
 }
@@ -53,7 +58,7 @@ export default {
     border-bottom: 1px solid #dfdfdf;
     padding: 10px;
     display: grid;
-    grid-template: 90px / 70px 340px 100px;
+    grid-template: 90px / 70px 340px 140px;
   }
 
   .img-container {
@@ -96,4 +101,10 @@ export default {
     margin: 15px;
     align-self: flex-start;
   }
+
+  .heart {
+    height: 30px;
+    width: 30px;
+  }
+
 </style>
