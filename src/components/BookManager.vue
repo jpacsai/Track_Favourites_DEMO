@@ -165,4 +165,8 @@ export default {
     margin: 10px 0;
     border: 1px solid #dfdfdf;
   }
+
+  input[type='text'] {
+    padding-left: 10px;
+  }
 </style>

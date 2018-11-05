@@ -51,20 +51,26 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   li {
-    border: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
     padding: 10px;
     display: grid;
-    grid-template: 120px / 70px 200px 100px;
+    grid-template: 90px / 70px 340px 100px;
   }
 
   .img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-top: 6px;
+    text-align: center;
+  }
+
+  img {
+    object-fit: contain;
+    max-height: 75px;
+    width: 50px;
   }
 
   .details {
-    padding: 15px;
+    position: relative;
+    padding-left: 15px;
   }
 
   .title {
@@ -72,14 +78,20 @@ export default {
     margin: 0;
   }
 
-  button {
-    height: 30px;
-    margin: 15px;
-    align-self: flex-start;
+  .author {
+    margin: 0;
+    font-size: 80%;
   }
 
   .ratings {
     font-size: 80%;
     color: gray;
+    margin-top: 7px;
+  }
+
+  button {
+    height: 30px;
+    margin: 15px;
+    align-self: flex-start;
   }
 </style>
