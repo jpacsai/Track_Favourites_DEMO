@@ -15,6 +15,7 @@
           v-bind:rating="s.average_rating"/>
       </ul>
     </div>
+    <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
       <b-col>
@@ -55,7 +56,7 @@
           </form>
         </b-card>
       </b-col>
-    </b-row>
+    </b-row> -->
   </div>
 </template>
 
@@ -75,6 +76,8 @@ export default {
       books: [],
       model: {},
       search: '',
+      page: 1,
+      allPage: 0,
       searchResult: []
     }
   },
@@ -86,7 +89,7 @@ export default {
       console.log()
       fetch(
         'https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' +
-          keys.bookKey + '&q=' + this.search
+          keys.bookKey + '&q=' + this.search + '&page=' + this.page
       )
         .then(data => data.blob())
         .then(data => {
@@ -95,6 +98,8 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
+          const allResults = jsonObj.GoodreadsResponse.search['total-results']
+          this.allPage = Math.ceil(allResults / 20)
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           this.searchResult = res
