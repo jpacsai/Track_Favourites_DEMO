@@ -8,7 +8,10 @@
         <p class="author">by {{ this.author}}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
-      <button>Details</button>
+      <div>
+        <button @click='getBookDetails'>Details</button>
+        <p></p>
+      </div>
     </li>
 </template>
 
@@ -25,20 +28,16 @@ export default {
   },
   data () {
     return {
+      ISBN: ''
     }
   },
   methods: {
-    getISBN () {
-      const arr = this.searchResult
-      arr.forEach(b => {
-        console.log(b.best_book.title)
-      })
-    },
     getBookDetails () {
-      fetch('https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&country=GB&key=' + keys.googleBooks)
+      fetch('https://www.googleapis.com/books/v1/volumes?q=' + this.author + ' ' + this.title + '&country=GB&key=' + keys.googleBooks)
         .then(data => data.json())
         .then(data => {
-          console.log(data)
+          const num = data.items[0].volumeInfo.industryIdentifiers[0].identifier
+          this.ISBN = num
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
