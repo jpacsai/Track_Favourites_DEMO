@@ -25,9 +25,12 @@
       </ul>
     </div>
     <div class="nav-btn-container" v-if="this.allResult > 20">
-      <button class="nav-btn" @click="pageBackward">«</button>
+      <button class="nav-btn" @click="pageBackward">
+        <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
       <span>{{ this.page }}</span>
-      <button class="nav-btn" @click="pageForward">»</button>
+      <button class="nav-btn" @click="pageForward">
+        <img class='nav-btn-img' src='../assets/arrow_forw.svg'>
+      </button>
     </div>
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -216,6 +219,7 @@ export default {
   .container {
     max-width: 1100px;
     margin-top: 20px;
+    padding-bottom: 50px;
   }
 
   form {
@@ -230,10 +234,19 @@ export default {
   input[type='submit'] {
     margin: 0 auto;
     width: 80px;
+    border: none;
+    background-color: greenyellow;
+    border-radius: 3px;
+    transition: 0.2s;
+  }
+  input[type='submit']:hover {
+    background-color: #91d629;
+    box-shadow: 0 0 15px -3px gray;
+    cursor: pointer;
   }
 
   .searchNums {
-    color: gray;
+    color: #808080;
     font-size: 80%;
     display: flex;
     align-items: center;
@@ -253,10 +266,25 @@ export default {
   }
 
   .nav-btn-container {
-    padding-left: 60px;
+    padding-right: 25px;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .nav-btn {
-    width: 60px;
+    margin: 0 10px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  .nav-btn-img {
+    width: 20px;
+    transition: 0.2s;
+  }
+
+  .nav-btn-img:hover {
+    filter: drop-shadow(0 0 2px grey);
   }
 </style>

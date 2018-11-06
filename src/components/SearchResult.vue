@@ -9,7 +9,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <button v-if='this.series === true' @click='searchSeries' class="series-btn"> Series</button>
+        <button v-if='this.series === true' class="series-btn"> Series</button>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import keys from '../../apiKeys.js'
+// import keys from '../../apiKeys.js'
 
 export default {
   name: 'searchresult',
@@ -123,6 +123,7 @@ export default {
     height: 30px;
     width: 30px;
     cursor: pointer;
+    transition: 0.2s;
   }
 
   .heart:hover {
