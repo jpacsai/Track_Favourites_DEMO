@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid mt-4">
-    <h1 class="h1">Book Manager</h1>
+  <div class="container">
+    <h1 class="header">Book Manager</h1>
     <div class="top">
       <form @submit.prevent="newSearch">
         <input type="text" v-model='search' required/>
@@ -104,6 +104,7 @@ export default {
   methods: {
     newSearch () {
       this.page = 1
+      this.searchResult = []
       this.searchBooks()
     },
     searchBooks () {
@@ -124,8 +125,12 @@ export default {
           this.resultsTo = jsonObj.GoodreadsResponse.search['results-end']
           this.allPage = Math.ceil(allResults / 20)
           const res = jsonObj.GoodreadsResponse.search.results.work
-          console.log(jsonObj)
-          this.searchResult = res
+          console.log(res)
+          if (Array.isArray(res) === true) {
+            this.searchResult = res
+          } else {
+            this.searchResult.push(res)
+          }
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
@@ -208,9 +213,13 @@ export default {
 </script>
 
 <style scoped>
+  .container {
+    max-width: 1100px;
+    margin-top: 20px;
+  }
+
   .top {
-    display: grid;
-    grid-template-columns: 1fr 218px;
+    
   }
 
   form {
@@ -227,7 +236,6 @@ export default {
   }
 
   .searchNums {
-    margin: 0 0 0 15px;
     color: gray;
     font-size: 80%;
     display: flex;
@@ -236,11 +244,14 @@ export default {
 
   ul {
     padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .search-results {
     width: 100%;
-    min-height: 200px;
     margin: 10px 0;
   }
 
