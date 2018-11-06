@@ -9,7 +9,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <p v-if='this.series === true' @click='searchSeries'> Series</p>
+        <button v-if='this.series === true' @click='searchSeries' class="series-btn"> Series</button>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -111,6 +111,20 @@ export default {
     align-self: flex-start;
   }
 
+  .series-btn {
+    background-color: greenyellow;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    margin: 0;
+    width: 60px;
+  }
+
+  .series-btn:hover {
+    background-color: #91d629;
+    box-shadow: 0 0 15px -3px gray;
+  }
+
   .heart-container {
     display: flex;
     justify-content: center;
@@ -120,6 +134,11 @@ export default {
   .heart {
     height: 30px;
     width: 30px;
+    cursor: pointer;
+  }
+
+  .heart:hover {
+    filter: drop-shadow(0 0 2px #f55641);
   }
 
 </style>

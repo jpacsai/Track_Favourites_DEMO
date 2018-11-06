@@ -224,7 +224,7 @@ export default {
 
   form {
     display: grid;
-    grid-template-columns: 1fr 90px;
+    grid-template-columns: 1fr 140px;
   }
   
   input[type='text'] {
@@ -232,7 +232,8 @@ export default {
   }
 
   input[type='submit'] {
-    margin-left: 15px;
+    margin: 0 auto;
+    width: 80px;
   }
 
   .searchNums {
