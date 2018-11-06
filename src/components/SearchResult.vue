@@ -41,18 +41,6 @@ export default {
   methods: {
     likeToggle () {
       this.liked = !this.liked
-    },
-    searchSeries () {
-      fetch(
-        'https://cors-escape.herokuapp.com/https://www.goodreads.com/series/show.xml?key=' +
-          keys.bookKey + '&q=' + this.id
-      )
-        .then(data => {
-          console.log(data)
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
     }
   }
 }

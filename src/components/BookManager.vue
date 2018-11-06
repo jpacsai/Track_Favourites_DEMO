@@ -218,10 +218,6 @@ export default {
     margin-top: 20px;
   }
 
-  .top {
-    
-  }
-
   form {
     display: grid;
     grid-template-columns: 1fr 140px;
