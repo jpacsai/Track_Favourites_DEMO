@@ -14,6 +14,8 @@
     <div class="search-results">
       <ul>
         <searchresult v-for="s in searchResult" 
+          v-on:getSeries="getSeries"
+          v-bind:id="s.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.title"
@@ -134,6 +136,30 @@ export default {
           } else {
             this.searchResult.push(res)
           }
+        })
+        .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
+    async getSeries (id) {
+      try {
+        const workId = await this.getWorkId(id)
+        console.log(workId)
+      } catch (e) {
+        console.warn(e.message)
+      }
+    },
+    getWorkId (id) {
+      fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/book/id_to_work_id/' + id + '?key=' + keys.bookKey)
+        .then(data => data.blob())
+        .then(data => {
+          const text = this.handleUpload(data)
+          return text
+        })
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          const workId = jsonObj.GoodreadsResponse['work-ids'].item
+          console.log(workId)
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)

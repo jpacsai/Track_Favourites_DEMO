@@ -9,7 +9,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <button v-if='this.series === true' class="series-btn"> Series</button>
+        <button v-if='this.series === true' class="series-btn" @click='getSeries'> Series</button>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -30,7 +30,8 @@ export default {
     rating: Number,
     year: Number,
     url: String,
-    series: Boolean
+    series: Boolean,
+    id: Number
   },
   data () {
     return {
@@ -41,6 +42,9 @@ export default {
   methods: {
     likeToggle () {
       this.liked = !this.liked
+    },
+    getSeries () {
+      this.$emit('getSeries', this.id)
     }
   }
 }
