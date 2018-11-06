@@ -143,6 +143,10 @@ export default {
     },
     async getSeries (id) {
       this.getWorkId(id)
+        .then(workId => {
+          console.log(workId)
+          return this.getWhichSeries(workId)
+        })
         .then(data => {
           console.log(data)
         })
@@ -161,6 +165,21 @@ export default {
           var jsonObj = parser.parse(text)
           const workId = jsonObj.GoodreadsResponse['work-ids'].item
           return workId
+        })
+        .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
+    getWhichSeries (workId) {
+      return fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/series/work/' + workId + '?format=xml&key=' + keys.bookKey)
+        .then(data => data.blob())
+        .then(data => {
+          const text = this.handleUpload(data)
+          return text
+        })
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          console.log(jsonObj)
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
