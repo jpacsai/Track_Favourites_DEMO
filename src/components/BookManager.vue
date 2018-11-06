@@ -24,7 +24,7 @@
           v-bind:series="s.best_book.title.includes('(')"/>
       </ul>
     </div>
-    <div class="nav-btn-container" v-if="this.allResult !== 0">
+    <div class="nav-btn-container" v-if="this.allResult > 20">
       <button class="nav-btn" @click="pageBackward">«</button>
       <span>{{ this.page }}</span>
       <button class="nav-btn" @click="pageForward">»</button>
