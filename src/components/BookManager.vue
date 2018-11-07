@@ -14,13 +14,13 @@
     <div class="search-results">
       <ul>
         <searchresult v-for="s in searchResult" 
-          v-on:getSeries="getSeries"
+          v-on:findSeries="findSeries"
           v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.title"
           v-bind:image="s.best_book.small_image_url"
-          v-bind:rating="s.average_rating"
+          v-bind:rating="s.average_rating || +((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
           v-bind:series="s.best_book.title.includes('(')"/>
@@ -142,14 +142,15 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    getSeries (id, title) {
-      this.getAuthorSeries(id, title) /*
-        .then(workId => {
-          console.log(workId)
-          return this.getWhichSeries(workId)
-        }) */
-        .then(data => {
-          console.log(data)
+    findSeries (id, title) {
+      this.getAuthorSeries(id, title)
+        .then(seriesid => {
+          // console.log(seriesid)
+          return this.getSeries(seriesid)
+        })
+        .then(seriesBook => {
+          console.log(seriesBook)
+          this.searchResult = seriesBook
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
@@ -195,24 +196,49 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
-          console.log(jsonObj)
+          // console.log(jsonObj)
           const seriesArr = jsonObj.GoodreadsResponse['series_works'].series_work
           const series = this.seriesId(seriesArr, title)
-          console.log(series)
+          return series
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
     },
     seriesId (arr, title) {
-      console.log(title)
-      console.log(arr)
+      // console.log('title: ' + title)
+      // console.log(arr)
       const serie = arr.find(s => {
         const t = s.series.title
-        console.log(t.substring(1, t.length).trim())
+        // console.log(t.substring(1, t.length).trim())
         return t.substring(1, t.length).trim() === title
       })
-      console.log(serie)
+      return serie.series.id
+    },
+    getSeries (id) {
+      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/' + id + '?format=xml&key=' + keys.bookKey)
+        .then(data => data.blob())
+        .then(data => {
+          const text = this.handleUpload(data)
+          return text
+        })
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          // console.log(jsonObj)
+          const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
+          const transArr = this.transformSeries(arr)
+          return transArr
+        })
+        .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
+    transformSeries (arr) {
+      const t = arr.reduce((a, obj) => {
+        a.push(obj.work)
+        return a
+      }, [])
+      return t
     },
     pageForward () {
       if (this.page < this.allPage) {

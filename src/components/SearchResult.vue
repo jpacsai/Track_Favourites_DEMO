@@ -9,7 +9,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <button v-if='this.series === true' class="series-btn" @click='getSeries'> Series</button>
+        <button v-if='this.series === true' class="series-btn" @click='findSeries'> Series</button>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -44,9 +44,9 @@ export default {
     likeToggle () {
       this.liked = !this.liked
     },
-    getSeries () {
+    findSeries () {
       const sTitle = this.seriesTitle()
-      this.$emit('getSeries', this.authorId, sTitle)
+      this.$emit('findSeries', this.authorId, sTitle)
     },
     seriesTitle () {
       const start = this.title.search(/\(/) + 1
