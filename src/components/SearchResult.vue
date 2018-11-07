@@ -31,6 +31,7 @@ export default {
     year: Number,
     url: String,
     series: Boolean,
+    authorId: Number,
     id: Number
   },
   data () {
@@ -44,7 +45,14 @@ export default {
       this.liked = !this.liked
     },
     getSeries () {
-      this.$emit('getSeries', this.id)
+      const sTitle = this.seriesTitle()
+      this.$emit('getSeries', this.authorId, sTitle)
+    },
+    seriesTitle () {
+      const start = this.title.search(/\(/) + 1
+      const t = this.title.substring(start)
+      const end = t.search(/[,#]/)
+      return t.substring(0, end).trim()
     }
   }
 }

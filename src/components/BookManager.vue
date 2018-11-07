@@ -15,7 +15,7 @@
       <ul>
         <searchresult v-for="s in searchResult" 
           v-on:getSeries="getSeries"
-          v-bind:id="s.id"
+          v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.title"
@@ -100,7 +100,8 @@ export default {
       resultsFrom: 0,
       resultsTo: 0,
       allResult: 0,
-      searchResult: []
+      searchResult: [],
+      herokuNoCors: 'https://cors-escape.herokuapp.com/'
     }
   }, /*
   async created () {
@@ -114,7 +115,7 @@ export default {
     },
     searchBooks () {
       fetch(
-        'https://cors-escape.herokuapp.com/https://www.goodreads.com/search/index.xml?key=' +
+        this.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
           keys.bookKey + '&q=' + this.search + '&page=' + this.page
       )
         .then(data => data.blob())
@@ -141,12 +142,12 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    async getSeries (id) {
-      this.getWorkId(id)
+    getSeries (id, title) {
+      this.getAuthorSeries(id, title) /*
         .then(workId => {
           console.log(workId)
           return this.getWhichSeries(workId)
-        })
+        }) */
         .then(data => {
           console.log(data)
         })
@@ -155,7 +156,7 @@ export default {
         })
     },
     getWorkId (id) {
-      return fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/book/id_to_work_id/' + id + '?key=' + keys.bookKey)
+      return fetch(this.herokuNoCors + 'https://www.goodreads.com/book/id_to_work_id/' + id + '?key=' + keys.bookKey)
         .then(data => data.blob())
         .then(data => {
           const text = this.handleUpload(data)
@@ -171,7 +172,7 @@ export default {
         })
     },
     getWhichSeries (workId) {
-      return fetch('https://cors-escape.herokuapp.com/https://www.goodreads.com/series/work/' + workId + '?format=xml&key=' + keys.bookKey)
+      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/work/' + workId + '?format=xml&key=' + keys.bookKey)
         .then(data => data.blob())
         .then(data => {
           const text = this.handleUpload(data)
@@ -184,6 +185,34 @@ export default {
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
+    },
+    getAuthorSeries (id, title) {
+      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/list/' + id + '.xml?key=' + keys.bookKey)
+        .then(data => data.blob())
+        .then(data => {
+          const text = this.handleUpload(data)
+          return text
+        })
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          console.log(jsonObj)
+          const seriesArr = jsonObj.GoodreadsResponse['series_works'].series_work
+          const series = this.seriesId(seriesArr, title)
+          console.log(series)
+        })
+        .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
+    seriesId (arr, title) {
+      console.log(title)
+      console.log(arr)
+      const serie = arr.find(s => {
+        const t = s.series.title
+        console.log(t.substring(1, t.length).trim())
+        return t.substring(1, t.length).trim() === title
+      })
+      console.log(serie)
     },
     pageForward () {
       if (this.page < this.allPage) {
