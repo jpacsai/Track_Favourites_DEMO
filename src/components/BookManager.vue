@@ -365,7 +365,7 @@ export default {
   .container {
     max-width: 1100px;
     margin-top: 20px;
-    padding-bottom: 50px;
+    padding: 0 0 50px 0;
   }
 
   form {
