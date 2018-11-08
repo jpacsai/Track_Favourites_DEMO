@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li :class="{ future: future }">
       <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
         <a :href='url' target='_blank'><img :src="image"/></a>
@@ -11,7 +11,7 @@
       </div>
       <div class="details">
         <button v-if='this.series === true' class="series-btn" @click='findSeries'> Series</button>
-        <p v-if='this.future === true'>Coming on {{ this.releaseString(this.release) }}</p>
+        <p class="future-release" v-if='this.future === true'>Coming on {{ this.releaseString(this.release) }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -82,6 +82,10 @@ export default {
     box-sizing: border-box;
   }
 
+  .future {
+    background-color: rgba(240, 128, 128, 0.17);
+  }
+
   .order-num {
     display: flex;
     justify-content: center;
@@ -132,6 +136,11 @@ export default {
     align-self: flex-start;
   }
 
+  .details {
+    display: flex;
+    flex-direction: column;
+  }
+
   .series-btn {
     background-color: greenyellow;
     border: none;
@@ -144,6 +153,15 @@ export default {
   .series-btn:hover {
     background-color: #91d629;
     box-shadow: 0 0 15px -3px gray;
+  }
+
+  .future-release {
+    background-color: rgba(240, 128, 128, 0.5);;
+    font-size: 80%;
+    margin-top: 10px;
+    align-self: flex-start;
+    padding: 5px;
+    border-radius: 3px;
   }
 
   .heart-container {

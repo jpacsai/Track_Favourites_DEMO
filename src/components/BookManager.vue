@@ -132,7 +132,6 @@ export default {
     newSearch () {
       this.page = 1
       this.searchResult = []
-      console.log(this.today)
       this.searchBooks()
     },
     searchBooks () {
