@@ -129,6 +129,20 @@ export default {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
     },
+    setPages (obj) {
+      const allResults = obj.GoodreadsResponse.search['total-results']
+      this.allResult = allResults
+      this.resultsFrom = obj.GoodreadsResponse.search['results-start']
+      this.resultsTo = obj.GoodreadsResponse.search['results-end']
+      this.allPage = Math.ceil(allResults / 20)
+    },
+    setPageSeries (arr) {
+      this.page = 1
+      this.allResult = arr.length
+      this.resultsFrom = 1
+      this.resultsTo = arr.length
+      this.allPage = 1
+    },
     newSearch () {
       this.page = 1
       this.searchResult = []
@@ -146,11 +160,7 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
-          const allResults = jsonObj.GoodreadsResponse.search['total-results']
-          this.allResult = allResults
-          this.resultsFrom = jsonObj.GoodreadsResponse.search['results-start']
-          this.resultsTo = jsonObj.GoodreadsResponse.search['results-end']
-          this.allPage = Math.ceil(allResults / 20)
+          this.setPages(jsonObj)
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           if (Array.isArray(res) === true) {
@@ -164,20 +174,28 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    /* get series id from author series
+    ** get serie with series id
+    ** display serie
+    */
     findSeries (id, title) {
       this.getAuthorSeries(id, title)
         .then(seriesid => {
           // console.log(seriesid)
+          this.search = ''
           return this.getSeries(seriesid)
         })
         .then(seriesBook => {
           console.log(seriesBook)
+          this.page = 1
           this.searchResult = seriesBook
+          this.setPageSeries(seriesBook)
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    /* get workId from book id */
     getWorkId (id) {
       return fetch(this.herokuNoCors + 'https://www.goodreads.com/book/id_to_work_id/' + id + '?key=' + keys.bookKey)
         .then(data => data.blob())
@@ -194,6 +212,7 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    /* list whih series the work is in with the workId */
     getWhichSeries (workId) {
       return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/work/' + workId + '?format=xml&key=' + keys.bookKey)
         .then(data => data.blob())
@@ -209,6 +228,7 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    /* get all series of an author */
     getAuthorSeries (id, title) {
       return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/list/' + id + '.xml?key=' + keys.bookKey)
         .then(data => data.blob())
@@ -227,6 +247,7 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    /* find series, extract serieId */
     seriesId (arr, title) {
       // console.log('title: ' + title)
       // console.log(arr)
@@ -255,6 +276,7 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    /* add books of a serie to display list */
     transformSeries (arr) {
       const t = arr.reduce((a, obj) => {
         a.push(obj.work)
@@ -283,6 +305,7 @@ export default {
         behavior: 'smooth'
       })
     },
+    /* read xml response */
     readUploadedFileAsText (inputFile) {
       const temporaryFileReader = new FileReader()
 
