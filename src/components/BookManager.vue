@@ -24,7 +24,8 @@
           v-bind:rating="s.average_rating || +((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year || 0"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
-          v-bind:series="s.best_book.title.includes('(')" 
+          v-bind:series="s.best_book.title.includes('(')"
+          v-bind:seriesView="seriesView"
           v-bind:release="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
           v-bind:future="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day) > today"/>
       </ul>
@@ -105,6 +106,7 @@ export default {
       resultsTo: 0,
       allResult: 0,
       searchResult: [],
+      seriesView: false,
       herokuNoCors: 'https://cors-escape.herokuapp.com/'
     }
   },
@@ -122,6 +124,12 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
+    seriesViewTrue () {
+      this.seriesView = true
+    },
+    seriesViewFalse () {
+      this.seriesView = false
+    },
     releaseDate (year, month, day) {
       return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
     },
@@ -146,6 +154,7 @@ export default {
     newSearch () {
       this.page = 1
       this.searchResult = []
+      this.seriesViewFalse()
       this.searchBooks()
     },
     searchBooks () {
@@ -190,6 +199,7 @@ export default {
           this.page = 1
           this.searchResult = seriesBook
           this.setPageSeries(seriesBook)
+          this.seriesViewTrue()
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)

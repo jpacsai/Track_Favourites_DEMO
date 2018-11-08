@@ -10,7 +10,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <button v-if='this.series === true' class="series-btn" @click='findSeries'> Series</button>
+        <button v-if='this.series === true && this.seriesView === false' class="series-btn" @click='findSeries'> Series</button>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.releaseString(this.release) }}</p>
       </div>
       <div class="heart-container">
@@ -33,6 +33,7 @@ export default {
     year: Number,
     url: String,
     series: Boolean,
+    seriesView: Boolean,
     authorId: Number,
     id: Number,
     num: Number,
