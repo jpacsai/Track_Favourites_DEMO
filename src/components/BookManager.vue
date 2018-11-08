@@ -24,7 +24,9 @@
           v-bind:rating="s.average_rating || +((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year || 0"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
-          v-bind:series="s.best_book.title.includes('(')"/>
+          v-bind:series="s.best_book.title.includes('(')" 
+          v-bind:release="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
+          v-bind:future="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day) > today"/>
       </ul>
     </div>
     <div class="nav-btn-container" v-if="this.allResult > 20">
@@ -93,6 +95,7 @@ export default {
   data () {
     return {
       loading: false,
+      today: null,
       books: [],
       model: {},
       search: '',
@@ -104,14 +107,28 @@ export default {
       searchResult: [],
       herokuNoCors: 'https://cors-escape.herokuapp.com/'
     }
-  }, /*
+  },
+  created () {
+    const now = new Date()
+    const day = now.getDate()
+    const month = now.getMonth() // January is 0!
+    const year = now.getFullYear()
+    const today = new Date(year, month, day)
+    this.today = today
+    console.log(today)
+  },
+  /*
   async created () {
     this.refreshBooks()
   }, */
   methods: {
+    releaseDate (year, month, day) {
+      return new Date(year, month - 1, day, 0, 0, 0, 0)
+    },
     newSearch () {
       this.page = 1
       this.searchResult = []
+      console.log(this.today)
       this.searchBooks()
     },
     searchBooks () {

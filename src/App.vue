@@ -24,7 +24,8 @@ export default {
   name: 'app',
   data () {
     return {
-      activeUser: null
+      activeUser: null,
+      today: null
     }
   },
   async created () {
