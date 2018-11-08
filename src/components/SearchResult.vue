@@ -1,5 +1,6 @@
 <template>
     <li>
+      <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
         <a :href='url' target='_blank'><img :src="image"/></a>
       </div>
@@ -10,6 +11,7 @@
       </div>
       <div class="details">
         <button v-if='this.series === true' class="series-btn" @click='findSeries'> Series</button>
+        
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -32,7 +34,8 @@ export default {
     url: String,
     series: Boolean,
     authorId: Number,
-    id: Number
+    id: Number,
+    num: Number
   },
   data () {
     return {
@@ -64,9 +67,17 @@ export default {
     border-bottom: 1px solid #dfdfdf;
     padding: 10px 0;
     display: grid;
-    grid-template: 90px / 70px 1fr 1fr 140px;
+    grid-template: 90px / 30px 70px 1fr 1fr 140px;
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .order-num {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80%;
+    color: gray;
   }
 
   .img-container {

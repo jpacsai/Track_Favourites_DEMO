@@ -13,15 +13,16 @@
     
     <div class="search-results">
       <ul>
-        <searchresult v-for="s in searchResult" 
+        <searchresult v-for="(s, index) in searchResult" 
           v-on:findSeries="findSeries"
+          v-bind:num="index"
           v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.title"
-          v-bind:image="s.best_book.small_image_url"
+          v-bind:image="s.best_book.small_image_url || s.best_book.image_url "
           v-bind:rating="s.average_rating || +((s.ratings_sum / s.ratings_count).toFixed(2))"
-          v-bind:year="s.original_publication_year"
+          v-bind:year="s.original_publication_year || 0"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
           v-bind:series="s.best_book.title.includes('(')"/>
       </ul>
