@@ -123,7 +123,11 @@ export default {
   }, */
   methods: {
     releaseDate (year, month, day) {
-      return new Date(year, month - 1, day, 0, 0, 0, 0)
+      return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+    },
+    checkSearchResults (arr) {
+      const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
+      return checkedArr
     },
     newSearch () {
       this.page = 1
@@ -151,7 +155,8 @@ export default {
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           if (Array.isArray(res) === true) {
-            this.searchResult = res
+            const checkedArr = this.checkSearchResults(res)
+            this.searchResult = checkedArr
           } else {
             this.searchResult.push(res)
           }
