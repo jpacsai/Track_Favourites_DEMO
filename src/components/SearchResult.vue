@@ -11,7 +11,7 @@
       </div>
       <div class="details">
         <button v-if='this.series === true' class="series-btn" @click='findSeries'> Series</button>
-        <p v-if='this.future === true'>Coming on {{ this.release }}</p>
+        <p v-if='this.future === true'>Coming on {{ this.releaseString(this.release) }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -48,6 +48,14 @@ export default {
   methods: {
     likeToggle () {
       this.liked = !this.liked
+    },
+    releaseString (date) {
+      console.log(date)
+      const day = date.getUTCDate()
+      const locale = 'en-us'
+      const month = date.toLocaleString(locale, { month: 'short' })
+      const year = date.getUTCFullYear()
+      return day + ' ' + month + ' ' + year
     },
     findSeries () {
       const sTitle = this.seriesTitle()
