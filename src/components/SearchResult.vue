@@ -60,7 +60,7 @@ export default {
     },
     findSeries () {
       const sTitle = this.seriesTitle()
-      this.$emit('findSeries', this.authorId, sTitle)
+      this.$emit('findSeries', this.id, sTitle)
     },
     seriesTitle () {
       const start = this.title.search(/\(/) + 1

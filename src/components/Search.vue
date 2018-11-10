@@ -6,6 +6,7 @@
         <searchresult v-for="(s, index) in list" 
           v-on:findSeries="findSeries"
           v-bind:num="index"
+          v-bind:id="s.id"
           v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"

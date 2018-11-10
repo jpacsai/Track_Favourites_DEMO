@@ -89,7 +89,7 @@ export default {
   data () {
     return {
       loading: false,
-      view: 'search',
+      view: null,
       today: null,
       books: [],
       model: {},
@@ -148,7 +148,7 @@ export default {
     newSearch () {
       this.page = 1
       this.searchResult = []
-      if (this.view === 'series') {
+      if (this.view !== 'search') {
         this.viewState_search()
       }
       this.searchBooks()
@@ -179,19 +179,16 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    /* get series id from author series
-    ** get serie with series id
-    ** display serie
-    */
     findSeries (id, title) {
-      this.getAuthorSeries(id, title)
-        .then(seriesid => {
-          // console.log(seriesid)
-          this.search = ''
-          return this.getSeries(seriesid)
+      this.getWhichSeries(id)
+        .then(data => {
+          // console.log(data)
+          const seriesId = data.GoodreadsResponse.series_works.series_work.series.id
+          return this.getSeries(seriesId)
         })
         .then(seriesBook => {
           console.log(seriesBook)
+          this.search = ''
           this.page = 1
           this.searchResult = seriesBook
           this.setPageSeries(seriesBook)
@@ -201,42 +198,9 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    /* get workId from book id */
-    getWorkId (id) {
-      return fetch(this.herokuNoCors + 'https://www.goodreads.com/book/id_to_work_id/' + id + '?key=' + keys.bookKey)
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          const workId = jsonObj.GoodreadsResponse['work-ids'].item
-          return workId
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    /* list whih series the work is in with the workId */
-    getWhichSeries (workId) {
-      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/work/' + workId + '?format=xml&key=' + keys.bookKey)
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          console.log(jsonObj)
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    /* get all series of an author */
-    getAuthorSeries (id, title) {
-      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/list/' + id + '.xml?key=' + keys.bookKey)
+    /* list which series the work is in with the workId */
+    getWhichSeries (id) {
+      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/work/' + id + '?format=xml&key=' + keys.bookKey)
         .then(data => data.blob())
         .then(data => {
           const text = this.handleUpload(data)
@@ -245,24 +209,11 @@ export default {
         .then(text => {
           var jsonObj = parser.parse(text)
           // console.log(jsonObj)
-          const seriesArr = jsonObj.GoodreadsResponse['series_works'].series_work
-          const series = this.seriesId(seriesArr, title)
-          return series
+          return jsonObj
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
         })
-    },
-    /* find series, extract serieId */
-    seriesId (arr, title) {
-      // console.log('title: ' + title)
-      // console.log(arr)
-      const serie = arr.find(s => {
-        const t = s.series.title
-        // console.log(t.substring(1, t.length).trim())
-        return t.substring(1, t.length).trim() === title
-      })
-      return serie.series.id
     },
     getSeries (id) {
       return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/' + id + '?format=xml&key=' + keys.bookKey)
