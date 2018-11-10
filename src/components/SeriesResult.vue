@@ -111,7 +111,7 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 330px;
+    max-width: 370px;
   }
 
   .author {

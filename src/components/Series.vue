@@ -9,7 +9,7 @@
           v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
-          v-bind:title="s.best_book.title"
+          v-bind:title="decodeTitle(s.best_book.title)"
           v-bind:image="s.best_book.image_url "
           v-bind:rating="+((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year || 0"
@@ -40,6 +40,9 @@ export default {
   methods: {
     releaseDate (year, month, day) {
       return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+    },
+    decodeTitle (title) {
+      return title.replace(/&amp;/g, '&')
     }
   }
 }
