@@ -78,7 +78,7 @@ export default {
     border-bottom: 1px solid #dfdfdf;
     padding: 10px 0;
     display: grid;
-    grid-template: 90px / 30px 70px 1fr 1fr 140px;
+    grid-template: 90px / 30px 70px 1.5fr 1fr 140px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -117,7 +117,7 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 330px;
+    max-width: 370px;
   }
 
   .author {
