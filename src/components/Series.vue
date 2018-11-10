@@ -2,9 +2,9 @@
   <div class="container">
     <h3>Series view</h3>
     <div class="search-results">
-      <ul> <!--
-        <seriesResult v-for="(s, index) in searchResult" 
-          v-on:findSeries="findSeries"
+      <ul>
+        <seriesresult v-for="(s, index) in list" 
+          v-bind:today="today"
           v-bind:num="index"
           v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
@@ -14,34 +14,32 @@
           v-bind:rating="+((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year || 0"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
-          v-bind:series="s.best_book.title.includes('(')"
-          v-bind:seriesView="seriesView"
           v-bind:release="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
-          v-bind:future="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day) > today"/> -->
+          />
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-// import searchresult from './SearchResult'
-// import api from '@/api'
-// import keys from '../../apiKeys.js'
-// const parser = require('fast-xml-parser')
-
+import seriesresult from './SeriesResult'
 export default {
   name: 'series',
   components: {
-    // searchresult
+    seriesresult
   },
   props: {
-    list: Array
+    list: Array,
+    today: Date
   },
   data () {
     return {
     }
   },
   methods: {
+    releaseDate (year, month, day) {
+      return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+    }
   }
 }
 </script>

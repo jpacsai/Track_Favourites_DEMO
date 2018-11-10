@@ -10,8 +10,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <button v-if='this.series === true && this.seriesView === false' class="series-btn" @click='findSeries'> Series</button>
-        <p class="future-release" v-if='this.future === true'>Coming on {{ this.releaseString(this.release) }}</p>
+        <p class="future-release" v-if="this.future === true">Coming on {{ this.releaseString(this.release) }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -26,26 +25,33 @@
 export default {
   name: 'seriesresult',
   props: {
+    today: Date,
     author: String,
     title: String,
     image: String,
     rating: Number,
     year: Number,
     url: String,
-    series: Boolean,
-    seriesView: Boolean,
     authorId: Number,
     id: Number,
     num: Number,
-    release: Date,
-    future: Boolean
+    release: Date
   },
   data () {
     return {
-      liked: false
+      liked: false,
+      future: false
     }
   },
+  created () {
+    this.future = this.setFuture(this.release, this.today)
+    console.log(this.future)
+  },
   methods: {
+    setFuture (release, today) {
+      console.log('future: ' + release > today)
+      return release > today
+    },
     likeToggle () {
       this.liked = !this.liked
     },
@@ -56,16 +62,6 @@ export default {
       const month = date.toLocaleString(locale, { month: 'short' })
       const year = date.getUTCFullYear()
       return day + ' ' + month + ' ' + year
-    },
-    findSeries () {
-      const sTitle = this.seriesTitle()
-      this.$emit('findSeries', this.authorId, sTitle)
-    },
-    seriesTitle () {
-      const start = this.title.search(/\(/) + 1
-      const t = this.title.substring(start)
-      const end = t.search(/[,#]/)
-      return t.substring(0, end).trim()
     }
   }
 }
@@ -141,24 +137,9 @@ export default {
     flex-direction: column;
   }
 
-  .series-btn {
-    background-color: greenyellow;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    margin: 0;
-    width: 60px;
-  }
-
-  .series-btn:hover {
-    background-color: #91d629;
-    box-shadow: 0 0 15px -3px gray;
-  }
-
   .future-release {
     background-color: rgba(240, 128, 128, 0.5);;
     font-size: 80%;
-    margin-top: 10px;
     align-self: flex-start;
     padding: 5px;
     border-radius: 3px;

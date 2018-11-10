@@ -31,7 +31,9 @@
       </ul>
     </div>
     <div v-if="view === 'series'">
-      <series v-bind:list="searchResult" />
+      <series
+        v-bind:list="searchResult"
+        v-bind:today="this.today"/>
     </div>
     <div class="nav-btn-container" v-if="this.allResult > 20">
       <button class="nav-btn" @click="pageBackward">
@@ -160,8 +162,8 @@ export default {
     newSearch () {
       this.page = 1
       this.searchResult = []
-      if (this.seriesView === true) {
-        this.seriesViewFalse()
+      if (this.view === 'series') {
+        this.viewState_search()
       }
       this.searchBooks()
     },
