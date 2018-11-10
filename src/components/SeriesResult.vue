@@ -10,6 +10,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
+        <p>BOOK {{ this.position }}</p>
         <p class="future-release" v-if="this.future === true">Coming on {{ this.releaseString(this.release) }}</p>
       </div>
       <div class="heart-container">
@@ -35,7 +36,8 @@ export default {
     authorId: Number,
     id: Number,
     num: Number,
-    release: Date
+    release: Date,
+    position: String
   },
   data () {
     return {

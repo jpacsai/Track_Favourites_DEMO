@@ -14,6 +14,7 @@
           v-bind:rating="+((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year || 0"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
+          v-bind:position="s.position"
           v-bind:release="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
           />
       </ul>

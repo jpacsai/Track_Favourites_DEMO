@@ -237,7 +237,7 @@ export default {
     transformSeries (arr) {
       const t = arr.reduce((a, obj) => {
         const o = obj.work
-        o.position = obj.user_position
+        o.position = obj.user_position.toString()
         a.push(o)
         return a
       }, [])
