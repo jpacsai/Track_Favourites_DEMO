@@ -11,7 +11,7 @@
       </p>
     </div>
     
-    <div class="search-results">
+    <div v-if="view === 'search'" class="search-results">
       <ul>
         <searchresult v-for="(s, index) in searchResult" 
           v-on:findSeries="findSeries"
@@ -29,6 +29,9 @@
           v-bind:release="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
           v-bind:future="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day) > today"/>
       </ul>
+    </div>
+    <div v-if="view === 'series'">
+      <series v-bind:list="searchResult" />
     </div>
     <div class="nav-btn-container" v-if="this.allResult > 20">
       <button class="nav-btn" @click="pageBackward">
@@ -85,17 +88,20 @@
 
 <script>
 import searchresult from './SearchResult'
+import series from './Series'
 // import api from '@/api'
 import keys from '../../apiKeys.js'
 const parser = require('fast-xml-parser')
 
 export default {
   components: {
-    searchresult
+    searchresult,
+    series
   },
   data () {
     return {
       loading: false,
+      view: 'search',
       today: null,
       books: [],
       model: {},
@@ -124,11 +130,11 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
-    seriesViewTrue () {
-      this.seriesView = true
+    viewState_series () {
+      this.view = 'series'
     },
-    seriesViewFalse () {
-      this.seriesView = false
+    viewState_search () {
+      this.view = 'search'
     },
     releaseDate (year, month, day) {
       return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
@@ -154,7 +160,9 @@ export default {
     newSearch () {
       this.page = 1
       this.searchResult = []
-      this.seriesViewFalse()
+      if (this.seriesView === true) {
+        this.seriesViewFalse()
+      }
       this.searchBooks()
     },
     searchBooks () {
@@ -199,7 +207,7 @@ export default {
           this.page = 1
           this.searchResult = seriesBook
           this.setPageSeries(seriesBook)
-          this.seriesViewTrue()
+          this.viewState_series()
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
