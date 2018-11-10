@@ -45,18 +45,15 @@ export default {
   },
   created () {
     this.future = this.setFuture(this.release, this.today)
-    console.log(this.future)
   },
   methods: {
     setFuture (release, today) {
-      console.log('future: ' + release > today)
       return release > today
     },
     likeToggle () {
       this.liked = !this.liked
     },
     releaseString (date) {
-      console.log(date)
       const day = date.getUTCDate()
       const locale = 'en-us'
       const month = date.toLocaleString(locale, { month: 'short' })
