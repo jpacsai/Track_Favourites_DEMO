@@ -224,8 +224,8 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
-          // console.log(jsonObj)
           const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
+          // console.log(jsonObj)
           const transArr = this.transformSeries(arr)
           return transArr
         })
@@ -236,7 +236,9 @@ export default {
     /* add books of a serie to display list */
     transformSeries (arr) {
       const t = arr.reduce((a, obj) => {
-        a.push(obj.work)
+        const o = obj.work
+        o.position = obj.user_position
+        a.push(o)
         return a
       }, [])
       return t
