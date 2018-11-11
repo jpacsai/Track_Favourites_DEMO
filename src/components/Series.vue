@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Series view</h3>
-    <p>{{ this.serieAuthor }}</p>
+    <p>{{ this.serieAuthor }} - {{ this.serieTitle }}</p>
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in list" 
@@ -31,6 +31,7 @@ export default {
   },
   props: {
     serieAuthor: String,
+    serieTitle: String,
     list: Array
   },
   data () {

@@ -18,6 +18,7 @@
     <series
       v-if="view === 'series'"
       v-bind:serieAuthor="serieAuthor"
+      v-bind:serieTitle="serieTitle"
       v-bind:list="searchResult" />
 
     <div class="nav-btn-container" v-if="this.allResult > 20">
@@ -101,6 +102,7 @@ export default {
       searchResult: [],
       seriesView: false,
       serieAuthor: null,
+      serieTitle: null,
       herokuNoCors: 'https://cors-escape.herokuapp.com/'
     }
   },
@@ -153,7 +155,7 @@ export default {
           obj.release = this.releaseString(year, month, day)
         }
         if (obj.hasOwnProperty('serie') === false) {
-          obj.serie = obj.best_book.title.includes('(')
+          obj.serie = obj.best_book.title.includes('#')
           if (obj.serie === true) {
             this.serieAuthor = obj.best_book.author.name
           }
@@ -179,6 +181,7 @@ export default {
     newSearch () {
       this.page = 1
       this.serieAuthor = null
+      this.serieTitle = null
       this.searchResult = []
       if (this.view !== 'search') {
         this.viewState_search()
@@ -215,7 +218,8 @@ export default {
     findSeries (id, title) {
       this.getWhichSeries(id)
         .then(data => {
-          // console.log(data)
+          console.log(data)
+          this.serieTitle = data.GoodreadsResponse.series_works.series_work.series.title
           const seriesId = data.GoodreadsResponse.series_works.series_work.series.id
           return this.getSeries(seriesId)
         })
