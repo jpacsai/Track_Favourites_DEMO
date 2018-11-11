@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <h3>Series view</h3>
+    <p>{{ this.serieAuthor }}</p>
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in list" 
           v-bind:num="index"
-          v-bind:authorId="s.best_book.author.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:title="s.best_book.titleDecoded"
@@ -30,11 +30,16 @@ export default {
     seriesresult
   },
   props: {
+    serieAuthor: String,
     list: Array
   },
   data () {
     return {
+      author: null,
+      serie: null
     }
+  },
+  created () {
   },
   methods: {
   }

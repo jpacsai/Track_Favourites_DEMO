@@ -17,6 +17,7 @@
       class="search-results" />
     <series
       v-if="view === 'series'"
+      v-bind:serieAuthor="serieAuthor"
       v-bind:list="searchResult" />
 
     <div class="nav-btn-container" v-if="this.allResult > 20">
@@ -99,6 +100,7 @@ export default {
       allResult: 0,
       searchResult: [],
       seriesView: false,
+      serieAuthor: null,
       herokuNoCors: 'https://cors-escape.herokuapp.com/'
     }
   },
@@ -150,6 +152,12 @@ export default {
         if (obj.hasOwnProperty('release') === false) {
           obj.release = this.releaseString(year, month, day)
         }
+        if (obj.hasOwnProperty('serie') === false) {
+          obj.serie = obj.best_book.title.includes('(')
+          if (obj.serie === true) {
+            this.serieAuthor = obj.best_book.author.name
+          }
+        }
         return obj
       })
       return parsed
@@ -170,6 +178,7 @@ export default {
     },
     newSearch () {
       this.page = 1
+      this.serieAuthor = null
       this.searchResult = []
       if (this.view !== 'search') {
         this.viewState_search()

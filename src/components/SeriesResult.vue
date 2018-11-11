@@ -32,8 +32,6 @@ export default {
     rating: Number,
     year: Number,
     url: String,
-    authorId: Number,
-    id: Number,
     num: Number,
     future: Boolean,
     release: String,
