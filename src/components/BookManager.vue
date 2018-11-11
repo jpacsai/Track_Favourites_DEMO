@@ -14,15 +14,10 @@
     <search
       v-if="view === 'search'"
       v-bind:list="searchResult"
-      v-on:releaseDate="releaseDate"
-      v-on:releaseString="releaseString"
       class="search-results" />
     <series
       v-if="view === 'series'"
-      v-bind:list="searchResult"
-      v-on:releaseDate="releaseDate"
-      v-on:releaseString="releaseString"
-      v-bind:today="today"/>
+      v-bind:list="searchResult" />
 
     <div class="nav-btn-container" v-if="this.allResult > 20">
       <button class="nav-btn" @click="pageBackward">
@@ -114,7 +109,6 @@ export default {
     const year = now.getFullYear()
     const today = new Date(year, month, day)
     this.today = today
-    console.log(today)
   },
   /*
   async created () {
@@ -131,7 +125,7 @@ export default {
       return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
     },
     releaseString (year, month, day) {
-      return day + ' ' + month + ' ' + year
+      return day + '/' + month + '/' + year
     },
     decodeTitle (title) {
       return title.replace(/&amp;/g, '&')
@@ -139,6 +133,26 @@ export default {
     checkSearchResults (arr) {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
+    },
+    /* add future (Boolean) and release date as String to book objects */
+    parseArr (arr) {
+      const parsed = arr.map(obj => {
+        const year = obj.original_publication_year
+        const month = obj.original_publication_month
+        const day = obj.original_publication_day
+        if (obj.best_book.hasOwnProperty('titleDecoded') === false) {
+          obj.best_book.titleDecoded = this.decodeTitle(obj.best_book.title)
+        }
+        if (obj.hasOwnProperty('future') === false) {
+          const releaseDate = this.releaseDate(year, month, day)
+          obj.future = releaseDate > this.today
+        }
+        if (obj.hasOwnProperty('release') === false) {
+          obj.release = this.releaseString(year, month, day)
+        }
+        return obj
+      })
+      return parsed
     },
     setPages (obj) {
       const allResults = obj.GoodreadsResponse.search['total-results']
@@ -179,9 +193,10 @@ export default {
           console.log(res)
           if (Array.isArray(res) === true) {
             const checkedArr = this.checkSearchResults(res)
-            this.searchResult = checkedArr
+            this.searchResult = this.parseArr(checkedArr)
           } else {
-            this.searchResult.push(res)
+            const parsedObj = this.parseArr([res])
+            this.searchResult.push(parsedObj)
           }
         })
         .catch(function (error) {
@@ -199,7 +214,7 @@ export default {
           console.log(seriesBook)
           this.search = ''
           this.page = 1
-          this.searchResult = seriesBook
+          this.searchResult = this.parseArr(seriesBook)
           this.setPageSeries(seriesBook)
           this.viewState_series()
         })

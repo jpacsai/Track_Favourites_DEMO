@@ -1,5 +1,5 @@
 <template>
-    <li :class="{ future: future }">
+    <li :class="{ future: this.future }">
       <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
         <a :href='url' target='_blank'><img :src="image"/></a>
@@ -11,7 +11,7 @@
       </div>
       <div class="details">
         <p>BOOK {{ this.position }}</p>
-        <p class="future-release" v-if="this.future === true">Coming on {{ this.releaseString }}</p>
+        <p class="future-release" v-if="this.future === true">Coming on {{ this.release }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -26,7 +26,6 @@
 export default {
   name: 'seriesresult',
   props: {
-    today: Date,
     author: String,
     title: String,
     image: String,
@@ -36,23 +35,16 @@ export default {
     authorId: Number,
     id: Number,
     num: Number,
-    release: Date,
-    releaseString: String,
+    future: Boolean,
+    release: String,
     position: String
   },
   data () {
     return {
-      liked: false,
-      future: false
+      liked: false
     }
   },
-  created () {
-    this.future = this.setFuture(this.release, this.today)
-  },
   methods: {
-    setFuture (release, today) {
-      return release > today
-    },
     likeToggle () {
       this.liked = !this.liked
     }

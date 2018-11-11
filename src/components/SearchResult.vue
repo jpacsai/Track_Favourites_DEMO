@@ -11,7 +11,7 @@
       </div>
       <div class="details">
         <button v-if='this.series === true && this.seriesView === false' class="series-btn" @click='findSeries'> Series</button>
-        <p class="future-release" v-if='this.future === true'>Coming on {{ this.releaseString }}</p>
+        <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -37,8 +37,7 @@ export default {
     authorId: Number,
     id: Number,
     num: Number,
-    release: Date,
-    releaseString: String,
+    release: String,
     future: Boolean
   },
   data () {
