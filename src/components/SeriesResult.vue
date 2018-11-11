@@ -11,7 +11,7 @@
       </div>
       <div class="details">
         <p>BOOK {{ this.position }}</p>
-        <p class="future-release" v-if="this.future === true">Coming on {{ this.releaseString(this.release) }}</p>
+        <p class="future-release" v-if="this.future === true">Coming on {{ this.releaseString }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -37,6 +37,7 @@ export default {
     id: Number,
     num: Number,
     release: Date,
+    releaseString: String,
     position: String
   },
   data () {
@@ -54,13 +55,6 @@ export default {
     },
     likeToggle () {
       this.liked = !this.liked
-    },
-    releaseString (date) {
-      const day = date.getUTCDate()
-      const locale = 'en-us'
-      const month = date.toLocaleString(locale, { month: 'short' })
-      const year = date.getUTCFullYear()
-      return day + ' ' + month + ' ' + year
     }
   }
 }

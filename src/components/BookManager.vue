@@ -14,11 +14,14 @@
     <search
       v-if="view === 'search'"
       v-bind:list="searchResult"
-      v-on:findSeries="findSeries"
+      v-on:releaseDate="releaseDate"
+      v-on:releaseString="releaseString"
       class="search-results" />
     <series
       v-if="view === 'series'"
       v-bind:list="searchResult"
+      v-on:releaseDate="releaseDate"
+      v-on:releaseString="releaseString"
       v-bind:today="today"/>
 
     <div class="nav-btn-container" v-if="this.allResult > 20">
@@ -126,6 +129,12 @@ export default {
     },
     releaseDate (year, month, day) {
       return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+    },
+    releaseString (year, month, day) {
+      return day + ' ' + month + ' ' + year
+    },
+    decodeTitle (title) {
+      return title.replace(/&amp;/g, '&')
     },
     checkSearchResults (arr) {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')

@@ -4,6 +4,7 @@
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in list" 
+          v-on:releaseString="releaseString"
           v-bind:today="today"
           v-bind:num="index"
           v-bind:authorId="s.best_book.author.id"
@@ -16,6 +17,7 @@
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
           v-bind:position="s.position"
           v-bind:release="releaseDate(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
+          v-bind:releaseString="releaseString(s.original_publication_year, s.original_publication_month, s.original_publication_day)"
           />
       </ul>
     </div>
@@ -39,7 +41,10 @@ export default {
   },
   methods: {
     releaseDate (year, month, day) {
-      return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+      return this.$parent.releaseDate(year, month, day)
+    },
+    releaseString (year, month, day) {
+      return this.$parent.releaseString(year, month, day)
     },
     decodeTitle (title) {
       return title.replace(/&amp;/g, '&')
