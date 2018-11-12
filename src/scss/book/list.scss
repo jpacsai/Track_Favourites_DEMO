@@ -63,46 +63,56 @@
   .details {
     display: flex;
     flex-direction: column;
-  }
 
-  .series-btn {
-    background-color: greenyellow;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    margin: 0;
-    width: 60px;
-  }
+    .series-btn {
+      background-color: greenyellow;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      margin: 0;
+      width: 60px;
+    }
 
-  .series-btn:hover {
-    background-color: #91d629;
-    box-shadow: 0 0 15px -3px gray;
-  }
+    .series-btn:hover {
+      background-color: #91d629;
+      box-shadow: 0 0 15px -3px gray;
+    }
 
-  .future-release {
-    background-color: rgba(240, 128, 128, 0.5);
-    ;
-    font-size: 80%;
-    margin-top: 10px;
-    align-self: flex-start;
-    padding: 5px;
-    border-radius: 3px;
+    .future-release {
+      background-color: rgba(240, 128, 128, 0.5);
+      font-size: 80%;
+      margin-top: 10px;
+      align-self: flex-start;
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    .serie-position {
+      color: gray;
+
+      span {
+        font-weight: bold;
+      }
+    }
   }
 
   .heart-container {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+    justify-self: end;
 
-  .heart {
-    height: 30px;
-    width: 30px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-
-  .heart:hover {
-    filter: drop-shadow(0 0 2px #f55641);
+    .heart {
+      height: 30px;
+      width: 30px;
+      cursor: pointer;
+      transition: 0.2s;
+      justify-self: end;
+      margin-right: 25px;
+    }
+  
+    .heart:hover {
+      filter: drop-shadow(0 0 2px #f55641);
+    }
   }
 }

@@ -11,12 +11,12 @@
   }
 
   .book_search-submit {
-    margin: 0 auto;
     width: 80px;
     border: none;
     background-color: greenyellow;
     border-radius: 3px;
     transition: 0.2s;
+    justify-self: end;
   }
 
   .book_search-submit:hover {
@@ -46,25 +46,28 @@
   }
 
   .nav-btn-container {
-    padding-right: 25px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 22px 30px 22px;
     justify-content: flex-end;
-  }
 
-  .nav-btn {
-    margin: 0 10px;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-  }
+    span {
+      text-align: center;
+    }
 
-  .nav-btn-img {
-    width: 20px;
-    transition: 0.2s;
+    .nav-btn {
+      padding: 0;
+      border: none;
+      cursor: pointer;
+      background-color: transparent;
+    }
+  
+    .nav-btn-img {
+      width: 20px;
+      transition: 0.2s;
+    }
+  
+    .nav-btn-img:hover {
+      filter: drop-shadow(0 0 2px grey);
+    }  
   }
-
-  .nav-btn-img:hover {
-    filter: drop-shadow(0 0 2px grey);
-  }  
 }

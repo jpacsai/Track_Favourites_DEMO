@@ -10,7 +10,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <p>BOOK {{ this.position }}</p>
+        <p class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <p class="future-release" v-if="this.future === true">Coming on {{ this.release }}</p>
       </div>
       <div class="heart-container">
