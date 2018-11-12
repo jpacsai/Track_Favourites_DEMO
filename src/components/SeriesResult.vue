@@ -1,5 +1,5 @@
 <template>
-    <li :class="{ future: this.future }" class="book-li">
+    <li :class="{ future: future }" class="book_li">
       <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
         <a :href='url' target='_blank'><img :src="image"/></a>
