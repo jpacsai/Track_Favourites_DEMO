@@ -20,6 +20,9 @@
       v-bind:serieAuthor="serieAuthor"
       v-bind:serieTitle="serieTitle"
       v-bind:list="searchResult" />
+    <author
+      v-if="view === 'author'"
+      v-bind:list="searchResult" />
 
     <div class="error" v-if="error === 'no_search'">
       <p>No results</p>
@@ -81,6 +84,7 @@
 <script>
 import series from './Series'
 import search from './Search'
+import author from './Author'
 // import api from '@/api'
 import keys from '../../apiKeys.js'
 const parser = require('fast-xml-parser')
@@ -88,7 +92,8 @@ const parser = require('fast-xml-parser')
 export default {
   components: {
     series,
-    search
+    search,
+    author
   },
   data () {
     return {
@@ -130,6 +135,9 @@ export default {
     viewState_search () {
       this.view = 'search'
     },
+    viewState_author () {
+      this.view = 'author'
+    },
     error_null () {
       this.error = null
     },
@@ -169,6 +177,32 @@ export default {
           obj.serie = obj.best_book.title.includes('#')
           if (obj.serie === true) {
             this.serieAuthor = obj.best_book.author.name
+          }
+        }
+        return obj
+      })
+      return parsed
+    },
+    parseArr_Author (arr) {
+      console.log(arr)
+      const parsed = arr.map(obj => {
+        const year = obj.publication_year
+        const month = obj.publication_month
+        const day = obj.publication_day
+        if (obj.hasOwnProperty('titleDecoded') === false) {
+          obj.titleDecoded = this.decodeTitle(obj.title)
+        }
+        if (obj.hasOwnProperty('future') === false) {
+          const releaseDate = this.releaseDate(year, month, day)
+          obj.future = releaseDate > this.today
+        }
+        if (obj.hasOwnProperty('release') === false) {
+          obj.release = this.releaseString(year, month, day)
+        }
+        if (obj.hasOwnProperty('serie') === false) {
+          obj.serie = obj.title.includes('#')
+          if (obj.serie === true) {
+            this.serieAuthor = obj.authors.author.name
           }
         }
         return obj
@@ -302,9 +336,8 @@ export default {
         .then(text => {
           var jsonObj = parser.parse(text)
           const arr = jsonObj.GoodreadsResponse.author.books.book
-          console.log(arr)
-          // const transArr = this.transformSeries(arr)
-          // return transArr
+          this.searchResult = this.parseArr_Author(arr)
+          this.viewState_author()
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
