@@ -1,5 +1,5 @@
 <template>
-    <li :class="{ future: this.future }">
+    <li :class="{ future: this.future }" class="book-li">
       <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
         <a :href='url' target='_blank'><img :src="image"/></a>
@@ -49,9 +49,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  
-
-</style>

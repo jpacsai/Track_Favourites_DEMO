@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container search">
     <h3>Search results</h3>
     <div class="search-results">
       <ul>
@@ -43,11 +43,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .container {
-    max-width: 1100px;
-    margin-top: 20px;
-    padding: 0 0 50px 0;
-  }
-</style>
