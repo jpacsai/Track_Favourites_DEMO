@@ -10,7 +10,7 @@
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResult }}</span>
       </p>
     </div>
-    
+
     <search
       v-if="view === 'search'"
       v-bind:list="searchResult"
@@ -20,6 +20,10 @@
       v-bind:serieAuthor="serieAuthor"
       v-bind:serieTitle="serieTitle"
       v-bind:list="searchResult" />
+
+    <div class="error" v-if="error === 'no_search'">
+      <p>No results</p>
+    </div>
 
     <div class="nav-btn-container" v-if="this.allResult > 20">
       <button class="nav-btn" @click="pageBackward">
@@ -89,6 +93,7 @@ export default {
   data () {
     return {
       loading: false,
+      error: null,
       view: null,
       today: null,
       books: [],
@@ -124,6 +129,12 @@ export default {
     },
     viewState_search () {
       this.view = 'search'
+    },
+    error_null () {
+      this.error = null
+    },
+    error_noSearchResult () {
+      this.error = 'no_search'
     },
     releaseDate (year, month, day) {
       return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
@@ -206,6 +217,8 @@ export default {
           if (Array.isArray(res) === true) {
             const checkedArr = this.checkSearchResults(res)
             this.searchResult = this.parseArr(checkedArr)
+          } else if (res === undefined) {
+            this.error_noSearchResult()
           } else {
             const parsedObj = this.parseArr([res])
             this.searchResult.push(parsedObj)

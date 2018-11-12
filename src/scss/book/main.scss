@@ -25,6 +25,13 @@
     cursor: pointer;
   }
 
+  .error {
+    text-transform: uppercase;
+    font-size: 120%;
+    color: grey;
+    margin-top: -50px;
+  }
+
   .book_searchNums {
     color: #808080;
     font-size: 80%;
