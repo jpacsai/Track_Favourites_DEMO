@@ -8,7 +8,7 @@
           v-on:findSeries="findSeries"
           v-on:authorBooks="authorBooks"
           v-bind:num="index"
-          v-bind:id="s.id"
+          v-bind:id="s.work.id"
           v-bind:key='s.id'
           v-bind:author="s.authors.author.name"
           v-bind:authorId="s.authors.author.id"

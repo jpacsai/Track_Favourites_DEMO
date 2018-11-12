@@ -283,6 +283,7 @@ export default {
     },
     /* list which series the work is in with the workId */
     getWhichSeries (id) {
+      console.log(id)
       return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/work/' + id + '?format=xml&key=' + keys.bookKey)
         .then(data => data.blob())
         .then(data => {
@@ -291,7 +292,6 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
-          // console.log(jsonObj)
           return jsonObj
         })
         .catch(function (error) {
