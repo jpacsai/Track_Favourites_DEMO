@@ -327,7 +327,7 @@ export default {
       return t
     },
     authorBooks (authorId) {
-      fetch(this.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
+      fetch(this.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey + '&q=' + this.search + '&page=' + this.page)
         .then(data => data.blob())
         .then(data => {
           const text = this.handleUpload(data)
@@ -335,9 +335,10 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
+          console.log(jsonObj) /*
           const arr = jsonObj.GoodreadsResponse.author.books.book
           this.searchResult = this.parseArr_Author(arr)
-          this.viewState_author()
+          this.viewState_author() */
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
