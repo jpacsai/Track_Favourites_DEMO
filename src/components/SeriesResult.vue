@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by {{ this.author}} - {{ this.year }}</p>
+        <p class="author">by <span @click='authorBooks'>{{ this.author}}</span> - {{ this.year }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
@@ -27,6 +27,7 @@ export default {
   name: 'seriesresult',
   props: {
     author: String,
+    authorId: Number,
     title: String,
     image: String,
     rating: Number,
@@ -45,6 +46,9 @@ export default {
   methods: {
     likeToggle () {
       this.liked = !this.liked
+    },
+    authorBooks () {
+      this.$emit('authorBooks', this.authorId)
     }
   }
 }

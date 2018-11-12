@@ -231,7 +231,6 @@ export default {
     findSeries (id, title) {
       this.getWhichSeries(id)
         .then(data => {
-          console.log(data)
           this.serieTitle = data.GoodreadsResponse.series_works.series_work.series.title
           const seriesId = data.GoodreadsResponse.series_works.series_work.series.id
           return this.getSeries(seriesId)
@@ -292,6 +291,24 @@ export default {
         return a
       }, [])
       return t
+    },
+    authorBooks (authorId) {
+      fetch(this.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
+        .then(data => data.blob())
+        .then(data => {
+          const text = this.handleUpload(data)
+          return text
+        })
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          const arr = jsonObj.GoodreadsResponse.author.books.book
+          console.log(arr)
+          // const transArr = this.transformSeries(arr)
+          // return transArr
+        })
+        .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
     },
     pageForward () {
       if (this.page < this.allPage) {

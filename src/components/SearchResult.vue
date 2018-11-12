@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by {{ this.author}} - {{ this.year }}</p>
+        <p class="author">by <span @click='authorBooks'>{{ this.author}}</span> - {{ this.year }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
@@ -27,6 +27,7 @@ export default {
   name: 'searchresult',
   props: {
     author: String,
+    authorId: Number,
     title: String,
     image: String,
     rating: Number,
@@ -34,7 +35,6 @@ export default {
     url: String,
     series: Boolean,
     seriesView: Boolean,
-    authorId: Number,
     id: Number,
     num: Number,
     release: String,
@@ -53,6 +53,9 @@ export default {
     findSeries () {
       const sTitle = this.seriesTitle()
       this.$emit('findSeries', this.id, sTitle)
+    },
+    authorBooks () {
+      this.$emit('authorBooks', this.authorId)
     },
     seriesTitle () {
       const start = this.title.search(/\(/) + 1

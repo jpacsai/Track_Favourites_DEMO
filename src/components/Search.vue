@@ -5,10 +5,12 @@
       <ul>
         <searchresult v-for="(s, index) in list" 
           v-on:findSeries="findSeries"
+          v-on:authorBooks="authorBooks"
           v-bind:num="index"
           v-bind:id="s.id"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
+          v-bind:authorId="s.best_book.author.id"
           v-bind:title="s.best_book.titleDecoded"
           v-bind:image="s.best_book.small_image_url"
           v-bind:rating="s.average_rating"
@@ -39,6 +41,9 @@ export default {
   methods: {
     findSeries (author, title) {
       this.$parent.findSeries(author, title)
+    },
+    authorBooks (authorId) {
+      this.$parent.authorBooks(authorId)
     }
   }
 }
