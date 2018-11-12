@@ -51,8 +51,4 @@ export default {
 }
 </script>
 
-<style>
-  html {
-    overflow-y: scroll;
-  }
-</style>
+<style lang="scss" src="./scss/main.scss"></style>
