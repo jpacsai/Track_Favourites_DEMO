@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by <span @click='authorBooks'>{{ this.author}}</span> - {{ this.year }}</p>
+        <p class="author">by <span @click='authorBooks'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">

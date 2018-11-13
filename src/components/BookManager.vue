@@ -160,9 +160,9 @@ export default {
     /* add future (Boolean) and release date as String to book objects */
     parseArr (arr) {
       const parsed = arr.map(obj => {
-        const year = obj.original_publication_year
-        const month = obj.original_publication_month
-        const day = obj.original_publication_day
+        const year = obj.original_publication_year || 1900
+        const month = obj.original_publication_month || 1
+        const day = obj.original_publication_day || 1
         if (obj.best_book.hasOwnProperty('titleDecoded') === false) {
           obj.best_book.titleDecoded = this.decodeTitle(obj.best_book.title)
         }
@@ -186,9 +186,9 @@ export default {
     parseArr_Author (arr) {
       console.log(arr)
       const parsed = arr.map(obj => {
-        const year = obj.publication_year
-        const month = obj.publication_month
-        const day = obj.publication_day
+        const year = obj.publication_year || 1900
+        const month = obj.publication_month || 1
+        const day = obj.publication_day || 1
         if (obj.hasOwnProperty('titleDecoded') === false) {
           obj.titleDecoded = this.decodeTitle(obj.title)
         }
@@ -200,7 +200,7 @@ export default {
           obj.release = this.releaseString(year, month, day)
         }
         if (obj.hasOwnProperty('serie') === false) {
-          obj.serie = obj.title.includes('#')
+          obj.serie = obj.title !== obj.title_without_series
           if (obj.serie === true) {
             this.serieAuthor = obj.authors.author.name
           }
@@ -249,8 +249,7 @@ export default {
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           if (Array.isArray(res) === true) {
-            const checkedArr = this.checkSearchResults(res)
-            this.searchResult = this.parseArr(checkedArr)
+            this.searchResult = this.parseArr(res)
           } else if (res === undefined) {
             this.error_noSearchResult()
           } else {
@@ -335,10 +334,11 @@ export default {
         })
         .then(text => {
           var jsonObj = parser.parse(text)
-          console.log(jsonObj) /*
+          // console.log(jsonObj)
           const arr = jsonObj.GoodreadsResponse.author.books.book
+          console.log(arr)
           this.searchResult = this.parseArr_Author(arr)
-          this.viewState_author() */
+          this.viewState_author()
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
