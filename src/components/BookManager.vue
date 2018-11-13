@@ -155,6 +155,9 @@ export default {
     decodeTitle (title) {
       return title.replace(/&amp;/g, '&')
     },
+    noSeriesTitle (title) {
+      return title.split('(')[0].trim()
+    },
     checkSearchResults (arr) {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
@@ -177,6 +180,9 @@ export default {
         }
         if (obj.hasOwnProperty('serie') === false) {
           obj.serie = obj.best_book.title.includes('#')
+          if (obj.serie === true) {
+            obj.best_book.titleNoSeries = this.noSeriesTitle(obj.best_book.titleDecoded)
+          }
         }
         return obj
       })
@@ -275,7 +281,6 @@ export default {
       console.log('FETCH - serie id: ' + id + ', title: ' + title)
       this.getWhichSeries(id)
         .then(data => {
-          console.log(data)
           this.serieTitle = data.GoodreadsResponse.series_works.series_work.series.title
           const seriesId = data.GoodreadsResponse.series_works.series_work.series.id
           return this.getSeries(seriesId)
@@ -284,6 +289,7 @@ export default {
           this.search = ''
           this.page = 1
           this.searchResult = this.parseArr_Series(seriesBook)
+          console.log(seriesBook)
           this.setPageSeries(seriesBook)
           this.viewState_series()
         })
