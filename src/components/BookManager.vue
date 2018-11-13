@@ -29,10 +29,10 @@
     </div>
 
     <div class="nav-btn-container" v-if="this.view === 'search' || this.view === 'author'">
-      <button class="nav-btn" @click="pageBackward">
+      <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackward">
         <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
       <span>{{ this.page }}</span>
-      <button class="nav-btn" @click="pageForward">
+      <button :class="{ hidden: this.page === this.allPage }" class="nav-btn" @click="pageForward">
         <img class='nav-btn-img' src='../assets/arrow_forw.svg'>
       </button>
     </div>
@@ -454,3 +454,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .hidden {
+    visibility: hidden;
+  }
+</style>
