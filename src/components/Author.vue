@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <h3>Author view</h3>
-    <p>{{ this.list.length }} book</p>
+    <p>{{ this.displayAuthor }} - {{ this.list.length }} {{ this.list.length > 1 ? 'books' : 'book' }}</p>
     <div class="search-results">
       <ul>
-        <searchresult v-for="(s, index) in list" 
+        <authorresult v-for="(s, index) in list" 
           v-on:findSeries="findSeries"
           v-on:authorBooks="authorBooks"
           v-bind:num="index"
@@ -26,14 +26,15 @@
 </template>
 
 <script>
-import searchresult from './SearchResult'
+import authorresult from './AuthorResult'
 export default {
   name: 'author',
   components: {
-    searchresult
+    authorresult
   },
   props: {
-    list: Array
+    list: Array,
+    displayAuthor: String
   },
   data () {
     return {}

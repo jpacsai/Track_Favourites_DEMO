@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by <span @click='authorDetails'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
+        <p class="author">by <span class='author-link' @click='authorDetails'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
@@ -55,7 +55,7 @@ export default {
       this.$emit('findSeries', this.id, sTitle)
     },
     authorDetails () {
-      this.$emit('authorDetails', this.authorId)
+      this.$emit('authorDetails', this.author, this.authorId)
     },
     seriesTitle () {
       const start = this.title.search(/\(/) + 1

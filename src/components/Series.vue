@@ -1,11 +1,10 @@
 <template>
   <div class="container">
     <h3>Series view</h3>
-    <p>{{ this.serieAuthor }} - {{ this.serieTitle }}</p>
+    <p><span class="author-link" @click='authorDetails'>{{ this.displayAuthor }}</span> - {{ this.serieTitle }}</p>
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in list"
-          v-on:authorDetails="authorDetails"
           v-bind:num="index"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
@@ -32,8 +31,9 @@ export default {
     seriesresult
   },
   props: {
-    serieAuthor: String,
+    displayAuthor: String,
     serieTitle: String,
+    authorId: Number,
     list: Array
   },
   data () {
@@ -45,8 +45,9 @@ export default {
   created () {
   },
   methods: {
-    authorDetails (authorId) {
-      this.$parent.authorDetails(authorId)
+    authorDetails () {
+      console.log(this.displayAuthor + ' ' + this.authorId)
+      this.$parent.authorDetails(this.displayAuthor, this.authorId)
     }
   }
 }

@@ -47,6 +47,11 @@
     align-items: center;
   }
 
+  .author-link {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   .search-results {
     width: 100%;
     margin: 10px 0;

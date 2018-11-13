@@ -6,12 +6,12 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p>{{ this.year }}</p>
+        <p>{{ this.year > 0 ? this.year : 'unknown' }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <p class="serie-position">BOOK <span>{{ this.position }}</span></p>
-        <p class="future-release" v-if="this.future === true">Coming on {{ this.release }}</p>
+        <button v-if='this.series === true && this.seriesView === false' class="series-btn" @click='findSeries'> Series</button>
+        <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <div class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -24,7 +24,7 @@
 // import keys from '../../apiKeys.js'
 
 export default {
-  name: 'seriesresult',
+  name: 'authorresult',
   props: {
     author: String,
     authorId: Number,
@@ -33,19 +33,35 @@ export default {
     rating: Number,
     year: Number,
     url: String,
+    series: Boolean,
+    seriesView: Boolean,
+    id: Number,
     num: Number,
-    future: Boolean,
     release: String,
-    position: String
+    future: Boolean
   },
   data () {
     return {
+      ISBN: '',
       liked: false
     }
   },
   methods: {
     likeToggle () {
       this.liked = !this.liked
+    },
+    findSeries () {
+      const sTitle = this.seriesTitle()
+      this.$emit('findSeries', this.id, sTitle)
+    },
+    authorDetails () {
+      this.$emit('authorDetails', this.authorId)
+    },
+    seriesTitle () {
+      const start = this.title.search(/\(/) + 1
+      const t = this.title.substring(start)
+      const end = t.search(/[,#]/)
+      return t.substring(0, end).trim()
     }
   }
 }

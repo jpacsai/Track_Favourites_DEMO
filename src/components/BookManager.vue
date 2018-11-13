@@ -17,11 +17,13 @@
       class="search-results" />
     <series
       v-if="view === 'series'"
-      v-bind:serieAuthor="displayAuthor"
+      v-bind:displayAuthor="displayAuthor"
       v-bind:serieTitle="serieTitle"
+      v-bind:authorId="displayAuthorId"
       v-bind:list="searchResult" />
     <author
       v-if="view === 'author'"
+      v-bind:displayAuthor="displayAuthor"
       v-bind:list="searchResult" />
 
     <div class="error" v-if="error === 'no_search'">
@@ -175,13 +177,18 @@ export default {
         }
         if (obj.hasOwnProperty('serie') === false) {
           obj.serie = obj.best_book.title.includes('#')
-          if (obj.serie === true) {
-            this.displayAuthor = obj.best_book.author.name
-          }
         }
         return obj
       })
       return parsed
+    },
+    parseArr_Search (arr) {
+      return this.parseArr(arr)
+    },
+    parseArr_Series (arr) {
+      this.displayAuthor = arr[0].best_book.author.name
+      this.displayAuthorId = arr[0].best_book.author.id
+      return this.parseArr(arr)
     },
     parseArr_Author (arr) {
       const parsed = arr.map(obj => {
@@ -252,7 +259,7 @@ export default {
           const res = jsonObj.GoodreadsResponse.search.results.work
           console.log(res)
           if (Array.isArray(res) === true) {
-            this.searchResult = this.parseArr(res)
+            this.searchResult = this.parseArr_Search(res)
           } else if (res === undefined) {
             this.error_noSearchResult()
           } else {
@@ -268,15 +275,15 @@ export default {
       console.log('FETCH - serie id: ' + id + ', title: ' + title)
       this.getWhichSeries(id)
         .then(data => {
+          console.log(data)
           this.serieTitle = data.GoodreadsResponse.series_works.series_work.series.title
           const seriesId = data.GoodreadsResponse.series_works.series_work.series.id
           return this.getSeries(seriesId)
         })
         .then(seriesBook => {
-          console.log(seriesBook)
           this.search = ''
           this.page = 1
-          this.searchResult = this.parseArr(seriesBook)
+          this.searchResult = this.parseArr_Series(seriesBook)
           this.setPageSeries(seriesBook)
           this.viewState_series()
         })
@@ -311,7 +318,6 @@ export default {
         .then(text => {
           var jsonObj = parser.parse(text)
           const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
-          // console.log(jsonObj)
           const transArr = this.transformSeries(arr)
           return transArr
         })
@@ -329,7 +335,7 @@ export default {
       }, [])
       return t
     },
-    authorDetails (authorId) {
+    authorDetails (name, authorId) {
       console.log('FETCH - author id ' + authorId)
       fetch(this.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
         .then(data => data.blob())
@@ -343,6 +349,7 @@ export default {
           this.allResult = workCount
           this.page = 1
           this.allPage = Math.ceil(workCount / 30)
+          this.displayAuthor = name
           this.displayAuthorId = authorId
           this.authorBooks(authorId)
         })

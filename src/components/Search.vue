@@ -42,8 +42,8 @@ export default {
     findSeries (author, title) {
       this.$parent.findSeries(author, title)
     },
-    authorDetails (authorId) {
-      this.$parent.authorDetails(authorId)
+    authorDetails (name, authorId) {
+      this.$parent.authorDetails(name, authorId)
     }
   }
 }
