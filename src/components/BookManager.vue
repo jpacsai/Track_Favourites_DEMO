@@ -17,7 +17,7 @@
       class="search-results" />
     <series
       v-if="view === 'series'"
-      v-bind:serieAuthor="serieAuthor"
+      v-bind:serieAuthor="displayAuthor"
       v-bind:serieTitle="serieTitle"
       v-bind:list="searchResult" />
     <author
@@ -110,8 +110,8 @@ export default {
       resultsTo: 0,
       allResult: 0,
       searchResult: [],
-      seriesView: false,
-      serieAuthor: null,
+      displayAuthor: null,
+      displayAuthorId: null,
       serieTitle: null,
       herokuNoCors: 'https://cors-escape.herokuapp.com/'
     }
@@ -176,7 +176,7 @@ export default {
         if (obj.hasOwnProperty('serie') === false) {
           obj.serie = obj.best_book.title.includes('#')
           if (obj.serie === true) {
-            this.serieAuthor = obj.best_book.author.name
+            this.displayAuthor = obj.best_book.author.name
           }
         }
         return obj
@@ -184,7 +184,7 @@ export default {
       return parsed
     },
     parseArr_Author (arr) {
-      console.log(arr)
+      // console.log(arr)
       const parsed = arr.map(obj => {
         const year = obj.publication_year || 1900
         const month = obj.publication_month || 1
@@ -202,7 +202,7 @@ export default {
         if (obj.hasOwnProperty('serie') === false) {
           obj.serie = obj.title !== obj.title_without_series
           if (obj.serie === true) {
-            this.serieAuthor = obj.authors.author.name
+            this.displayAuthor = obj.authors.author.name
           }
         }
         return obj
@@ -223,9 +223,16 @@ export default {
       this.resultsTo = arr.length
       this.allPage = 1
     },
+    setPageAuthor (arr) {
+      const from = 1 + (this.page - 1) * 30
+      this.resultsFrom = from
+      this.resultsTo = from + arr.length - 1
+      console.log(this.page + ' ' + from + ' ' + (from + arr.length) + ' ' + this.allPage)
+    },
     newSearch () {
       this.page = 1
-      this.serieAuthor = null
+      this.displayAuthor = null
+      this.displayAuthorId = null
       this.serieTitle = null
       this.searchResult = []
       if (this.view !== 'search') {
@@ -247,7 +254,7 @@ export default {
           var jsonObj = parser.parse(text)
           this.setPages(jsonObj)
           const res = jsonObj.GoodreadsResponse.search.results.work
-          console.log(res)
+          console.log(jsonObj)
           if (Array.isArray(res) === true) {
             this.searchResult = this.parseArr(res)
           } else if (res === undefined) {
@@ -325,6 +332,29 @@ export default {
       }, [])
       return t
     },
+    authorDetails (authorId) {
+      fetch(this.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
+        .then(data => data.blob())
+        .then(data => {
+          const text = this.handleUpload(data)
+          return text
+        })
+        .then(text => {
+          var jsonObj = parser.parse(text)
+          // const arr = jsonObj.GoodreadsResponse.author.books.book
+          console.log(jsonObj)
+          // const transArr = this.transformSeries(arr)
+          // return transArr
+          const workCount = jsonObj.GoodreadsResponse.author.works_count
+          this.allResult = workCount
+          this.allPage = Math.ceil(workCount / 30)
+          this.displayAuthorId = authorId
+          this.authorBooks(authorId)
+        })
+        .catch(function (error) {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
     authorBooks (authorId) {
       fetch(this.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey + '&q=' + this.search + '&page=' + this.page)
         .then(data => data.blob())
@@ -337,8 +367,10 @@ export default {
           // console.log(jsonObj)
           const arr = jsonObj.GoodreadsResponse.author.books.book
           console.log(arr)
-          this.searchResult = this.parseArr_Author(arr)
           this.viewState_author()
+          this.setPageAuthor(arr)
+          this.page = 1
+          this.searchResult = this.parseArr_Author(arr)
         })
         .catch(function (error) {
           console.log('Looks like there was a problem: \n', error)
@@ -347,14 +379,23 @@ export default {
     pageForward () {
       if (this.page < this.allPage) {
         this.page++
-        this.searchBooks()
+        if (this.view === 'search') {
+          this.searchBooks()
+        } else if (this.view === 'author') {
+          this.authorBooks(this.displayAuthorId)
+        }
         this.scrollUp()
       }
     },
     pageBackward () {
       if (this.page > 1) {
         this.page--
-        this.searchBooks()
+        console.log(this.page)
+        if (this.view === 'search') {
+          this.searchBooks()
+        } else if (this.view === 'author') {
+          this.authorBooks(this.displayAuthorId)
+        }
         this.scrollUp()
       }
     },

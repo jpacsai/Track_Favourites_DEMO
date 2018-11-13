@@ -5,7 +5,7 @@
       <ul>
         <searchresult v-for="(s, index) in list" 
           v-on:findSeries="findSeries"
-          v-on:authorBooks="authorBooks"
+          v-on:authorDetails="authorDetails"
           v-bind:num="index"
           v-bind:id="s.id"
           v-bind:key='s.id'
@@ -42,8 +42,8 @@ export default {
     findSeries (author, title) {
       this.$parent.findSeries(author, title)
     },
-    authorBooks (authorId) {
-      this.$parent.authorBooks(authorId)
+    authorDetails (authorId) {
+      this.$parent.authorDetails(authorId)
     }
   }
 }
