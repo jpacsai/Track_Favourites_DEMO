@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by <span @click='authorBooks'>{{ this.author}}</span> - {{ this.year }}</p>
+        <p class="author">by <span @click='authorDetails'>{{ this.author}}</span> - {{ this.year }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
@@ -47,8 +47,8 @@ export default {
     likeToggle () {
       this.liked = !this.liked
     },
-    authorBooks () {
-      this.$emit('authorBooks', this.authorId)
+    authorDetails () {
+      this.$emit('authorDetails', this.authorId)
     }
   }
 }
