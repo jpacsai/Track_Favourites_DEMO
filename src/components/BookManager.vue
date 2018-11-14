@@ -156,7 +156,11 @@ export default {
       return title.replace(/&amp;/g, '&')
     },
     noSeriesTitle (title) {
-      return title.split('(')[0].trim()
+      if ((/\(/).test(title) === true) {
+        return title.split('(')[0].trim()
+      } else {
+        return title
+      }
     },
     checkSearchResults (arr) {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
@@ -180,9 +184,6 @@ export default {
         }
         if (obj.hasOwnProperty('serie') === false) {
           obj.serie = obj.best_book.title.includes('#')
-          if (obj.serie === true) {
-            obj.best_book.titleNoSeries = this.noSeriesTitle(obj.best_book.titleDecoded)
-          }
         }
         return obj
       })
@@ -194,7 +195,14 @@ export default {
     parseArr_Series (arr) {
       this.displayAuthor = arr[0].best_book.author.name
       this.displayAuthorId = arr[0].best_book.author.id
-      return this.parseArr(arr)
+      const parsed = this.parseArr(arr)
+      const a = parsed.map(obj => {
+        if (obj.best_book.hasOwnProperty('titleNoSeries') === false) {
+          obj.best_book.titleNoSeries = this.noSeriesTitle(obj.best_book.titleDecoded)
+        }
+        return obj
+      })
+      return a
     },
     parseArr_Author (arr) {
       const parsed = arr.map(obj => {
