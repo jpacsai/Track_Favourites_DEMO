@@ -377,6 +377,7 @@ export default {
           console.log(arr)
           this.viewState_author()
           this.setPageAuthor(arr)
+          this.search = ''
           this.searchResult = this.parseArr_Author(arr)
         })
         .catch(function (error) {
