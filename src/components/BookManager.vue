@@ -281,8 +281,9 @@ export default {
       console.log('FETCH - serie id: ' + id + ', title: ' + title)
       this.getWhichSeries(id)
         .then(data => {
-          this.serieTitle = data.GoodreadsResponse.series_works.series_work.series.title
-          const seriesId = data.GoodreadsResponse.series_works.series_work.series.id
+          const s = this.extractSeries(data.GoodreadsResponse.series_works.series_work, title)
+          this.serieTitle = s.series.title
+          const seriesId = s.series.id
           return this.getSeries(seriesId)
         })
         .then(seriesBook => {
@@ -340,6 +341,17 @@ export default {
         return a
       }, [])
       return t
+    },
+    extractSeries (data, title) {
+      if (Array.isArray(data) === true) {
+        const serie = data.filter(obj => {
+          const t = obj.series.title
+          return t.substring(1, t.length - 1).trim() === title
+        })
+        return serie[0]
+      } else {
+        return data
+      }
     },
     authorDetails (name, authorId) {
       console.log('FETCH - author id ' + authorId)
