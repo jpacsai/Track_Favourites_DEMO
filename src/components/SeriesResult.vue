@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p>{{ this.year }}</p>
+        <p>{{ this.year > 0 ? this.year : 'unknown' }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
