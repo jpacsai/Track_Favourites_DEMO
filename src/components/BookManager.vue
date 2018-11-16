@@ -9,6 +9,7 @@
       <p class="book_searchNums" v-if="this.allResult > 0">
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResult }}</span>
       </p>
+      <p>{{ $store.state.search }}</p>
     </div>
 
     <search
