@@ -2,7 +2,7 @@
   <div class="container book">
     <h1 class="header">Book Manager</h1>
     <div class="top">
-      <form @submit.prevent="newSearch" class="book_search-form">
+      <form @submit.prevent="searchBook" class="book_search-form">
         <input type="text" v-model='search' required class="book_search-input"/>
         <input type='submit' value="Search" class="book_search-submit"/>
       </form>
@@ -13,7 +13,7 @@
 
     <search
       v-if="view === 'search'"
-      v-bind:list="searchResult"
+      v-bind:search='search'
       class="search-results" />
     <series
       v-if="view === 'series'"
@@ -30,7 +30,7 @@
       <p>No results</p>
     </div>
 
-    <div class="nav-btn-container" v-if="this.view === 'search' || this.view === 'author'">
+    <div class="nav-btn-container" v-if="this.view === 'author'">
       <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackward">
         <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
       <span>{{ this.page }}</span>
@@ -131,6 +131,9 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
+    searchBook () {
+      this.$emit('searchBook', this.search)
+    },
     viewState_series () {
       this.view = 'series'
     },
@@ -255,35 +258,6 @@ export default {
         this.viewState_search()
       }
       this.searchBooks()
-    },
-    searchBooks () {
-      console.log('FETCH - search books')
-      fetch(
-        this.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
-          keys.bookKey + '&q=' + this.search + '&page=' + this.page
-      )
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          this.setPages(jsonObj)
-          const res = jsonObj.GoodreadsResponse.search.results.work
-          console.log(res)
-          if (Array.isArray(res) === true) {
-            this.searchResult = this.parseArr_Search(res)
-          } else if (res === undefined) {
-            this.error_noSearchResult()
-          } else {
-            const parsedObj = this.parseArr([res])
-            this.searchResult.push(parsedObj)
-          }
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
     },
     findSeries (id, title) {
       console.log('FETCH - serie id: ' + id + ', title: ' + title)
