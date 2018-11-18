@@ -88,7 +88,7 @@ import search from './Search'
 import author from './Author'
 // import api from '@/api'
 import keys from '../../apiKeys.js'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 const parser = require('fast-xml-parser')
 
 export default {
@@ -97,12 +97,14 @@ export default {
     search,
     author
   },
+  computed: mapState([
+    'view'
+  ]),
   data () {
     return {
       newSearch: '',
       loading: false,
       error: null,
-      view: null,
       books: [],
       model: {},
       page: 1,
@@ -137,15 +139,6 @@ export default {
     searchInit () {
       this.search_book(this.newSearch)
       this.newSearch = ''
-    },
-    viewState_series () {
-      this.view = 'series'
-    },
-    viewState_search () {
-      this.view = 'search'
-    },
-    viewState_author () {
-      this.view = 'author'
     },
     error_null () {
       this.error = null

@@ -2,7 +2,6 @@
   <div class="container">
     <h3>Search results</h3>
     <div class="search-results">
-      <p>{{ searchResult }}</p>
       <ul>
         <searchresult v-for="(s, index) in searchResult" 
           v-on:authorDetails="authorDetails"
