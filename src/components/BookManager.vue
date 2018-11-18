@@ -2,19 +2,17 @@
   <div class="container book">
     <h1 class="header">Book Manager</h1>
     <div class="top">
-      <form @submit.prevent="addSearch" class="book_search-form">
+      <form @submit.prevent="searchInit" class="book_search-form">
         <input type="text" v-model='newSearch' required class="book_search-input"/>
         <input type='submit' value="Search" class="book_search-submit"/>
       </form>
       <p class="book_searchNums" v-if="this.allResult > 0">
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResult }}</span>
       </p>
-      <p>{{ search }}</p>
     </div>
 
     <search
       v-if="view === 'search'"
-      v-bind:search='search'
       class="search-results" />
     <series
       v-if="view === 'series'"
@@ -90,7 +88,7 @@ import search from './Search'
 import author from './Author'
 // import api from '@/api'
 import keys from '../../apiKeys.js'
-import { mapState, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 const parser = require('fast-xml-parser')
 
 export default {
@@ -99,16 +97,12 @@ export default {
     search,
     author
   },
-  computed: mapState([
-    'search'
-  ]),
   data () {
     return {
       newSearch: '',
       loading: false,
       error: null,
       view: null,
-      today: null,
       books: [],
       model: {},
       page: 1,
@@ -128,23 +122,21 @@ export default {
     const day = now.getDate()
     const month = now.getMonth() // January is 0!
     const year = now.getFullYear()
-    const today = new Date(year, month, day)
-    this.today = today
+    const todayDate = new Date(year, month, day)
+    this.setTodayDate(todayDate)
   },
   /*
   async created () {
     this.refreshBooks()
   }, */
   methods: {
-    ...mapMutations([
-      'ADD_SEARCH'
-    ]),
-    addSearch () {
-      this.ADD_SEARCH(this.newSearch)
-      // this.newSearch = ''
+    ...mapActions(['setToday', 'search_book']),
+    setTodayDate (date) {
+      this.setToday(date)
     },
-    searchBook () {
-      this.$emit('searchBook', this.search)
+    searchInit () {
+      this.search_book(this.newSearch)
+      this.newSearch = ''
     },
     viewState_series () {
       this.view = 'series'
