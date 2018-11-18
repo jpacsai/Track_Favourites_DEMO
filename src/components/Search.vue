@@ -3,7 +3,7 @@
     <h3>Search results</h3>
     <div class="search-results">
       <ul>
-        <searchresult v-for="(s, index) in searchResult" 
+        <searchresult v-for="(s, index) in displayList" 
           v-on:authorDetails="authorDetails"
           v-bind:num="index"
           v-bind:id="s.id"
@@ -46,7 +46,7 @@ export default {
     search: String
   },
   computed: mapState([
-    'searchResult'
+    'displayList'
   ]),
   data () {
     return {

@@ -11,7 +11,7 @@ const state = {
   herokuNoCors: 'https://cors-escape.herokuapp.com/',
   today: null,
   view: 'search',
-  searchResult: [],
+  displayList: [],
   page: 1
 }
 
@@ -20,7 +20,7 @@ const mutations = {
     state.today = date
   },
   ADD_SEARCH_RESULT (state, result) {
-    state.searchResult = result // what if only one result? -> not arr
+    state.displayList = result // what if only one result? -> not arr
   }
 }
 
