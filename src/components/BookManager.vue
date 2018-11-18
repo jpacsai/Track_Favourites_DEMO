@@ -2,14 +2,14 @@
   <div class="container book">
     <h1 class="header">Book Manager</h1>
     <div class="top">
-      <form @submit.prevent="searchBook" class="book_search-form">
-        <input type="text" v-model='search' required class="book_search-input"/>
+      <form @submit.prevent="addSearch" class="book_search-form">
+        <input type="text" v-model='newSearch' required class="book_search-input"/>
         <input type='submit' value="Search" class="book_search-submit"/>
       </form>
       <p class="book_searchNums" v-if="this.allResult > 0">
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResult }}</span>
       </p>
-      <p>{{ $store.state.search }}</p>
+      <p>{{ search }}</p>
     </div>
 
     <search
@@ -90,6 +90,7 @@ import search from './Search'
 import author from './Author'
 // import api from '@/api'
 import keys from '../../apiKeys.js'
+import { mapState, mapMutations } from 'vuex'
 const parser = require('fast-xml-parser')
 
 export default {
@@ -98,15 +99,18 @@ export default {
     search,
     author
   },
+  computed: mapState([
+    'search'
+  ]),
   data () {
     return {
+      newSearch: '',
       loading: false,
       error: null,
       view: null,
       today: null,
       books: [],
       model: {},
-      search: '',
       page: 1,
       allPage: 0,
       resultsFrom: 0,
@@ -132,6 +136,13 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
+    ...mapMutations([
+      'ADD_SEARCH'
+    ]),
+    addSearch () {
+      this.ADD_SEARCH(this.newSearch)
+      // this.newSearch = ''
+    },
     searchBook () {
       this.$emit('searchBook', this.search)
     },
@@ -249,7 +260,7 @@ export default {
       this.resultsFrom = from
       this.resultsTo = from + arr.length - 1
     },
-    newSearch () {
+    /* newSearch () {
       this.page = 1
       this.displayAuthor = null
       this.displayAuthorId = null
@@ -259,7 +270,7 @@ export default {
         this.viewState_search()
       }
       this.searchBooks()
-    },
+    }, */
     findSeries (id, title) {
       console.log('FETCH - serie id: ' + id + ', title: ' + title)
       this.getWhichSeries(id)
