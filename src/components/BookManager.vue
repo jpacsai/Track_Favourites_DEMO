@@ -25,8 +25,8 @@
       v-bind:displayAuthor="displayAuthor"
       v-bind:list="searchResult" />
 
-    <div class="error" v-if="error === 'no_search'">
-      <p>No results</p>
+    <div class="error" v-if="view === 'error'">
+      <p>{{ this.error }}</p>
     </div>
 
     <div class="nav-btn-container" v-if="this.view === 'author'">
@@ -98,13 +98,13 @@ export default {
     author
   },
   computed: mapState([
-    'view'
+    'view',
+    'error'
   ]),
   data () {
     return {
       newSearch: '',
       loading: false,
-      error: null,
       books: [],
       model: {},
       page: 1,
@@ -131,16 +131,13 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
-    ...mapActions(['set_today', 'search_book', 'search_series']),
+    ...mapActions(['set_today', 'search_book', 'search_series', 'set_error']),
     searchBook () {
       this.search_book(this.newSearch)
       this.newSearch = ''
     },
     error_null () {
       this.error = null
-    },
-    error_noSearchResult () {
-      this.error = 'no_search'
     },
     checkSearchResults (arr) {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')

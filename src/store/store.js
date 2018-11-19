@@ -12,6 +12,7 @@ Vue.use(Vuex)
 const state = {
   herokuNoCors: 'https://cors-escape.herokuapp.com/',
   today: null,
+  error: null,
   view: 'search',
   displayList: [],
   page: 1,
@@ -27,11 +28,22 @@ const mutations = {
   TODAY (state, date) {
     state.today = date
   },
+  ERROR_NO_RESULT (state) {
+    console.log('no result')
+    state.error = 'No result'
+  },
+  NO_ERROR (state) {
+    state.error = null
+  },
   VIEW_SEARCH (state) {
     state.view = 'search'
   },
   VIEW_SERIES (state) {
     state.view = 'series'
+  },
+  VIEW_ERROR (state) {
+    state.view = 'error'
+    console.log(state.view)
   },
   ADD_DISPLAY_LIST (state, result) {
     state.displayList = result // what if only one result? -> not arr
@@ -72,8 +84,20 @@ const actions = {
   set_seriesTitle ({commit}, title) {
     commit('SET_SERIES_TITLE', title)
   },
+  set_error_noResult ({commit}) {
+    commit('VIEW_ERROR')
+    commit('ERROR_NO_RESULT')
+  },
+  set_noError ({commit}) {
+    commit('NO_ERROR')
+  },
+  newSearch ({dispatch}) {
+    dispatch('set_viewState_search')
+    dispatch('set_noError')
+  },
   search_book ({dispatch}, text) {
     console.log('FETCH - search books')
+    dispatch('newSearch')
     fetch(
       state.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
         keys.bookKey + '&q=' + text + '&page=' + state.page
@@ -87,18 +111,15 @@ const actions = {
         var jsonObj = parser.parse(text)
         // this.setPages(jsonObj) // FIX THIS
         const res = jsonObj.GoodreadsResponse.search.results.work
-        if (Array.isArray(res) === true) {
-          const result = parseArr(res, state.today)
-          console.log(result)
+        if (res === undefined) {
+          dispatch('set_error_noResult')
+        } else {
+          const result = Array.isArray(res) === false ? parseArr([res], state.today) : parseArr(res, state.today)
           dispatch('set_display', result)
-        } else if (res === undefined) { // FIX THIS
-          this.error_noSearchResult()
-        } else { // FIX THIS
-          const parsedObj = this.parseArr([res])
-          this.searchResult.push(parsedObj)
-        }
-        if (state.view !== 'search') {
-          dispatch('set_viewState_search')
+          console.log(result)
+          if (state.view !== 'search') {
+            dispatch('set_viewState_search')
+          }
         }
       })
       .catch(function (error) {
