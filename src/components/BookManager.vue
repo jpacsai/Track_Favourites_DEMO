@@ -121,11 +121,10 @@ export default {
   },
   created () {
     const now = new Date()
-    const day = now.getDate()
-    const month = now.getMonth() // January is 0!
-    const year = now.getFullYear()
-    const todayDate = new Date(year, month, day)
-    this.setTodayDate(todayDate)
+    now.setHours(0)
+    now.setMinutes(0)
+    now.setSeconds(0)
+    this.set_today(now)
   },
   /*
   async created () {
@@ -133,9 +132,6 @@ export default {
   }, */
   methods: {
     ...mapActions(['set_today', 'search_book', 'search_series']),
-    setTodayDate (date) { // FIX THIS WHEN OTHER MODULES ARE DONE
-      this.set_today(date)
-    },
     searchBook () {
       this.search_book(this.newSearch)
       this.newSearch = ''
