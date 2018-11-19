@@ -40,8 +40,8 @@ const mutations = {
   SET_SERIES_AUTHOR_NAME (state, author) {
     state.series.author = author
   },
-  SET_SERIES_AUTHOR_ID (state, author) {
-    state.series.author = author
+  SET_SERIES_AUTHOR_ID (state, authorId) {
+    state.series.authorId = authorId
   },
   SET_SERIES_TITLE (state, title) {
     state.series.title = title
