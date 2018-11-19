@@ -2,7 +2,7 @@
   <div class="container book">
     <h1 class="header">Book Manager</h1>
     <div class="top">
-      <form @submit.prevent="searchInit" class="book_search-form">
+      <form @submit.prevent="searchBook" class="book_search-form">
         <input type="text" v-model='newSearch' required class="book_search-input"/>
         <input type='submit' value="Search" class="book_search-submit"/>
       </form>
@@ -132,11 +132,11 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
-    ...mapActions(['setToday', 'search_book']),
-    setTodayDate (date) {
-      this.setToday(date)
+    ...mapActions(['set_today', 'search_book', 'search_series']),
+    setTodayDate (date) { // FIX THIS WHEN OTHER MODULES ARE DONE
+      this.set_today(date)
     },
-    searchInit () {
+    searchBook () {
       this.search_book(this.newSearch)
       this.newSearch = ''
     },
@@ -146,64 +146,11 @@ export default {
     error_noSearchResult () {
       this.error = 'no_search'
     },
-    releaseDate (year, month, day) {
-      return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
-    },
-    releaseString (year, month, day) {
-      return day + '/' + month + '/' + year
-    },
-    decodeTitle (title) {
-      return title.replace(/&amp;/g, '&')
-    },
-    noSeriesTitle (title) {
-      if ((/\(/).test(title) === true) {
-        return title.split('(')[0].trim()
-      } else {
-        return title
-      }
-    },
     checkSearchResults (arr) {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
     },
     /* add future (Boolean) and release date as String to book objects */
-    parseArr (arr) {
-      const parsed = arr.map(obj => {
-        const year = obj.original_publication_year || 1900
-        const month = obj.original_publication_month || 1
-        const day = obj.original_publication_day || 1
-        if (obj.best_book.hasOwnProperty('titleDecoded') === false) {
-          obj.best_book.titleDecoded = this.decodeTitle(obj.best_book.title)
-        }
-        if (obj.hasOwnProperty('future') === false) {
-          const releaseDate = this.releaseDate(year, month, day)
-          obj.future = releaseDate > this.today
-        }
-        if (obj.hasOwnProperty('release') === false) {
-          obj.release = this.releaseString(year, month, day)
-        }
-        if (obj.hasOwnProperty('serie') === false) {
-          obj.serie = obj.best_book.title.includes('#')
-        }
-        return obj
-      })
-      return parsed
-    },
-    parseArr_Search (arr) {
-      return this.parseArr(arr)
-    },
-    parseArr_Series (arr) {
-      this.displayAuthor = arr[0].best_book.author.name
-      this.displayAuthorId = arr[0].best_book.author.id
-      const parsed = this.parseArr(arr)
-      const a = parsed.map(obj => {
-        if (obj.best_book.hasOwnProperty('titleNoSeries') === false) {
-          obj.best_book.titleNoSeries = this.noSeriesTitle(obj.best_book.titleDecoded)
-        }
-        return obj
-      })
-      return a
-    },
     parseArr_Author (arr) {
       const parsed = arr.map(obj => {
         const year = obj.publication_year || 1900
@@ -256,82 +203,7 @@ export default {
       }
       this.searchBooks()
     }, */
-    findSeries (id, title) {
-      console.log('FETCH - serie id: ' + id + ', title: ' + title)
-      this.getWhichSeries(id)
-        .then(data => {
-          const s = this.extractSeries(data.GoodreadsResponse.series_works.series_work, title)
-          this.serieTitle = s.series.title
-          const seriesId = s.series.id
-          return this.getSeries(seriesId)
-        })
-        .then(seriesBook => {
-          this.search = ''
-          this.page = 1
-          this.searchResult = this.parseArr_Series(seriesBook)
-          console.log(seriesBook)
-          this.setPageSeries(seriesBook)
-          this.viewState_series()
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    /* list which series the work is in with the workId */
-    getWhichSeries (id) {
-      console.log('FETCH - serie books')
-      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/work/' + id + '?format=xml&key=' + keys.bookKey)
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          return jsonObj
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    getSeries (id) {
-      return fetch(this.herokuNoCors + 'https://www.goodreads.com/series/' + id + '?format=xml&key=' + keys.bookKey)
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
-          const transArr = this.transformSeries(arr)
-          return transArr
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
     /* add books of a serie to display list */
-    transformSeries (arr) {
-      const t = arr.reduce((a, obj) => {
-        const o = obj.work
-        o.position = obj.user_position.toString()
-        a.push(o)
-        return a
-      }, [])
-      return t
-    },
-    extractSeries (data, title) {
-      if (Array.isArray(data) === true) {
-        const serie = data.filter(obj => {
-          const t = obj.series.title
-          return t.substring(1, t.length - 1).trim() === title
-        })
-        return serie[0]
-      } else {
-        return data
-      }
-    },
     authorDetails (name, authorId) {
       console.log('FETCH - author id ' + authorId)
       fetch(this.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
@@ -403,30 +275,6 @@ export default {
         left: 0,
         behavior: 'smooth'
       })
-    },
-    /* read xml response */
-    readUploadedFileAsText (inputFile) {
-      const temporaryFileReader = new FileReader()
-
-      return new Promise((resolve, reject) => {
-        temporaryFileReader.onerror = () => {
-          temporaryFileReader.abort()
-          reject(new DOMException('Problem parsing input file.'))
-        }
-        temporaryFileReader.onload = () => {
-          resolve(temporaryFileReader.result)
-        }
-        temporaryFileReader.readAsText(inputFile)
-      })
-    },
-    async handleUpload (data) {
-      const file = data
-      try {
-        const fileContents = await this.readUploadedFileAsText(file)
-        return fileContents
-      } catch (e) {
-        console.warn(e.message)
-      }
     }
     /*
     async refreshBooks () {

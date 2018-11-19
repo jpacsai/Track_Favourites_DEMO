@@ -42,15 +42,11 @@ export default {
   components: {
     searchresult
   },
-  props: {
-    search: String
-  },
   computed: mapState([
     'displayList'
   ]),
   data () {
     return {
-      list: [],
       page: 1,
       allPage: 1,
       allResult: 0,
@@ -59,13 +55,10 @@ export default {
     }
   },
   methods: {
-    findSeries (author, title) {
-      this.$parent.findSeries(author, title)
-    },
     authorDetails (name, authorId) {
       this.$parent.authorDetails(name, authorId)
     },
-    pageForward () {
+    pageForward () { // MOVE TO STATE
       if (this.page < this.allPage) {
         this.page++
         if (this.view === 'search') {
@@ -76,7 +69,7 @@ export default {
         this.scrollUp()
       }
     },
-    pageBackward () {
+    pageBackward () { // MOVE TO STATE
       if (this.page > 1) {
         this.page--
         if (this.view === 'search') {

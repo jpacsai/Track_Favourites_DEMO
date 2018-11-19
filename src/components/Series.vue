@@ -4,7 +4,7 @@
     <p><span class="author-link" @click='authorDetails'>{{ this.displayAuthor }}</span> - {{ this.serieTitle }}</p>
     <div class="search-results">
       <ul>
-        <seriesresult v-for="(s, index) in list"
+        <seriesresult v-for="(s, index) in displayList"
           v-bind:num="index"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
@@ -24,12 +24,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import seriesresult from './SeriesResult'
+
 export default {
   name: 'series',
   components: {
     seriesresult
   },
+  computed: mapState([
+    'displayList'
+  ]),
   props: {
     displayAuthor: String,
     serieTitle: String,
