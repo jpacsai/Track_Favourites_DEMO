@@ -1,6 +1,6 @@
 import parseHelpers from './parseHelpers'
 
-export default function parseArrSearch (arr, today) {
+export default function parseArr (arr, today) {
   const parsed = arr.map(obj => {
     const year = obj.original_publication_year || 1900
     const month = obj.original_publication_month || 1
@@ -17,6 +17,9 @@ export default function parseArrSearch (arr, today) {
     }
     if (obj.hasOwnProperty('serie') === false) {
       obj.serie = obj.best_book.title.includes('#')
+      if (obj.serie === true && obj.best_book.hasOwnProperty('titleNoSeries') === false) {
+        obj.best_book.titleNoSeries = parseHelpers.noSeriesTitle(obj.best_book.titleDecoded)
+      }
     }
     return obj
   })

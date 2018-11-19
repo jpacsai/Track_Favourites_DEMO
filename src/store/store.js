@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import keys from '../../apiKeys.js'
 import handleUpload from '../helpers/convertXML'
-import parseArrSearch from './../helpers/parseArr_Search'
-import parseArrSeries from './../helpers/parseArr_Series'
+import parseArr from '../helpers/parseArr'
 import parseHelpers from './../helpers/parseHelpers'
 
 const parser = require('fast-xml-parser')
@@ -89,7 +88,7 @@ const actions = {
         // this.setPages(jsonObj) // FIX THIS
         const res = jsonObj.GoodreadsResponse.search.results.work
         if (Array.isArray(res) === true) {
-          const result = parseArrSearch(res, state.today)
+          const result = parseArr(res, state.today)
           console.log(result)
           dispatch('set_display', result)
         } else if (res === undefined) { // FIX THIS
@@ -121,7 +120,7 @@ const actions = {
         console.log(seriesBook)
         // this.search = ''
         // this.page = 1
-        const result = parseArrSeries(seriesBook)
+        const result = parseArr(seriesBook, state.today)
         dispatch('set_display', result)
         // this.setPageSeries(seriesBook)
         dispatch('set_viewState_series')
