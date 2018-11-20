@@ -16,7 +16,7 @@
           v-bind:image="s.small_image_url"
           v-bind:rating="s.average_rating"
           v-bind:year="s.publication_year || 0"
-          v-bind:url="'https://www.goodreads.com/book/show/' + s.authors.author.id"
+          v-bind:url="'https://www.goodreads.com/book/show/' + s.id"
           v-bind:series="s.serie"
           v-bind:release="s.release"
           v-bind:future="s.future"/>
