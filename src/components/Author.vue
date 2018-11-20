@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Author view</h3>
-    <p>{{ author_name }} - {{ displayList.length }} {{ displayList.length > 1 ? 'books' : 'book' }}</p>
+    <p>{{ authorName }} - {{ displayList.length }} {{ displayList.length > 1 ? 'books' : 'book' }}</p>
     <div class="search-results">
       <ul>
         <authorresult v-for="(s, index) in displayList" 
@@ -36,7 +36,7 @@ export default {
   },
   computed: mapState([
     'displayList',
-    'author_name'
+    'authorName'
   ]),
   props: {
     list: Array,

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Series view</h3>
-    <p><span class="author-link" @click='authorDetails'>{{ author_name }}</span> - {{ series_title }}</p>
+    <p><span class="author-link" @click='authorDetails'>{{ authorName }}</span> - {{ seriesTitle }}</p>
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in displayList"
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import seriesresult from './SeriesResult'
 
 export default {
@@ -34,8 +34,9 @@ export default {
   },
   computed: mapState([
     'displayList',
-    'author_name',
-    'series_title'
+    'authorName',
+    'authorId',
+    'seriesTitle'
   ]),
   props: {
     displayAuthor: String,
@@ -52,9 +53,9 @@ export default {
   created () {
   },
   methods: {
+    ...mapActions(['fetch_authorDetails']),
     authorDetails () {
-      console.log(this.displayAuthor + ' ' + this.authorId)
-      this.$parent.authorDetails(this.displayAuthor, this.authorId)
+      this.fetch_authorDetails([this.authorName, this.authorId])
     }
   }
 }

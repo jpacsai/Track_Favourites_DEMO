@@ -17,10 +17,10 @@ const state = {
   view: 'search',
   displayList: [],
   page: 1,
-  author_name: null,
-  author_id: null,
-  series_title: null,
-  series_id: null
+  authorName: null,
+  authorId: null,
+  seriesTitle: null,
+  seriesId: null
 }
 
 const mutations = {
@@ -50,13 +50,13 @@ const mutations = {
     state.displayList = result // what if only one result? -> not arr
   },
   SET_SERIES_AUTHOR_NAME (state, author) {
-    state.author_name = author
+    state.authorName = author
   },
   SET_SERIES_AUTHOR_ID (state, authorId) {
-    state.author_id = authorId
+    state.authorId = authorId
   },
   SET_SERIES_TITLE (state, title) {
-    state.series_title = title
+    state.seriesTitle = title
   }
 }
 

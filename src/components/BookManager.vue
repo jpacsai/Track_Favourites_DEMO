@@ -87,9 +87,7 @@ import series from './Series'
 import search from './Search'
 import author from './Author'
 // import api from '@/api'
-import keys from '../../apiKeys.js'
 import { mapState, mapActions } from 'vuex'
-const parser = require('fast-xml-parser')
 
 export default {
   components: {
@@ -143,29 +141,6 @@ export default {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
     },
-    /* add future (Boolean) and release date as String to book objects */
-    parseArr_Author (arr) {
-      const parsed = arr.map(obj => {
-        const year = obj.publication_year || 1900
-        const month = obj.publication_month || 1
-        const day = obj.publication_day || 1
-        if (obj.hasOwnProperty('titleDecoded') === false) {
-          obj.titleDecoded = this.decodeTitle(obj.title)
-        }
-        if (obj.hasOwnProperty('future') === false) {
-          const releaseDate = this.releaseDate(year, month, day)
-          obj.future = releaseDate > this.today
-        }
-        if (obj.hasOwnProperty('release') === false) {
-          obj.release = this.releaseString(year, month, day)
-        }
-        if (obj.hasOwnProperty('serie') === false) {
-          obj.serie = obj.title.includes('#')
-        }
-        return obj
-      })
-      return parsed
-    },
     setPages (obj) {
       const allResults = obj.GoodreadsResponse.search['total-results']
       this.allResult = allResults
@@ -196,50 +171,6 @@ export default {
       }
       this.searchBooks()
     }, */
-    /* add books of a serie to display list */
-    authorDetails (name, authorId) {
-      console.log('FETCH - author id ' + authorId)
-      fetch(this.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          const workCount = jsonObj.GoodreadsResponse.author.works_count
-          this.allResult = workCount
-          this.page = 1
-          this.allPage = Math.ceil(workCount / 30)
-          this.displayAuthor = name
-          this.displayAuthorId = authorId
-          this.authorBooks(authorId)
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    authorBooks (authorId) {
-      console.log('FETCH - all books, page ' + this.page)
-      fetch(this.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey + '&q=' + this.search + '&page=' + this.page)
-        .then(data => data.blob())
-        .then(data => {
-          const text = this.handleUpload(data)
-          return text
-        })
-        .then(text => {
-          var jsonObj = parser.parse(text)
-          const arr = jsonObj.GoodreadsResponse.author.books.book
-          console.log(arr)
-          this.viewState_author()
-          this.setPageAuthor(arr)
-          this.search = ''
-          this.searchResult = this.parseArr_Author(arr)
-        })
-        .catch(function (error) {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
     pageForward () {
       if (this.page < this.allPage) {
         this.page++
