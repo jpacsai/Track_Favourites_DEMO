@@ -10,7 +10,7 @@
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
-        <button v-if='this.series === true && this.seriesView === false' class="series-btn" @click='findSeries'> Series</button>
+        <button v-if='this.series === true && this.seriesView === false' class="series-btn" @click='searchSeries'> Series</button>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <div class="heart-container">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// import keys from '../../apiKeys.js'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'authorresult',
@@ -47,15 +47,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['search_series']),
     likeToggle () {
       this.liked = !this.liked
     },
-    findSeries () {
-      const sTitle = this.seriesTitle()
-      this.$emit('findSeries', this.id, sTitle)
-    },
-    authorDetails () {
-      this.$emit('authorDetails', this.authorId)
+    searchSeries () {
+      const sTitle = this.seriesTitle() // NECESSARY??
+      this.search_series([this.id, sTitle, this.author, this.authorId])
     },
     seriesTitle () {
       const start = this.title.search(/\(/) + 1

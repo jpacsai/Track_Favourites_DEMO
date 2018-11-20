@@ -21,7 +21,6 @@
 </template>
 
 <script>
-// import keys from '../../apiKeys.js'
 import { mapActions } from 'vuex'
 
 export default {
@@ -48,7 +47,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['search_series']),
+    ...mapActions(['search_series', 'fetch_authorDetails']),
     likeToggle () {
       this.liked = !this.liked
     },
@@ -56,8 +55,8 @@ export default {
       const sTitle = this.seriesTitle() // NECESSARY??
       this.search_series([this.id, sTitle, this.author, this.authorId])
     },
-    authorDetails () { // INCLUDE
-      this.$emit('authorDetails', this.author, this.authorId)
+    authorDetails () {
+      this.fetch_authorDetails([this.author, this.authorId])
     },
     seriesTitle () { // NECESSARY??
       const start = this.title.search(/\(/) + 1

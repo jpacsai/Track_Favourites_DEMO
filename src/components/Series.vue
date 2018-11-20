@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Series view</h3>
-    <p><span class="author-link" @click='authorDetails'>{{ series.author }}</span> - {{ series.title }}</p>
+    <p><span class="author-link" @click='authorDetails'>{{ author_name }}</span> - {{ series_title }}</p>
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in displayList"
@@ -34,7 +34,8 @@ export default {
   },
   computed: mapState([
     'displayList',
-    'series'
+    'author_name',
+    'series_title'
   ]),
   props: {
     displayAuthor: String,

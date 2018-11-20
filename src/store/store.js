@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import keys from '../../apiKeys.js'
 import handleUpload from '../helpers/convertXML'
 import parseArr from '../helpers/parseArr'
+import parseArrAuthor from './../helpers/parseArr_author'
 import parseHelpers from './../helpers/parseHelpers'
 
 const parser = require('fast-xml-parser')
@@ -16,12 +17,10 @@ const state = {
   view: 'search',
   displayList: [],
   page: 1,
-  series: {
-    title: null,
-    seriesId: null,
-    author: null,
-    authorId: null
-  }
+  author_name: null,
+  author_id: null,
+  series_title: null,
+  series_id: null
 }
 
 const mutations = {
@@ -41,21 +40,23 @@ const mutations = {
   VIEW_SERIES (state) {
     state.view = 'series'
   },
+  VIEW_AUTHOR (state) {
+    state.view = 'author'
+  },
   VIEW_ERROR (state) {
     state.view = 'error'
-    console.log(state.view)
   },
   ADD_DISPLAY_LIST (state, result) {
     state.displayList = result // what if only one result? -> not arr
   },
   SET_SERIES_AUTHOR_NAME (state, author) {
-    state.series.author = author
+    state.author_name = author
   },
   SET_SERIES_AUTHOR_ID (state, authorId) {
-    state.series.authorId = authorId
+    state.author_id = authorId
   },
   SET_SERIES_TITLE (state, title) {
-    state.series.title = title
+    state.series_title = title
   }
 }
 
@@ -71,10 +72,10 @@ const actions = {
   },
   set_viewState_series ({commit}) {
     commit('VIEW_SERIES')
-  }, /*
-  viewState_author () {
-    this.view = 'author'
-  }, */
+  },
+  set_viewState_author ({commit}) {
+    commit('VIEW_AUTHOR')
+  },
   set_seriesAuthorName ({commit}, author) {
     commit('SET_SERIES_AUTHOR_NAME', author)
   },
@@ -91,13 +92,15 @@ const actions = {
   set_noError ({commit}) {
     commit('NO_ERROR')
   },
-  newSearch ({dispatch}) {
+  newSearch ({dispatch}) { // add page settings
     dispatch('set_viewState_search')
     dispatch('set_noError')
   },
   search_book ({dispatch}, text) {
-    console.log('FETCH - search books')
     dispatch('newSearch')
+
+    console.log('FETCH - search books')
+
     fetch(
       state.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
         keys.bookKey + '&q=' + text + '&page=' + state.page
@@ -128,6 +131,7 @@ const actions = {
   },
   search_series ({dispatch}, [id, title, author, authorId]) {
     console.log('FETCH - serie id: ' + id + ', title: ' + title + ', author: ' + author)
+
     dispatch('getWhichSeries', id)
       .then(data => {
         dispatch('set_seriesAuthorName', author)
@@ -152,6 +156,7 @@ const actions = {
   },
   getWhichSeries ({dispatch}, id) {
     console.log('FETCH - serie books ')
+
     return fetch(state.herokuNoCors + 'https://www.goodreads.com/series/work/' + id + '?format=xml&key=' + keys.bookKey)
       .then(data => data.blob())
       .then(data => {
@@ -178,6 +183,53 @@ const actions = {
         const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
         const transArr = parseHelpers.transformSeries(arr)
         return transArr
+      })
+      .catch(function (error) {
+        console.log('Looks like there was a problem: \n', error)
+      })
+  },
+  fetch_authorDetails ({dispatch}, [author, authorId]) {
+    dispatch('set_seriesAuthorName', author)
+    dispatch('set_seriesAuthorId', authorId)
+
+    console.log('FETCH - author id ' + authorId)
+
+    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
+      .then(data => data.blob())
+      .then(data => {
+        const text = handleUpload(data)
+        return text
+      })
+      .then(text => {
+        // var jsonObj = parser.parse(text)
+        // const workCount = jsonObj.GoodreadsResponse.author.works_count
+        // this.allResult = workCount
+        // this.page = 1
+        // this.allPage = Math.ceil(workCount / 30)
+        dispatch('authorBooks', authorId)
+        dispatch('set_viewState_author')
+      })
+      .catch(function (error) {
+        console.log('Looks like there was a problem: \n', error)
+      })
+  },
+  authorBooks ({dispatch}, authorId) {
+    console.log('FETCH - all books, page ' + state.page)
+    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey)
+      .then(data => data.blob())
+      .then(data => {
+        const text = handleUpload(data)
+        return text
+      })
+      .then(text => {
+        var jsonObj = parser.parse(text)
+        const arr = jsonObj.GoodreadsResponse.author.books.book
+        console.log(arr)
+        // this.viewState_author()
+        // this.setPageAuthor(arr)
+        // this.search = ''
+        const result = parseArrAuthor(arr, state.today)
+        dispatch('set_display', result)
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
