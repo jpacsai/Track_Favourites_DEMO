@@ -31,6 +31,7 @@ export default {
     author: String,
     authorId: Number,
     title: String,
+    serieTitle: String,
     image: String,
     rating: Number,
     year: Number,

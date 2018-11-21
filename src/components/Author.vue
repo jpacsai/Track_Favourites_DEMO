@@ -5,14 +5,13 @@
     <div class="search-results">
       <ul>
         <authorresult v-for="(s, index) in displayList" 
-          v-on:findSeries="findSeries"
-          v-on:authorBooks="authorBooks"
           v-bind:num="index"
           v-bind:id="s.work.id"
           v-bind:key='s.work.id'
           v-bind:author="s.authors.author.name"
           v-bind:authorId="s.authors.author.id"
           v-bind:title="s.title"
+          v-bind:serieTitle="s.title_without_series"
           v-bind:image="s.small_image_url"
           v-bind:rating="s.average_rating"
           v-bind:year="s.publication_year || 0"
@@ -36,24 +35,8 @@ export default {
   },
   computed: mapState([
     'displayList',
-    'authorName'
-  ]),
-  props: {
-    list: Array,
-    displayAuthor: String
-  },
-  data () {
-    return {}
-  },
-  created () {
-  },
-  methods: {
-    findSeries (author, title) {
-      this.$parent.findSeries(author, title)
-    },
-    authorBooks (author) {
-      this.$parent.authorBooks(author)
-    }
-  }
+    'authorName',
+    'authorId'
+  ])
 }
 </script>

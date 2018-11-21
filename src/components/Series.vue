@@ -8,7 +8,6 @@
           v-bind:num="index"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
-          v-bind:authorId="s.best_book.author.id"
           v-bind:title="s.best_book.titleNoSeries"
           v-bind:image="s.best_book.image_url "
           v-bind:rating="+((s.ratings_sum / s.ratings_count).toFixed(2))"
@@ -38,12 +37,6 @@ export default {
     'authorId',
     'seriesTitle'
   ]),
-  props: {
-    displayAuthor: String,
-    serieTitle: String,
-    authorId: Number,
-    list: Array
-  },
   data () {
     return {
       author: null,

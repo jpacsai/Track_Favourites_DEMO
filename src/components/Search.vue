@@ -3,10 +3,7 @@
     <h3>Search results</h3>
     <div class="search-results">
       <ul>
-        <searchresult v-for="(s, index) in displayList" 
-          v-on:authorDetails="authorDetails"
-          v-bind:num="index"
-          v-bind:id="s.id"
+        <searchresult v-for="(s, index) in displayList"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:authorId="s.best_book.author.id"
@@ -16,8 +13,10 @@
           v-bind:year="s.original_publication_year || 0"
           v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
           v-bind:series="s.serie"
+          v-bind:id="s.id"
+          v-bind:num="index"
           v-bind:release="s.release"
-          v-bind:future="s.future"/>
+          v-bind:future="s.future" />          
       </ul>
     </div>
 
@@ -55,9 +54,6 @@ export default {
     }
   },
   methods: {
-    authorDetails (name, authorId) {
-      this.$parent.authorDetails(name, authorId)
-    },
     pageForward () { // MOVE TO STATE
       if (this.page < this.allPage) {
         this.page++

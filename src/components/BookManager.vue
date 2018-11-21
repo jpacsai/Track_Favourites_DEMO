@@ -16,14 +16,10 @@
       class="search-results" />
     <series
       v-if="view === 'series'"
-      v-bind:displayAuthor="displayAuthor"
-      v-bind:serieTitle="serieTitle"
-      v-bind:authorId="displayAuthorId"
-      v-bind:list="searchResult" />
+      v-bind:displayAuthor="displayAuthor" />
     <author
       v-if="view === 'author'"
-      v-bind:displayAuthor="displayAuthor"
-      v-bind:list="searchResult" />
+      v-bind:displayAuthor="displayAuthor" />
 
     <div class="error" v-if="view === 'error'">
       <p>{{ this.error }}</p>

@@ -27,7 +27,6 @@ export default {
   name: 'seriesresult',
   props: {
     author: String,
-    authorId: Number,
     title: String,
     image: String,
     rating: Number,
