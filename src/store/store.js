@@ -6,6 +6,7 @@ import parseArr from './helpers/parseArr'
 import parseArrAuthor from './helpers/parseArr_author'
 import extractSeries from './helpers/extractSerieTitle'
 import transformSeries from './helpers/transformSeries'
+import scrollUp from './helpers/scrollUp.js'
 
 const parser = require('fast-xml-parser')
 
@@ -14,6 +15,7 @@ Vue.use(Vuex)
 const state = {
   herokuNoCors: 'https://cors-escape.herokuapp.com/',
   today: null,
+  searchText: null,
   error: null,
   view: 'search',
   displayList: [],
@@ -31,6 +33,9 @@ const state = {
 const mutations = {
   TODAY (state, date) {
     state.today = date
+  },
+  SET_SEARCH_TEXT (state, text) {
+    state.searchText = text
   },
   ERROR_NO_RESULT (state) {
     console.log('no result')
@@ -75,12 +80,21 @@ const mutations = {
     state.resultsFrom = numbers.from
     state.resultsTo = numbers.to
     state.allPage = numbers.allPages
+  },
+  PAGE_FORWARD (state) {
+    state.page++
+  },
+  PAGE_BACKWARD (state) {
+    state.page--
   }
 }
 
 const actions = {
   set_today ({commit}, date) {
     commit('TODAY', date)
+  },
+  set_searhText ({commit}, text) {
+    commit('SET_SEARCH_TEXT', text)
   },
   set_display ({commit}, result) {
     commit('ADD_DISPLAY_LIST', result)
@@ -100,6 +114,12 @@ const actions = {
   set_pageNumbers ({commit}, numbers) {
     commit('SET_PAGE_NUMBERS', numbers)
   },
+  page_forward ({commit}) {
+    commit('PAGE_FORWARD')
+  },
+  page_backward ({commit}) {
+    commit('PAGE_BACKWARD')
+  },
   set_seriesAuthorName ({commit}, author) {
     commit('SET_SERIES_AUTHOR_NAME', author)
   },
@@ -116,14 +136,14 @@ const actions = {
   set_noError ({commit}) {
     commit('NO_ERROR')
   },
-  newSearch ({dispatch}) { // add page settings
+  new_search ({dispatch}, text) {
+    dispatch('set_searhText', text)
     dispatch('set_pageNumbers_null')
-    dispatch('set_viewState_search')
     dispatch('set_noError')
+    dispatch('search_book', text)
+    dispatch('set_viewState_search')
   },
   search_book ({dispatch}, text) {
-    dispatch('newSearch')
-
     console.log('FETCH - search books')
 
     fetch(
@@ -263,6 +283,28 @@ const actions = {
       get allPages () { return Math.ceil(this.all / obj.GoodreadsResponse.search.results.work.length) }
     }
     dispatch('set_pageNumbers', numbers)
+  },
+  pageForward ({dispatch}) {
+    if (state.page < state.allPage) {
+      dispatch('page_forward')
+      if (state.view === 'search') {
+        dispatch('search_book', state.searchText)
+      } else if (this.view === 'author') {
+        // this.authorBooks(this.displayAuthorId)
+      }
+      scrollUp()
+    }
+  },
+  pageBackward ({dispatch}) {
+    if (state.page > 1) {
+      dispatch('page_backward')
+      if (state.view === 'search') {
+        dispatch('search_book', state.searchText)
+      } else if (this.view === 'author') {
+        // this.authorBooks(this.displayAuthorId)
+      }
+      scrollUp()
+    }
   }
 }
 

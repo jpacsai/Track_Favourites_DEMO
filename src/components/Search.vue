@@ -21,15 +21,6 @@
       </ul>
     </div>
 
-    <div class="nav-btn-container">
-      <button class="nav-btn" @click="pageBackward">
-        <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
-      <span>{{ this.page }}</span>
-      <button class="nav-btn" @click="pageForward">
-        <img class='nav-btn-img' src='../assets/arrow_forw.svg'>
-      </button>
-    </div>
-
   </div>
 </template>
 

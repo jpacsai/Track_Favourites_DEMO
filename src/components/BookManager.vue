@@ -17,11 +17,11 @@
 
     <div v-if="view === 'error'" class="error"><p>{{ this.error }}</p></div>
 
-    <div class="nav-btn-container" v-if="this.view === 'author'">
-      <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackward">
+    <div class="nav-btn-container" v-if="displayList.length > 0">
+      <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackw">
         <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
       <span>{{ this.page }}</span>
-      <button :class="{ hidden: this.page === this.allPage }" class="nav-btn" @click="pageForward">
+      <button :class="{ hidden: this.page === this.allPage }" class="nav-btn" @click="pageForw">
         <img class='nav-btn-img' src='../assets/arrow_forw.svg'>
       </button>
     </div>
@@ -86,6 +86,7 @@ export default {
   computed: mapState([
     'view',
     'error',
+    'displayList',
     'page',
     'allPage',
     'resultsFrom',
@@ -111,10 +112,25 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
-    ...mapActions(['set_today', 'search_book', 'search_series', 'set_error']),
+    ...mapActions([
+      'set_today',
+      'new_search',
+      'search_series',
+      'set_error',
+      'pageForward',
+      'pageBackward'
+    ]),
     searchBook () {
-      this.search_book(this.newSearch)
+      this.new_search(this.newSearch)
       this.newSearch = ''
+    },
+    pageForw () {
+      console.log('f')
+      this.pageForward()
+    },
+    pageBackw () {
+      console.log('b')
+      this.pageBackward()
     },
     error_null () {
       this.error = null
@@ -134,7 +150,7 @@ export default {
       const from = 1 + (this.page - 1) * 30
       this.resultsFrom = from
       this.resultsTo = from + arr.length - 1
-    },
+    }
     /* newSearch () {
       this.page = 1
       this.displayAuthor = null
@@ -146,35 +162,7 @@ export default {
       }
       this.searchBooks()
     }, */
-    pageForward () {
-      if (this.page < this.allPage) {
-        this.page++
-        if (this.view === 'search') {
-          this.searchBooks()
-        } else if (this.view === 'author') {
-          // this.authorBooks(this.displayAuthorId)
-        }
-        this.scrollUp()
-      }
-    },
-    pageBackward () {
-      if (this.page > 1) {
-        this.page--
-        if (this.view === 'search') {
-          this.searchBooks()
-        } else if (this.view === 'author') {
-          // this.authorBooks(this.displayAuthorId)
-        }
-        this.scrollUp()
-      }
-    },
-    scrollUp () {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      })
-    }
+
     /*
     async refreshBooks () {
       this.loading = true
