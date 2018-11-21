@@ -29,6 +29,7 @@ export default {
     author: String,
     authorId: Number,
     title: String,
+    serieTitle: String,
     image: String,
     rating: Number,
     year: Number,
@@ -51,17 +52,10 @@ export default {
       this.liked = !this.liked
     },
     searchSeries () {
-      const sTitle = this.seriesTitle() // NECESSARY??
-      this.search_series([this.id, sTitle, this.author, this.authorId])
+      this.search_series([this.id, this.serieTitle, this.author, this.authorId])
     },
     authorDetails () {
       this.fetch_authorDetails([this.author, this.authorId])
-    },
-    seriesTitle () { // NECESSARY??
-      const start = this.title.search(/\(/) + 1
-      const t = this.title.substring(start)
-      const end = t.search(/[,#]/)
-      return t.substring(0, end).trim()
     }
   }
 }

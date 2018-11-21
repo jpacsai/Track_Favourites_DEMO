@@ -52,14 +52,7 @@ export default {
       this.liked = !this.liked
     },
     searchSeries () {
-      const sTitle = this.seriesTitle() // NECESSARY??
-      this.search_series([this.id, sTitle, this.author, this.authorId])
-    },
-    seriesTitle () {
-      const start = this.title.search(/\(/) + 1
-      const t = this.title.substring(start)
-      const end = t.search(/[,#]/)
-      return t.substring(0, end).trim()
+      this.search_series([this.id, this.serieTitle, this.author, this.authorId])
     }
   }
 }

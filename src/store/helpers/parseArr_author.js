@@ -20,8 +20,13 @@ export default function parseArrAuthor (arr, today) {
     }
     if (obj.hasOwnProperty('serie') === false) {
       obj.serie = obj.title.includes('#')
-      if (obj.serie === true && obj.hasOwnProperty('titleNoSeries') === false) {
-        obj.titleNoSeries = parseHelpers.noSeriesTitle(obj.titleDecoded)
+      if (obj.serie === true) {
+        if (obj.hasOwnProperty('titleNoSeries') === false) {
+          obj.titleNoSeries = parseHelpers.noSeriesTitle(obj.titleDecoded)
+        }
+        if (obj.hasOwnProperty('serieTitle') === false) {
+          obj.serieTitle = parseHelpers.serieTitle(obj.titleDecoded)
+        }
       }
     }
     return obj

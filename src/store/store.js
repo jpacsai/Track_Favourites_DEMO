@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import keys from '../../apiKeys.js'
-import handleUpload from '../helpers/convertXML'
-import parseArr from '../helpers/parseArr'
-import parseArrAuthor from './../helpers/parseArr_author'
-import parseHelpers from './../helpers/parseHelpers'
+import handleUpload from './helpers/convertXML'
+import parseArr from './helpers/parseArr'
+import parseArrAuthor from './helpers/parseArr_author'
+import extractSeries from './helpers/extractSerieTitle'
+import transformSeries from './helpers/transformSeries'
 
 const parser = require('fast-xml-parser')
 
@@ -137,7 +138,7 @@ const actions = {
         dispatch('set_seriesAuthorName', author)
         dispatch('set_seriesTitle', title)
         dispatch('set_seriesAuthorId', authorId)
-        const s = parseHelpers.extractSeries(data.GoodreadsResponse.series_works.series_work, title)
+        const s = extractSeries(data.GoodreadsResponse.series_works.series_work, title)
         const seriesId = s.series.id
         return dispatch('getSeries', seriesId)
       })
@@ -181,7 +182,7 @@ const actions = {
       .then(text => {
         var jsonObj = parser.parse(text)
         const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
-        const transArr = parseHelpers.transformSeries(arr)
+        const transArr = transformSeries(arr)
         return transArr
       })
       .catch(function (error) {
