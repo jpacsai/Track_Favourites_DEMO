@@ -11,15 +11,9 @@
       </p>
     </div>
 
-    <search
-      v-if="view === 'search'"
-      class="search-results" />
-    <series
-      v-if="view === 'series'"
-      v-bind:displayAuthor="displayAuthor" />
-    <author
-      v-if="view === 'author'"
-      v-bind:displayAuthor="displayAuthor" />
+    <search v-if="view === 'search'" class="search-results" />
+    <series v-if="view === 'series'" />
+    <author v-if="view === 'author'" />
 
     <div class="error" v-if="view === 'error'">
       <p>{{ this.error }}</p>
@@ -99,18 +93,12 @@ export default {
     return {
       newSearch: '',
       loading: false,
-      books: [],
       model: {},
       page: 1,
       allPage: 0,
       resultsFrom: 0,
       resultsTo: 0,
-      allResult: 0,
-      searchResult: [],
-      displayAuthor: null,
-      displayAuthorId: null,
-      serieTitle: null,
-      herokuNoCors: 'https://cors-escape.herokuapp.com/'
+      allResult: 0
     }
   },
   created () {
@@ -173,7 +161,7 @@ export default {
         if (this.view === 'search') {
           this.searchBooks()
         } else if (this.view === 'author') {
-          this.authorBooks(this.displayAuthorId)
+          // this.authorBooks(this.displayAuthorId)
         }
         this.scrollUp()
       }
@@ -184,7 +172,7 @@ export default {
         if (this.view === 'search') {
           this.searchBooks()
         } else if (this.view === 'author') {
-          this.authorBooks(this.displayAuthorId)
+          // this.authorBooks(this.displayAuthorId)
         }
         this.scrollUp()
       }

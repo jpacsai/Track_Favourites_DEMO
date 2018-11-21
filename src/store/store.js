@@ -144,7 +144,6 @@ const actions = {
       })
       .then(seriesBook => {
         console.log(seriesBook)
-        // this.search = ''
         // this.page = 1
         const result = parseArr(seriesBook, state.today)
         dispatch('set_display', result)

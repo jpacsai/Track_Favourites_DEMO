@@ -11,7 +11,7 @@
           v-bind:author="s.authors.author.name"
           v-bind:authorId="s.authors.author.id"
           v-bind:title="s.title"
-          v-bind:serieTitle="s.title_without_series"
+          v-bind:serieTitle="s.titleNoSeries"
           v-bind:image="s.small_image_url"
           v-bind:rating="s.average_rating"
           v-bind:year="s.publication_year || 0"
