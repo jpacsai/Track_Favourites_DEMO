@@ -18,11 +18,11 @@ export default function parseArr (arr, today) {
     if (obj.hasOwnProperty('serie') === false) {
       obj.serie = obj.best_book.title.includes('#')
       if (obj.serie === true) {
-        if (obj.best_book.hasOwnProperty('titleNoSeries') === false) {
-          obj.best_book.titleNoSeries = parseHelpers.noSeriesTitle(obj.best_book.titleDecoded)
+        if (obj.best_book.hasOwnProperty('title_without_serie') === false) {
+          obj.best_book.title_without_serie = parseHelpers.noSeriesTitle(obj.best_book.titleDecoded)
         }
-        if (obj.best_book.hasOwnProperty('serieTitle') === false) {
-          obj.best_book.serieTitle = parseHelpers.serieTitle(obj.best_book.titleDecoded)
+        if (obj.best_book.hasOwnProperty('title_serie') === false) {
+          obj.best_book.title_serie = parseHelpers.serieTitle(obj.best_book.titleDecoded)
         }
       }
     }

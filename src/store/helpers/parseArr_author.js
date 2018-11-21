@@ -17,15 +17,12 @@ export default function parseArrAuthor (arr, today) {
     }
     if (obj.hasOwnProperty('serie') === false) {
       obj.serie = obj.title.includes('#')
-    }
-    if (obj.hasOwnProperty('serie') === false) {
-      obj.serie = obj.title.includes('#')
       if (obj.serie === true) {
-        if (obj.hasOwnProperty('titleNoSeries') === false) {
-          obj.titleNoSeries = parseHelpers.noSeriesTitle(obj.titleDecoded)
+        if (obj.hasOwnProperty('title_without_series') === false) {
+          obj.title_without_series = parseHelpers.noSeriesTitle(obj.titleDecoded)
         }
-        if (obj.hasOwnProperty('serieTitle') === false) {
-          obj.serieTitle = parseHelpers.serieTitle(obj.titleDecoded)
+        if (obj.hasOwnProperty('title_serie') === false) {
+          obj.title_serie = parseHelpers.serieTitle(obj.titleDecoded)
         }
       }
     }

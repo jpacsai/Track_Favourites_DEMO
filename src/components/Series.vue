@@ -5,10 +5,10 @@
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in displayList"
-          v-bind:num="index"
           v-bind:key='s.id'
+          v-bind:num="index"
           v-bind:author="s.best_book.author.name"
-          v-bind:title="s.best_book.titleNoSeries"
+          v-bind:title="s.best_book.title_without_serie"
           v-bind:image="s.best_book.image_url "
           v-bind:rating="+((s.ratings_sum / s.ratings_count).toFixed(2))"
           v-bind:year="s.original_publication_year || 0"

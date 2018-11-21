@@ -4,14 +4,14 @@
     <p>{{ authorName }} - {{ displayList.length }} {{ displayList.length > 1 ? 'books' : 'book' }}</p>
     <div class="search-results">
       <ul>
-        <authorresult v-for="(s, index) in displayList" 
+        <authorresult v-for="(s, index) in displayList"
+          v-bind:key='s.id'
           v-bind:num="index"
           v-bind:id="s.work.id"
-          v-bind:key='s.work.id'
           v-bind:author="s.authors.author.name"
           v-bind:authorId="s.authors.author.id"
-          v-bind:title="s.title"
-          v-bind:serieTitle="s.titleNoSeries"
+          v-bind:title="s.titleDecoded"
+          v-bind:serieTitle="s.title_serie"
           v-bind:image="s.small_image_url"
           v-bind:rating="s.average_rating"
           v-bind:year="s.publication_year || 0"

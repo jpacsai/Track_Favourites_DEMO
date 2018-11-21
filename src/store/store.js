@@ -230,6 +230,7 @@ const actions = {
         // this.search = ''
         const result = parseArrAuthor(arr, state.today)
         dispatch('set_display', result)
+        dispatch('set_viewState_author')
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
