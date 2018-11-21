@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Series view</h3>
-    <p><span class="author-link" @click='authorDetails'>{{ authorName }}</span> - {{ seriesTitle }}</p>
+    <p><span class="author-link" @click='authorBooks'>{{ authorName }}</span> - {{ seriesTitle }}</p>
     <div class="search-results">
       <ul>
         <seriesresult v-for="(s, index) in displayList"
@@ -46,9 +46,9 @@ export default {
   created () {
   },
   methods: {
-    ...mapActions(['fetch_authorDetails']),
-    authorDetails () {
-      this.fetch_authorDetails([this.authorName, this.authorId])
+    ...mapActions(['fetch_authorBooks']),
+    authorBooks () {
+      this.fetch_authorBooks([this.authorName, this.authorId])
     }
   }
 }

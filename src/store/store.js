@@ -188,10 +188,30 @@ const actions = {
         console.log('Looks like there was a problem: \n', error)
       })
   },
-  fetch_authorDetails ({dispatch}, [author, authorId]) {
-    dispatch('set_seriesAuthorName', author)
+  fetch_authorBooks ({dispatch}, [authorName, authorId]) {
+    dispatch('set_seriesAuthorName', authorName)
     dispatch('set_seriesAuthorId', authorId)
-
+    console.log('FETCH - all books ' + authorName + ' : ' + authorId + ', page ' + state.page)
+    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey)
+      .then(data => data.blob())
+      .then(data => {
+        const text = handleUpload(data)
+        return text
+      })
+      .then(text => {
+        var jsonObj = parser.parse(text)
+        const arr = jsonObj.GoodreadsResponse.author.books.book
+        // this.setPageAuthor(arr)
+        const result = parseArrAuthor(arr, state.today)
+        console.log(result)
+        dispatch('set_display', result)
+        dispatch('set_viewState_author')
+      })
+      .catch(function (error) {
+        console.log('Looks like there was a problem: \n', error)
+      })
+  },
+  fetch_authorDetails ({dispatch}, authorId) {
     console.log('FETCH - author id ' + authorId)
 
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
@@ -206,31 +226,6 @@ const actions = {
         // this.allResult = workCount
         // this.page = 1
         // this.allPage = Math.ceil(workCount / 30)
-        dispatch('authorBooks', authorId)
-        dispatch('set_viewState_author')
-      })
-      .catch(function (error) {
-        console.log('Looks like there was a problem: \n', error)
-      })
-  },
-  authorBooks ({dispatch}, authorId) {
-    console.log('FETCH - all books, page ' + state.page)
-    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey)
-      .then(data => data.blob())
-      .then(data => {
-        const text = handleUpload(data)
-        return text
-      })
-      .then(text => {
-        var jsonObj = parser.parse(text)
-        const arr = jsonObj.GoodreadsResponse.author.books.book
-        console.log(arr)
-        // this.viewState_author()
-        // this.setPageAuthor(arr)
-        // this.search = ''
-        const result = parseArrAuthor(arr, state.today)
-        dispatch('set_display', result)
-        dispatch('set_viewState_author')
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)

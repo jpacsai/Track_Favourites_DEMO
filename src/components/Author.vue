@@ -8,8 +8,6 @@
           v-bind:key='s.id'
           v-bind:num="index"
           v-bind:id="s.work.id"
-          v-bind:author="s.authors.author.name"
-          v-bind:authorId="s.authors.author.id"
           v-bind:title="s.titleDecoded"
           v-bind:serieTitle="s.title_serie"
           v-bind:image="s.small_image_url"
@@ -35,8 +33,7 @@ export default {
   },
   computed: mapState([
     'displayList',
-    'authorName',
-    'authorId'
+    'authorName'
   ])
 }
 </script>

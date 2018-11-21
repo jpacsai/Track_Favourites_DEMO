@@ -21,15 +21,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'authorresult',
+  computed: mapState([
+    'authorName',
+    'authorId'
+  ]),
   props: {
     num: Number,
     id: Number,
-    author: String,
-    authorId: Number,
     title: String,
     serieTitle: String,
     image: String,
@@ -42,7 +44,6 @@ export default {
   },
   data () {
     return {
-      ISBN: '',
       liked: false
     }
   },
@@ -52,7 +53,7 @@ export default {
       this.liked = !this.liked
     },
     searchSeries () {
-      this.search_series([this.id, this.serieTitle, this.author, this.authorId])
+      this.search_series([this.id, this.serieTitle, this.authorName, this.authorId])
     }
   }
 }

@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p class="author">by <span class='author-link' @click='authorDetails'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
+        <p class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
         <p class="ratings">{{ this.rating }} avg rating</p>
       </div>
       <div class="details">
@@ -47,15 +47,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['search_series', 'fetch_authorDetails']),
+    ...mapActions(['search_series', 'fetch_authorBooks']),
     likeToggle () {
       this.liked = !this.liked
     },
     searchSeries () {
       this.search_series([this.id, this.serieTitle, this.author, this.authorId])
     },
-    authorDetails () {
-      this.fetch_authorDetails([this.author, this.authorId])
+    authorBooks () {
+      this.fetch_authorBooks([this.author, this.authorId])
     }
   }
 }

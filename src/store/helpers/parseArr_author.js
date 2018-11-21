@@ -10,7 +10,7 @@ export default function parseArrAuthor (arr, today) {
     }
     if (obj.hasOwnProperty('future') === false) {
       const releaseDate = parseHelpers.releaseDate(year, month, day)
-      obj.future = releaseDate > parseHelpers.today
+      obj.future = releaseDate > today
     }
     if (obj.hasOwnProperty('release') === false) {
       obj.release = parseHelpers.releaseString(year, month, day)
