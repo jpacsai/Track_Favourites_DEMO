@@ -3,21 +3,19 @@
     <h1 class="header">Book Manager</h1>
     <div class="top">
       <form @submit.prevent="searchBook" class="book_search-form">
-        <input type="text" v-model='newSearch' required class="book_search-input"/>
-        <input type='submit' value="Search" class="book_search-submit"/>
+        <input type="text" v-model='newSearch' required class="book_search-input" />
+        <input type='submit' value="Search" class="book_search-submit" />
       </form>
-      <p class="book_searchNums" v-if="this.allResult > 0">
-        <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResult }}</span>
+      <p class="book_searchNums" v-if="this.allResults > 0">
+        <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span>
       </p>
     </div>
 
-    <search v-if="view === 'search'" class="search-results" />
+    <search v-if="view === 'search'" />
     <series v-if="view === 'series'" />
     <author v-if="view === 'author'" />
 
-    <div class="error" v-if="view === 'error'">
-      <p>{{ this.error }}</p>
-    </div>
+    <div v-if="view === 'error'" class="error"><p>{{ this.error }}</p></div>
 
     <div class="nav-btn-container" v-if="this.view === 'author'">
       <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackward">
@@ -87,18 +85,18 @@ export default {
   },
   computed: mapState([
     'view',
-    'error'
+    'error',
+    'page',
+    'allPage',
+    'resultsFrom',
+    'resultsTo',
+    'allResults'
   ]),
   data () {
     return {
       newSearch: '',
       loading: false,
-      model: {},
-      page: 1,
-      allPage: 0,
-      resultsFrom: 0,
-      resultsTo: 0,
-      allResult: 0
+      model: {}
     }
   },
   created () {
@@ -125,16 +123,9 @@ export default {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
     },
-    setPages (obj) {
-      const allResults = obj.GoodreadsResponse.search['total-results']
-      this.allResult = allResults
-      this.resultsFrom = obj.GoodreadsResponse.search['results-start']
-      this.resultsTo = obj.GoodreadsResponse.search['results-end']
-      this.allPage = Math.ceil(allResults / 20)
-    },
     setPageSeries (arr) {
       this.page = 1
-      this.allResult = arr.length
+      this.allResults = arr.length
       this.resultsFrom = 1
       this.resultsTo = arr.length
       this.allPage = 1

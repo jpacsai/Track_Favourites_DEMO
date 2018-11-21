@@ -18,6 +18,10 @@ const state = {
   view: 'search',
   displayList: [],
   page: 1,
+  allPage: 1,
+  resultsFrom: 0,
+  resultsTo: 0,
+  allResults: 0,
   authorName: null,
   authorId: null,
   seriesTitle: null,
@@ -58,6 +62,19 @@ const mutations = {
   },
   SET_SERIES_TITLE (state, title) {
     state.seriesTitle = title
+  },
+  SET_PAGE_NUMBERS_NULL (state) {
+    state.page = 1
+    state.allPage = 1
+    state.allResults = 0
+    state.resultsFrom = 0
+    state.resultsTo = 0
+  },
+  SET_PAGE_NUMBERS (state, numbers) {
+    state.allResults = numbers.all
+    state.resultsFrom = numbers.from
+    state.resultsTo = numbers.to
+    state.allPage = numbers.allPages
   }
 }
 
@@ -77,6 +94,12 @@ const actions = {
   set_viewState_author ({commit}) {
     commit('VIEW_AUTHOR')
   },
+  set_pageNumbers_null ({commit}) {
+    commit('SET_PAGE_NUMBERS_NULL')
+  },
+  set_pageNumbers ({commit}, numbers) {
+    commit('SET_PAGE_NUMBERS', numbers)
+  },
   set_seriesAuthorName ({commit}, author) {
     commit('SET_SERIES_AUTHOR_NAME', author)
   },
@@ -94,6 +117,7 @@ const actions = {
     commit('NO_ERROR')
   },
   newSearch ({dispatch}) { // add page settings
+    dispatch('set_pageNumbers_null')
     dispatch('set_viewState_search')
     dispatch('set_noError')
   },
@@ -113,7 +137,7 @@ const actions = {
       })
       .then(text => {
         var jsonObj = parser.parse(text)
-        // this.setPages(jsonObj) // FIX THIS
+        dispatch('searchPageNumbers', jsonObj)
         const res = jsonObj.GoodreadsResponse.search.results.work
         if (res === undefined) {
           dispatch('set_error_noResult')
@@ -230,6 +254,15 @@ const actions = {
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
       })
+  },
+  searchPageNumbers ({dispatch}, obj) {
+    const numbers = {
+      all: obj.GoodreadsResponse.search['total-results'],
+      from: obj.GoodreadsResponse.search['results-start'],
+      to: obj.GoodreadsResponse.search['results-end'],
+      get allPages () { return Math.ceil(this.all / obj.GoodreadsResponse.search.results.work.length) }
+    }
+    dispatch('set_pageNumbers', numbers)
   }
 }
 
