@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import keys from '../../apiKeys.js'
-import handleUpload from './helpers/convertXML'
+import handleUpload from './helpers/readStream'
 import parseArr from './helpers/parseArr'
 import parseArrAuthor from './helpers/parseArr_author'
 import extractSeries from './helpers/extractSerieTitle'
@@ -179,10 +179,8 @@ const actions = {
       state.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
         keys.bookKey + '&q=' + text + '&page=' + state.page
     )
-      .then(data => data.blob())
       .then(data => {
-        const text = handleUpload(data)
-        return text
+        return dispatch('convertXML', data)
       })
       .then(text => {
         var jsonObj = parser.parse(text)
@@ -232,10 +230,8 @@ const actions = {
     console.log('FETCH - serie books ')
 
     return fetch(state.herokuNoCors + 'https://www.goodreads.com/series/work/' + id + '?format=xml&key=' + keys.bookKey)
-      .then(data => data.blob())
       .then(data => {
-        const text = handleUpload(data)
-        return text
+        return dispatch('convertXML', data)
       })
       .then(text => {
         var jsonObj = parser.parse(text)
@@ -247,10 +243,8 @@ const actions = {
   },
   getSeries ({dispatch}, id) {
     return fetch(state.herokuNoCors + 'https://www.goodreads.com/series/' + id + '?format=xml&key=' + keys.bookKey)
-      .then(data => data.blob())
       .then(data => {
-        const text = handleUpload(data)
-        return text
+        return dispatch('convertXML', data)
       })
       .then(text => {
         var jsonObj = parser.parse(text)
@@ -271,10 +265,8 @@ const actions = {
   fetch_authorBooks ({dispatch}) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)
-      .then(data => data.blob())
       .then(data => {
-        const text = handleUpload(data)
-        return text
+        return dispatch('convertXML', data)
       })
       .then(text => {
         var jsonObj = parser.parse(text)
@@ -293,10 +285,8 @@ const actions = {
     console.log('FETCH - author id ' + state.authorId)
 
     return fetch(state.herokuNoCors + 'https://www.goodreads.com/author/show/' + state.authorId + '?format=xml&key=' + keys.bookKey)
-      .then(data => data.blob())
       .then(data => {
-        const text = handleUpload(data)
-        return text
+        return dispatch('convertXML', data)
       })
       .then(text => {
         const jsonObj = parser.parse(text)
@@ -354,6 +344,16 @@ const actions = {
       dispatch('fetch_authorBooks')
     }
     scrollUp()
+  },
+  convertXML ({dispatch}, data) {
+    return data.blob()
+      .then(data => {
+        const text = handleUpload(data)
+        return text
+      })
+      .catch(function (error) {
+        console.log('Looks like there was a problem: \n', error)
+      })
   }
 }
 
