@@ -37,14 +37,6 @@ export default {
     'authorId',
     'seriesTitle'
   ]),
-  data () {
-    return {
-      author: null,
-      serie: null
-    }
-  },
-  created () {
-  },
   methods: {
     ...mapActions(['fetch_new_authorBooks']),
     authorBooks () {

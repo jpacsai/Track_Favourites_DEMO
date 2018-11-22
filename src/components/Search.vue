@@ -35,39 +35,6 @@ export default {
   },
   computed: mapState([
     'displayList'
-  ]),
-  data () {
-    return {
-      page: 1,
-      allPage: 1,
-      allResult: 0,
-      resultsFrom: 1,
-      resultsTo: 1
-    }
-  },
-  methods: {
-    pageForward () { // MOVE TO STATE
-      if (this.page < this.allPage) {
-        this.page++
-        if (this.view === 'search') {
-          this.searchBooks()
-        } else if (this.view === 'author') {
-          this.authorBooks(this.displayAuthorId)
-        }
-        this.scrollUp()
-      }
-    },
-    pageBackward () { // MOVE TO STATE
-      if (this.page > 1) {
-        this.page--
-        if (this.view === 'search') {
-          this.searchBooks()
-        } else if (this.view === 'author') {
-          this.authorBooks(this.displayAuthorId)
-        }
-        this.scrollUp()
-      }
-    }
-  }
+  ])
 }
 </script>

@@ -25,7 +25,7 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'searchresult',
-  props: { // CHECK PROPS
+  props: {
     author: String,
     authorId: Number,
     title: String,
@@ -42,7 +42,6 @@ export default {
   },
   data () {
     return {
-      ISBN: '',
       liked: false
     }
   },

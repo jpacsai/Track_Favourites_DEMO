@@ -131,31 +131,7 @@ export default {
     pageBackw () {
       console.log('b')
       this.pageBackward()
-    },
-    error_null () {
-      this.error = null
-    },
-    checkSearchResults (arr) {
-      const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
-      return checkedArr
-    },
-    setPageAuthor (arr) {
-      const from = 1 + (this.page - 1) * 30
-      this.resultsFrom = from
-      this.resultsTo = from + arr.length - 1
     }
-    /* newSearch () {
-      this.page = 1
-      this.displayAuthor = null
-      this.displayAuthorId = null
-      this.serieTitle = null
-      this.searchResult = []
-      if (this.view !== 'search') {
-        this.viewState_search()
-      }
-      this.searchBooks()
-    }, */
-
     /*
     async refreshBooks () {
       this.loading = true

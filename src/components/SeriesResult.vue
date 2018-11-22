@@ -21,8 +21,6 @@
 </template>
 
 <script>
-// import keys from '../../apiKeys.js'
-
 export default {
   name: 'seriesresult',
   props: {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Author view</h3>
-    <p>{{ authorName }} - {{ displayList.length }} {{ displayList.length > 1 ? 'books' : 'book' }}</p>
+    <p>{{ authorName }}</p>
     <div class="search-results">
       <ul>
         <authorresult v-for="(s, index) in displayList"
