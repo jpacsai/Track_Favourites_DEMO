@@ -110,7 +110,7 @@ const actions = {
   set_today ({commit}, date) {
     commit('TODAY', date)
   },
-  set_searhText ({commit}, text) {
+  set_searchText ({commit}, text) {
     commit('SET_SEARCH_TEXT', text)
   },
   set_display ({commit}, result) {
@@ -166,11 +166,10 @@ const actions = {
     commit('NO_ERROR')
   },
   new_search ({dispatch}, text) {
-    dispatch('set_searhText', text)
+    dispatch('set_searchText', text)
     dispatch('set_pageNumbers_null')
     dispatch('set_noError')
     dispatch('search_book', text)
-    dispatch('set_viewState_search')
   },
   search_book ({dispatch}, text) {
     console.log('FETCH - search books')
@@ -193,6 +192,7 @@ const actions = {
           console.log(result)
           if (state.view !== 'search') {
             dispatch('set_viewState_search')
+            scrollUp()
           }
         }
       })
@@ -218,6 +218,7 @@ const actions = {
         dispatch('set_display', result)
         dispatch('set_viewState_series')
         dispatch('pageNumbers_series', seriesBook)
+        scrollUp()
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
@@ -253,6 +254,7 @@ const actions = {
     dispatch('set_authorId', authorId)
     dispatch('fetch_authorDetails')
     dispatch('fetch_authorBooks', [authorName, authorId])
+    scrollUp()
   },
   fetch_authorBooks ({dispatch}) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
