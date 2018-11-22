@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import keys from '../../apiKeys.js'
-import handleUpload from './helpers/readStream'
+import handleUpload from './helpers/convertStream'
 import parseArr from './helpers/parseArr'
 import parseArrAuthor from './helpers/parseArr_author'
 import extractSeries from './helpers/extractSerieTitle'
@@ -182,8 +182,7 @@ const actions = {
       .then(data => {
         return dispatch('convertXML', data)
       })
-      .then(text => {
-        var jsonObj = parser.parse(text)
+      .then(jsonObj => {
         dispatch('pageNumbers_search', jsonObj)
         const res = jsonObj.GoodreadsResponse.search.results.work
         if (res === undefined) {
@@ -215,10 +214,8 @@ const actions = {
       })
       .then(seriesBook => {
         console.log(seriesBook)
-        // this.page = 1
         const result = parseArr(seriesBook, state.today)
         dispatch('set_display', result)
-        // this.setPageSeries(seriesBook)
         dispatch('set_viewState_series')
         dispatch('pageNumbers_series', seriesBook)
       })
@@ -233,10 +230,6 @@ const actions = {
       .then(data => {
         return dispatch('convertXML', data)
       })
-      .then(text => {
-        var jsonObj = parser.parse(text)
-        return jsonObj
-      })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
       })
@@ -246,8 +239,7 @@ const actions = {
       .then(data => {
         return dispatch('convertXML', data)
       })
-      .then(text => {
-        var jsonObj = parser.parse(text)
+      .then(jsonObj => {
         const arr = jsonObj.GoodreadsResponse.series['series_works']['series_work']
         const transArr = transformSeries(arr)
         return transArr
@@ -268,8 +260,7 @@ const actions = {
       .then(data => {
         return dispatch('convertXML', data)
       })
-      .then(text => {
-        var jsonObj = parser.parse(text)
+      .then(jsonObj => {
         const arr = jsonObj.GoodreadsResponse.author.books.book
         const result = parseArrAuthor(arr, state.today)
         console.log(result)
@@ -288,8 +279,7 @@ const actions = {
       .then(data => {
         return dispatch('convertXML', data)
       })
-      .then(text => {
-        const jsonObj = parser.parse(text)
+      .then(jsonObj => {
         const workCount = jsonObj.GoodreadsResponse.author.works_count
         const pages = Math.ceil(workCount / 30)
         dispatch('set_allResult', workCount)
@@ -348,8 +338,10 @@ const actions = {
   convertXML ({dispatch}, data) {
     return data.blob()
       .then(data => {
-        const text = handleUpload(data)
-        return text
+        return handleUpload(data)
+      })
+      .then(fileContent => {
+        return parser.parse(fileContent)
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
