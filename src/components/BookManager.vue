@@ -17,7 +17,7 @@
 
     <div v-if="view === 'error'" class="error"><p>{{ this.error }}</p></div>
 
-    <div class="nav-btn-container" v-if="displayList.length > 0">
+    <div class="nav-btn-container" v-if="displayList.length > 0 && view !== 'series'">
       <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackw">
         <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
       <span>{{ this.page }}</span>

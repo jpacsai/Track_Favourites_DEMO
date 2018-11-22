@@ -75,7 +75,14 @@ const mutations = {
     state.resultsFrom = 0
     state.resultsTo = 0
   },
-  SET_PAGE_NUMBERS (state, numbers) {
+  SET_PAGE_NUMBERS_SEARCH (state, numbers) {
+    state.allResults = numbers.all
+    state.resultsFrom = numbers.from
+    state.resultsTo = numbers.to
+    state.allPage = numbers.allPages
+  },
+  SET_PAGE_NUMBERS_SERIES (state, numbers) {
+    state.page = numbers.page
     state.allResults = numbers.all
     state.resultsFrom = numbers.from
     state.resultsTo = numbers.to
@@ -111,8 +118,12 @@ const actions = {
   set_pageNumbers_null ({commit}) {
     commit('SET_PAGE_NUMBERS_NULL')
   },
-  set_pageNumbers ({commit}, numbers) {
-    commit('SET_PAGE_NUMBERS', numbers)
+  set_pageNumbers_search ({commit}, numbers) {
+    commit('SET_PAGE_NUMBERS_SEARCH', numbers)
+  },
+  set_pageNumbers_series ({commit}, numbers) {
+    console.log()
+    commit('SET_PAGE_NUMBERS_SERIES', numbers)
   },
   page_forward ({commit}) {
     commit('PAGE_FORWARD')
@@ -157,7 +168,7 @@ const actions = {
       })
       .then(text => {
         var jsonObj = parser.parse(text)
-        dispatch('searchPageNumbers', jsonObj)
+        dispatch('pageNumbers_search', jsonObj)
         const res = jsonObj.GoodreadsResponse.search.results.work
         if (res === undefined) {
           dispatch('set_error_noResult')
@@ -193,6 +204,7 @@ const actions = {
         dispatch('set_display', result)
         // this.setPageSeries(seriesBook)
         dispatch('set_viewState_series')
+        dispatch('pageNumbers_series', seriesBook)
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
@@ -275,14 +287,24 @@ const actions = {
         console.log('Looks like there was a problem: \n', error)
       })
   },
-  searchPageNumbers ({dispatch}, obj) {
+  pageNumbers_search ({dispatch}, obj) {
     const numbers = {
       all: obj.GoodreadsResponse.search['total-results'],
       from: obj.GoodreadsResponse.search['results-start'],
       to: obj.GoodreadsResponse.search['results-end'],
       get allPages () { return Math.ceil(this.all / obj.GoodreadsResponse.search.results.work.length) }
     }
-    dispatch('set_pageNumbers', numbers)
+    dispatch('set_pageNumbers_search', numbers)
+  },
+  pageNumbers_series ({dispatch}, arr) {
+    const numbers = {
+      page: 1,
+      all: arr.length,
+      from: 1,
+      to: arr.length,
+      allPage: 1
+    }
+    dispatch('set_pageNumbers_series', numbers)
   },
   pageForward ({dispatch}) {
     if (state.page < state.allPage) {
