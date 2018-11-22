@@ -139,13 +139,6 @@ export default {
       const checkedArr = arr.filter(obj => obj.original_publication_year !== '')
       return checkedArr
     },
-    setPageSeries (arr) {
-      this.page = 1
-      this.allResults = arr.length
-      this.resultsFrom = 1
-      this.resultsTo = arr.length
-      this.allPage = 1
-    },
     setPageAuthor (arr) {
       const from = 1 + (this.page - 1) * 30
       this.resultsFrom = from

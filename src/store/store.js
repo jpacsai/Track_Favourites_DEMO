@@ -59,14 +59,20 @@ const mutations = {
   ADD_DISPLAY_LIST (state, result) {
     state.displayList = result // what if only one result? -> not arr
   },
-  SET_SERIES_AUTHOR_NAME (state, author) {
+  SET_AUTHOR_NAME (state, author) {
     state.authorName = author
   },
-  SET_SERIES_AUTHOR_ID (state, authorId) {
+  SET_AUTHOR_ID (state, authorId) {
     state.authorId = authorId
   },
   SET_SERIES_TITLE (state, title) {
     state.seriesTitle = title
+  },
+  SET_ALL_RESULT (state, num) {
+    state.allResults = num
+  },
+  SET_ALL_PAGE (state, page) {
+    state.allPage = page
   },
   SET_PAGE_NUMBERS_NULL (state) {
     state.page = 1
@@ -87,6 +93,10 @@ const mutations = {
     state.resultsFrom = numbers.from
     state.resultsTo = numbers.to
     state.allPage = numbers.allPages
+  },
+  SET_PAGE_NUMBERS_AUTHOR (state, numbers) {
+    state.resultsFrom = numbers.from
+    state.resultsTo = numbers.to
   },
   PAGE_FORWARD (state) {
     state.page++
@@ -122,8 +132,10 @@ const actions = {
     commit('SET_PAGE_NUMBERS_SEARCH', numbers)
   },
   set_pageNumbers_series ({commit}, numbers) {
-    console.log()
     commit('SET_PAGE_NUMBERS_SERIES', numbers)
+  },
+  set_pageNumbers_author ({commit}, numbers) {
+    commit('SET_PAGE_NUMBERS_AUTHOR', numbers)
   },
   page_forward ({commit}) {
     commit('PAGE_FORWARD')
@@ -131,11 +143,17 @@ const actions = {
   page_backward ({commit}) {
     commit('PAGE_BACKWARD')
   },
-  set_seriesAuthorName ({commit}, author) {
-    commit('SET_SERIES_AUTHOR_NAME', author)
+  set_allResult ({commit}, num) {
+    commit('SET_ALL_RESULT', num)
   },
-  set_seriesAuthorId ({commit}, authorId) {
-    commit('SET_SERIES_AUTHOR_ID', authorId)
+  set_allPage ({commit}, page) {
+    commit('SET_ALL_PAGE', page)
+  },
+  set_authorName ({commit}, author) {
+    commit('SET_AUTHOR_NAME', author)
+  },
+  set_authorId ({commit}, authorId) {
+    commit('SET_AUTHOR_ID', authorId)
   },
   set_seriesTitle ({commit}, title) {
     commit('SET_SERIES_TITLE', title)
@@ -190,9 +208,9 @@ const actions = {
 
     dispatch('getWhichSeries', id)
       .then(data => {
-        dispatch('set_seriesAuthorName', author)
+        dispatch('set_authorName', author)
         dispatch('set_seriesTitle', title)
-        dispatch('set_seriesAuthorId', authorId)
+        dispatch('set_authorId', authorId)
         const s = extractSeries(data.GoodreadsResponse.series_works.series_work, title)
         const seriesId = s.series.id
         return dispatch('getSeries', seriesId)
@@ -244,11 +262,15 @@ const actions = {
         console.log('Looks like there was a problem: \n', error)
       })
   },
-  fetch_authorBooks ({dispatch}, [authorName, authorId]) {
-    dispatch('set_seriesAuthorName', authorName)
-    dispatch('set_seriesAuthorId', authorId)
-    console.log('FETCH - all books ' + authorName + ' : ' + authorId + ', page ' + state.page)
-    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + authorId + '?format=xml&key=' + keys.bookKey)
+  fetch_new_authorBooks ({dispatch}, [authorName, authorId]) {
+    dispatch('set_authorName', authorName)
+    dispatch('set_authorId', authorId)
+    dispatch('fetch_authorDetails')
+    dispatch('fetch_authorBooks', [authorName, authorId])
+  },
+  fetch_authorBooks ({dispatch}) {
+    console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
+    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)
       .then(data => data.blob())
       .then(data => {
         const text = handleUpload(data)
@@ -257,31 +279,31 @@ const actions = {
       .then(text => {
         var jsonObj = parser.parse(text)
         const arr = jsonObj.GoodreadsResponse.author.books.book
-        // this.setPageAuthor(arr)
         const result = parseArrAuthor(arr, state.today)
         console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_author')
+        dispatch('pageNumbers_author')
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
       })
   },
-  fetch_authorDetails ({dispatch}, authorId) {
-    console.log('FETCH - author id ' + authorId)
+  fetch_authorDetails ({dispatch}) {
+    console.log('FETCH - author id ' + state.authorId)
 
-    fetch(state.herokuNoCors + 'https://www.goodreads.com/author/show/' + authorId + '?format=xml&key=' + keys.bookKey)
+    return fetch(state.herokuNoCors + 'https://www.goodreads.com/author/show/' + state.authorId + '?format=xml&key=' + keys.bookKey)
       .then(data => data.blob())
       .then(data => {
         const text = handleUpload(data)
         return text
       })
       .then(text => {
-        // var jsonObj = parser.parse(text)
-        // const workCount = jsonObj.GoodreadsResponse.author.works_count
-        // this.allResult = workCount
-        // this.page = 1
-        // this.allPage = Math.ceil(workCount / 30)
+        const jsonObj = parser.parse(text)
+        const workCount = jsonObj.GoodreadsResponse.author.works_count
+        const pages = Math.ceil(workCount / 30)
+        dispatch('set_allResult', workCount)
+        dispatch('set_allPage', pages)
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
@@ -306,27 +328,32 @@ const actions = {
     }
     dispatch('set_pageNumbers_series', numbers)
   },
+  pageNumbers_author ({dispatch}) {
+    const numbers = {
+      from: 1 + (state.page - 1) * 30,
+      get to () { return this.from + state.displayList.length - 1 }
+    }
+    dispatch('set_pageNumbers_author', numbers)
+  },
   pageForward ({dispatch}) {
     if (state.page < state.allPage) {
       dispatch('page_forward')
-      if (state.view === 'search') {
-        dispatch('search_book', state.searchText)
-      } else if (this.view === 'author') {
-        // this.authorBooks(this.displayAuthorId)
-      }
-      scrollUp()
+      dispatch('turnPage')
     }
   },
   pageBackward ({dispatch}) {
     if (state.page > 1) {
       dispatch('page_backward')
-      if (state.view === 'search') {
-        dispatch('search_book', state.searchText)
-      } else if (this.view === 'author') {
-        // this.authorBooks(this.displayAuthorId)
-      }
-      scrollUp()
+      dispatch('turnPage')
     }
+  },
+  turnPage ({dispatch}) {
+    if (state.view === 'search') {
+      dispatch('search_book', state.searchText)
+    } else if (state.view === 'author') {
+      dispatch('fetch_authorBooks')
+    }
+    scrollUp()
   }
 }
 

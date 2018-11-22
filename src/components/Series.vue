@@ -46,9 +46,9 @@ export default {
   created () {
   },
   methods: {
-    ...mapActions(['fetch_authorBooks']),
+    ...mapActions(['fetch_new_authorBooks']),
     authorBooks () {
-      this.fetch_authorBooks([this.authorName, this.authorId])
+      this.fetch_new_authorBooks([this.authorName, this.authorId])
     }
   }
 }

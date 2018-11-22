@@ -47,7 +47,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['search_series', 'fetch_authorBooks']),
+    ...mapActions(['search_series', 'fetch_new_authorBooks']),
     likeToggle () {
       this.liked = !this.liked
     },
@@ -55,7 +55,7 @@ export default {
       this.search_series([this.id, this.serieTitle, this.author, this.authorId])
     },
     authorBooks () {
-      this.fetch_authorBooks([this.author, this.authorId])
+      this.fetch_new_authorBooks([this.author, this.authorId])
     }
   }
 }
