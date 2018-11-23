@@ -27,7 +27,9 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'booklist',
   computed: mapState([
-    'view'
+    'view',
+    'authorName',
+    'authorId'
   ]),
   props: {
     num: Number,
@@ -42,7 +44,7 @@ export default {
     release: String,
     future: Boolean,
     author: String,
-    authorId: Number,
+    authorid: Number,
     position: String
   },
   data () {
@@ -56,10 +58,10 @@ export default {
       this.liked = !this.liked
     },
     searchSeries () {
-      this.search_series([this.id, this.serieTitle, this.author, this.authorId])
+      this.search_series([this.id, this.serieTitle, this.authorName, this.authorId])
     },
     authorBooks () {
-      this.fetch_new_authorBooks([this.author, this.authorId])
+      this.fetch_new_authorBooks([this.author, this.authorid])
     }
   }
 }

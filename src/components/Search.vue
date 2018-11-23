@@ -6,7 +6,7 @@
         <booklist v-for="(s, index) in displayList"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
-          v-bind:authorId="s.best_book.author.id"
+          v-bind:authorid="s.best_book.author.id"
           v-bind:title="s.best_book.titleDecoded"
           v-bind:serieTitle="s.best_book.title_serie"
           v-bind:image="s.best_book.small_image_url"
