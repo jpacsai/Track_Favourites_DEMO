@@ -17,14 +17,8 @@
 
     <div v-if="view === 'error'" class="error"><p>{{ this.error }}</p></div>
 
-    <div class="nav-btn-container" v-if="displayList.length > 0 && view !== 'series'">
-      <button class="nav-btn" :class="{ hidden: this.page === 1 }" @click="pageBackw">
-        <img class='nav-btn-img' src='../assets/arrow_backw.svg'></button>
-      <span>{{ this.page }}</span>
-      <button :class="{ hidden: this.page === this.allPage }" class="nav-btn" @click="pageForw">
-        <img class='nav-btn-img' src='../assets/arrow_forw.svg'>
-      </button>
-    </div>
+    <pagenumbers v-if="displayList.length > 0 && view !== 'series'" />
+
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
@@ -74,6 +68,7 @@
 import series from './Series'
 import search from './Search'
 import author from './Author'
+import pagenumbers from './PageNums'
 // import api from '@/api'
 import { mapState, mapActions } from 'vuex'
 
@@ -81,14 +76,13 @@ export default {
   components: {
     series,
     search,
-    author
+    author,
+    pagenumbers
   },
   computed: mapState([
     'view',
     'error',
     'displayList',
-    'page',
-    'allPage',
     'resultsFrom',
     'resultsTo',
     'allResults'
@@ -116,21 +110,11 @@ export default {
       'set_today',
       'new_search',
       'search_series',
-      'set_error',
-      'pageForward',
-      'pageBackward'
+      'set_error'
     ]),
     searchBook () {
       this.new_search(this.newSearch)
       this.newSearch = ''
-    },
-    pageForw () {
-      console.log('f')
-      this.pageForward()
-    },
-    pageBackw () {
-      console.log('b')
-      this.pageBackward()
     }
     /*
     async refreshBooks () {
@@ -163,9 +147,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .hidden {
-    visibility: hidden;
-  }
-</style>
