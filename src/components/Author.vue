@@ -4,7 +4,7 @@
     <p>{{ authorName }}</p>
     <div class="search-results">
       <ul>
-        <authorresult v-for="(s, index) in displayList"
+        <booklist v-for="(s, index) in displayList"
           v-bind:key='s.id'
           v-bind:num="index"
           v-bind:id="s.work.id"
@@ -24,12 +24,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import authorresult from './AuthorResult'
+import booklist from './BookList'
 
 export default {
   name: 'author',
   components: {
-    authorresult
+    booklist
   },
   computed: mapState([
     'displayList',

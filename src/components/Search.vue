@@ -3,7 +3,7 @@
     <h3>Search results</h3>
     <div class="search-results">
       <ul>
-        <searchresult v-for="(s, index) in displayList"
+        <booklist v-for="(s, index) in displayList"
           v-bind:key='s.id'
           v-bind:author="s.best_book.author.name"
           v-bind:authorId="s.best_book.author.id"
@@ -26,12 +26,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import searchresult from './SearchResult'
+// import searchresult from './SearchResult'
+import booklist from './BookList'
 
 export default {
   name: 'search',
   components: {
-    searchresult
+    booklist
   },
   computed: mapState([
     'displayList'
