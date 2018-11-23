@@ -58,7 +58,7 @@ export default {
       this.liked = !this.liked
     },
     searchSeries () {
-      this.search_series([this.id, this.serieTitle, this.authorName, this.authorId])
+      this.search_series([this.id, this.serieTitle, this.authorName || this.author, this.authorId || this.authorid])
     },
     authorBooks () {
       this.fetch_new_authorBooks([this.author, this.authorid])

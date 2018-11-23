@@ -68,6 +68,9 @@ const mutations = {
   SET_SERIES_TITLE (state, title) {
     state.seriesTitle = title
   },
+  SET_SERIES_ID (state, id) {
+    state.seriesId = id
+  },
   SET_ALL_RESULT (state, num) {
     state.allResults = num
   },
@@ -158,6 +161,9 @@ const actions = {
   set_seriesTitle ({commit}, title) {
     commit('SET_SERIES_TITLE', title)
   },
+  set_seriesId ({commit}, id) {
+    commit('SET_SERIES_ID', id)
+  },
   set_error_noResult ({commit}) {
     commit('VIEW_ERROR')
     commit('ERROR_NO_RESULT')
@@ -192,6 +198,10 @@ const actions = {
           console.log(result)
           if (state.view !== 'search') {
             dispatch('set_viewState_search')
+            dispatch('set_seriesTitle', null)
+            dispatch('set_seriesId', null)
+            dispatch('set_authorName', null)
+            dispatch('set_authorId', null)
             scrollUp()
           }
         }
@@ -258,6 +268,7 @@ const actions = {
   },
   fetch_authorBooks ({dispatch}) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
+
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)
       .then(data => {
         return dispatch('convertXML', data)
@@ -268,6 +279,8 @@ const actions = {
         console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_author')
+        dispatch('set_seriesTitle', null)
+        dispatch('set_seriesId', null)
         dispatch('pageNumbers_author')
       })
       .catch(function (error) {
