@@ -49,9 +49,15 @@
   }
 
   .ratings {
-    font-size: 80%;
-    color: gray;
     margin-top: 7px;
+    display: flex;
+    align-items: center;
+    
+    p {
+      font-size: 80%;
+      color: gray;
+      margin: 0 7px 0 0;
+    }
   }
 
   button {
