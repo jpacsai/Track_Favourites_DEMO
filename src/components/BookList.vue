@@ -8,7 +8,6 @@
         <p class='title'>{{ this.title }}</p>
         <p v-if="view === 'search'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
         <div class="ratings" >
-          <p>{{ this.rating }} avg rating</p>
           <svg width="100px" height="25px" viewBox="0 0 100 25" :id="'svg' + this.id">
             <path d="M9.29 1.1 L3.3 21.78 L19.8 8.58 L0 8.58 L16.5 21.78
                       M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78
@@ -16,6 +15,7 @@
                       M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78
                       M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78" :fill="'url(#star-' + this.id + ')'" stroke="transparent" />
           </svg>
+          <p>{{ this.rating }} avg rating</p>
         </div> 
       </div>
       <div class="details">
