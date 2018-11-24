@@ -6,7 +6,8 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p v-if="view === 'search'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
+        <p v-if="view === 'search'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year }}</p>
+        <p v-if="view !== 'search'" class="author">{{ this.year }}</p>
         <div class="ratings" >
           <svg width="100px" height="25px" viewBox="0 0 100 25" >
             <path d="M9.29 1.1 L3.3 21.78 L19.8 8.58 L0 8.58 L16.5 21.78
@@ -55,7 +56,7 @@ export default {
     serieTitle: String,
     image: String,
     rating: Number,
-    year: Number,
+    year: String,
     url: String,
     series: Boolean,
     release: String,

@@ -7,15 +7,15 @@
         <booklist v-for="(s, index) in displayList"
           v-bind:key='s.id'
           v-bind:num="index"
-          v-bind:id="s.work.id"
-          v-bind:title="s.titleDecoded"
-          v-bind:serieTitle="s.title_serie"
-          v-bind:image="s.small_image_url"
-          v-bind:rating="s.average_rating"
-          v-bind:year="s.publication_year || 0"
-          v-bind:url="'https://www.goodreads.com/book/show/' + s.id"
-          v-bind:series="s.serie"
-          v-bind:release="s.release"
+          v-bind:id="s.id"
+          v-bind:title="s.title"
+          v-bind:serieTitle="s.serie.serieTitle"
+          v-bind:image="s.imgUrl"
+          v-bind:rating="s.rating"
+          v-bind:year="s.release.displayYear"
+          v-bind:url="s.url"
+          v-bind:series="s.serie.serie"
+          v-bind:release="s.release.string"
           v-bind:future="s.future"/>
       </ul>
     </div>

@@ -4,18 +4,18 @@
     <p><span class="author-link" @click='authorBooks'>{{ authorName }}</span> - {{ seriesTitle }}</p>
     <div class="search-results">
       <ul>
-        <booklist v-for="(s, index) in displayList"
-          v-bind:key='s.id'
+        <booklist v-for="(b, index) in displayList"
+          v-bind:key='b.id'
           v-bind:num="index"
-          v-bind:author="s.best_book.author.name"
-          v-bind:title="s.best_book.title_without_serie"
-          v-bind:image="s.best_book.image_url "
-          v-bind:rating="+((s.ratings_sum / s.ratings_count).toFixed(2))"
-          v-bind:year="s.original_publication_year || 0"
-          v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
-          v-bind:position="s.position"
-          v-bind:future="s.future"
-          v-bind:release="s.release"
+          v-bind:author="b.author"
+          v-bind:title="b.serie.title_without_serie"
+          v-bind:image="b.imgUrl"
+          v-bind:rating="b.rating"
+          v-bind:year="b.release.displayYear"
+          v-bind:url="b.url"
+          v-bind:position="b.serie.position"
+          v-bind:future="b.future"
+          v-bind:release="b.release.string"
           />
       </ul>
     </div>

@@ -2,31 +2,33 @@ import parseHelpers from './parseHelpers'
 
 export default function parseArrAuthor (arr, today) {
   const parsed = arr.map(obj => {
-    const year = obj.publication_year || 1900
-    const month = obj.publication_month || 1
+    // console.log(obj.title)
     const day = obj.publication_day || 1
-    if (obj.hasOwnProperty('titleDecoded') === false) {
-      obj.titleDecoded = parseHelpers.decodeTitle(obj.title)
-    }
-    if (obj.hasOwnProperty('future') === false) {
-      const releaseDate = parseHelpers.releaseDate(year, month, day)
-      obj.future = releaseDate > today
-    }
-    if (obj.hasOwnProperty('release') === false) {
-      obj.release = parseHelpers.releaseString(year, month, day)
-    }
-    if (obj.hasOwnProperty('serie') === false) {
-      obj.serie = obj.title.includes('#')
-      if (obj.serie === true) {
-        if (obj.hasOwnProperty('title_without_series') === false) {
-          obj.title_without_series = parseHelpers.noSeriesTitle(obj.titleDecoded)
-        }
-        if (obj.hasOwnProperty('title_serie') === false) {
-          obj.title_serie = parseHelpers.serieTitle(obj.titleDecoded)
-        }
+    const month = obj.publication_month || 1
+    const year = obj.publication_year || 1900
+    const titleDecode = parseHelpers.decodeTitle(obj.title)
+
+    const book = {
+      title: titleDecode,
+      id: obj.id,
+      author: obj.authors.author.name,
+      authorId: obj.authors.author.id,
+      imgUrl: obj.image_url,
+      rating: obj.average_rating,
+      url: obj.link,
+      release: {
+        displayYear: String(obj.publication_year) || 'unknown',
+        string: parseHelpers.releaseString(year, month, day),
+        dateObj: parseHelpers.releaseDate(year, month, day)
+      },
+      get future () { return this.release.dateObj > today },
+      serie: {
+        serie: titleDecode.includes('#'),
+        get title_without_serie () { return this.serie === true ? parseHelpers.noSeriesTitle(titleDecode) : null },
+        get serieTitle () { return this.serie === true ? parseHelpers.serieTitle(titleDecode) : null }
       }
     }
-    return obj
+    return book
   })
   return parsed
 }

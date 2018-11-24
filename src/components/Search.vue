@@ -3,21 +3,21 @@
     <h3>Search results</h3>
     <div class="search-results">
       <ul>
-        <booklist v-for="(s, index) in displayList"
-          v-bind:key='s.id'
-          v-bind:author="s.best_book.author.name"
-          v-bind:authorid="s.best_book.author.id"
-          v-bind:title="s.best_book.titleDecoded"
-          v-bind:serieTitle="s.best_book.title_serie"
-          v-bind:image="s.best_book.small_image_url"
-          v-bind:rating="s.average_rating"
-          v-bind:year="s.original_publication_year || 0"
-          v-bind:url="'https://www.goodreads.com/book/show/' + s.best_book.id"
-          v-bind:series="s.serie"
-          v-bind:id="s.id"
+        <booklist v-for="(b, index) in displayList"
+          v-bind:key='b.id'
+          v-bind:author="b.author"
+          v-bind:authorid="b.authorId"
+          v-bind:title="b.title"
+          v-bind:serieTitle="b.serieTitle"
+          v-bind:image="b.imgUrl"
+          v-bind:rating="b.rating"
+          v-bind:year="b.release.displayYear"
+          v-bind:url="b.url"
+          v-bind:series="b.serie.serie"
+          v-bind:id="b.id"
           v-bind:num="index"
-          v-bind:release="s.release"
-          v-bind:future="s.future" />          
+          v-bind:release="b.release.string"
+          v-bind:future="b.future" />          
       </ul>
     </div>
 
