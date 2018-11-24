@@ -7,20 +7,14 @@
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
         <p v-if="view === 'search'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
-        <div class="ratings">
+        <div class="ratings" >
           <p>{{ this.rating }} avg rating</p>
-          <svg width="100px" height="25px" viewBox="0 0 100 25">
-            <defs>
-              <linearGradient id="star" x1="0" y1="0" x2="1" y2="0">
-                <stop id="stop1" offset="50%" stop-color="purple"/>
-                <stop id="stop2" offset="50%" stop-color="lightgrey" />
-              </linearGradient>
-            </defs>
+          <svg width="100px" height="25px" viewBox="0 0 100 25" :id="'svg' + this.id">
             <path d="M9.29 1.1 L3.3 21.78 L19.8 8.58 L0 8.58 L16.5 21.78
-                     M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78
-                     M47.29 1.1 L41.3 21.78 L57.8 8.58 L38 8.58 L54.5 21.78
-                     M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78
-                     M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78" fill="url(#star)" stroke="transparent" />
+                      M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78
+                      M47.29 1.1 L41.3 21.78 L57.8 8.58 L38 8.58 L54.5 21.78
+                      M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78
+                      M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78" :fill="'url(#star-' + this.id + ')'" stroke="transparent" />
           </svg>
         </div> 
       </div>
@@ -38,6 +32,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import * as d3 from 'd3'
 
 export default {
   name: 'booklist',
@@ -66,6 +61,41 @@ export default {
     return {
       liked: false
     }
+  },
+  mounted () {
+    /*
+    <svg width="100px" height="25px" viewBox="0 0 100 25">
+      <path d="M9.29 1.1 L3.3 21.78 L19.8 8.58 L0 8.58 L16.5 21.78
+                M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78
+                M47.29 1.1 L41.3 21.78 L57.8 8.58 L38 8.58 L54.5 21.78
+                M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78
+                M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78" fill="url(#star)" stroke="transparent" />
+      <linearGradient id="star" x1="0" y1="0" x2="1" y2="0">
+        <stop offset='50%' stop-color="purple"/>
+        <stop offset='50%' stop-color="lightgrey" />
+      </linearGradient>
+    </svg>
+    */
+    // const svgPath = 'M9.29 1.1 L3.3 21.78 L19.8 8.58 L0 8.58 L16.5 21.78 M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78 M47.29 1.1 L41.3 21.78 L57.8 8.58 L38 8.58 L54.5 21.78 M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78 M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78'
+    // const svgId = 'svg' + this.id
+
+    d3.select('#svg' + this.id)
+      .append('defs')
+      .append('linearGradient')
+      .attr('id', 'star' + '-' + this.id)
+      .attr('x1', '0')
+      .attr('y1', '0')
+      .attr('x2', '1')
+      .attr('y1', '0')
+    d3.select('#star-' + this.id)
+      .append('stop')
+      .attr('offset', this.rating * 20 + '%')
+      .attr('stop-color', 'purple')
+
+    d3.select('#star-' + this.id)
+      .append('stop')
+      .attr('offset', this.rating * 20 + '%')
+      .attr('stop-color', 'lightgrey')
   },
   methods: {
     ...mapActions(['search_series', 'fetch_new_authorBooks']),
