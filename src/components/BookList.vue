@@ -8,12 +8,19 @@
         <p class='title'>{{ this.title }}</p>
         <p v-if="view === 'search'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year > 0 ? this.year : 'unknown' }}</p>
         <div class="ratings" >
-          <svg width="100px" height="25px" viewBox="0 0 100 25" :id="'svg' + this.id">
+          <svg width="100px" height="25px" viewBox="0 0 100 25" >
             <path d="M9.29 1.1 L3.3 21.78 L19.8 8.58 L0 8.58 L16.5 21.78
-                      M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78
-                      M47.29 1.1 L41.3 21.78 L57.8 8.58 L38 8.58 L54.5 21.78
-                      M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78
-                      M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78" :fill="'url(#star-' + this.id + ')'" stroke="transparent" />
+                     M28.29 1.1 L22.3 21.78 L38.8 8.58 L19 8.58 L35.5 21.78
+                     M47.29 1.1 L41.3 21.78 L57.8 8.58 L38 8.58 L54.5 21.78
+                     M66.29 1.1 L60.3 21.78 L76.8 8.58 L57 8.58 L73.5 21.78
+                     M85.29 1.1 L79.3 21.78 L95.8 8.58 L76 8.58 L92.5 21.78" 
+                  :fill="'url(#grad-' + this.id + ')'" stroke="transparent" />
+            <defs>
+              <linearGradient :id="'grad-' + this.id" x1="0" y1="0" x2="1" y2="0">
+                <stop :id="'stop1-' + this.id" offset="0%" stop-color="transparent"/>
+                <stop :id="'stop2-' + this.id" offset="0%" stop-color="lightgrey" />
+              </linearGradient>
+            </defs>
           </svg>
           <p>{{ this.rating }} avg rating</p>
         </div> 
@@ -78,23 +85,13 @@ export default {
     },
     addStarRating () {
       const color = this.rating >= 4 ? 'limegreen' : this.rating >= 3 ? 'palegreen' : this.rating >= 2 ? 'gold' : 'red'
-      d3.select('#svg' + this.id)
-        .append('defs')
-        .append('linearGradient')
-        .attr('id', 'star-' + this.id)
-        .attr('x1', '0')
-        .attr('y1', '0')
-        .attr('x2', '1')
-        .attr('y1', '0')
-      d3.select('#star-' + this.id)
-        .append('stop')
+
+      d3.select('#stop1-' + this.id)
         .attr('offset', this.rating * 20 + '%')
         .attr('stop-color', color)
 
-      d3.select('#star-' + this.id)
-        .append('stop')
+      d3.select('#stop2-' + this.id)
         .attr('offset', this.rating * 20 + '%')
-        .attr('stop-color', 'lightgrey')
     }
   }
 }
