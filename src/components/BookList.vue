@@ -85,6 +85,7 @@ export default {
       this.fetch_new_authorBooks([this.author, this.authorid])
     },
     addStarRating () {
+      console.log(this.rating)
       const color = this.rating >= 4 ? 'limegreen' : this.rating >= 3 ? 'palegreen' : this.rating >= 2 ? 'gold' : 'red'
 
       d3.select('#stop1-' + this.id)
