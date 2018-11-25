@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import keys from '../../apiKeys.js'
 import handleUpload from './helpers/convertStream'
 import parseArr from './helpers/parseArr'
-import parseArrAuthor from './helpers/parseArr_author'
 import extractSeries from './helpers/extractSerieTitle'
 import transformSeries from './helpers/transformSeries'
 import scrollUp from './helpers/scrollUp.js'
@@ -194,8 +193,8 @@ const actions = {
           dispatch('set_error_noResult')
         } else {
           const result = Array.isArray(res) === false ? parseArr([res], state.today) : parseArr(res, state.today)
-          dispatch('set_display', result)
           console.log(result)
+          dispatch('set_display', result)
           if (state.view !== 'search') {
             dispatch('set_viewState_search')
             dispatch('set_seriesTitle', null)
@@ -276,9 +275,9 @@ const actions = {
       })
       .then(jsonObj => {
         const arr = jsonObj.GoodreadsResponse.author.books.book
-        // console.log(arr)
-        const result = parseArrAuthor(arr, state.today)
-        console.log(result)
+        console.log(arr)
+        const result = parseArr(arr, state.today)
+        // console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_author')
         dispatch('set_seriesTitle', null)
