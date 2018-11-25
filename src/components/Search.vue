@@ -8,7 +8,7 @@
           v-bind:author="b.author"
           v-bind:authorid="b.authorId"
           v-bind:title="b.title"
-          v-bind:serieTitle="b.serieTitle"
+          v-bind:serieTitle="b.serie.serieTitle"
           v-bind:image="b.imgUrl"
           v-bind:rating="b.rating"
           v-bind:year="b.release.displayYear"

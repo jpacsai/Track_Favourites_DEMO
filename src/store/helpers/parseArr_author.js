@@ -10,7 +10,7 @@ export default function parseArrAuthor (arr, today) {
 
     const book = {
       title: titleDecode,
-      id: obj.id,
+      id: obj.work.id,
       author: obj.authors.author.name,
       authorId: obj.authors.author.id,
       imgUrl: obj.image_url,

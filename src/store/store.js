@@ -225,7 +225,7 @@ const actions = {
       .then(seriesBook => {
         console.log(seriesBook)
         const result = parseArr(seriesBook, state.today)
-        console.log(result)
+        // console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_series')
         dispatch('pageNumbers_series', seriesBook)
@@ -236,7 +236,7 @@ const actions = {
       })
   },
   getWhichSeries ({dispatch}, id) {
-    console.log('FETCH - serie books ')
+    console.log('FETCH - serie books, id: ' + id)
 
     return fetch(state.herokuNoCors + 'https://www.goodreads.com/series/work/' + id + '?format=xml&key=' + keys.bookKey)
       .then(data => {
