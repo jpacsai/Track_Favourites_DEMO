@@ -1,7 +1,7 @@
 <template>
   <div class="container book">
     <h1 class="header">Book Manager</h1>
-    
+
     <newbooks />
 
     <!--
@@ -52,16 +52,20 @@
 <script>
 import newbooks from './NewBooks'
 // import api from '@/api'
-import { mapState, mapActions } from 'vuex'
+// import { mapState, mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('newBooks')
 
 export default {
   components: {
     newbooks
   },
-  computed: mapState([
-    'view',
-    'error'
-  ]),
+  computed: {
+    ...mapState({
+      today: state => state.today
+    })
+  },
   data () {
     return {
       newSearch: '',
@@ -82,15 +86,8 @@ export default {
   }, */
   methods: {
     ...mapActions([
-      'set_today',
-      'new_search',
-      'search_series',
-      'set_error'
-    ]),
-    searchBook () {
-      this.new_search(this.newSearch)
-      this.newSearch = ''
-    }
+      'set_today'
+    ])
     /*
     async refreshBooks () {
       this.loading = true

@@ -23,20 +23,24 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import booklist from './BookList'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('newBooks')
 
 export default {
   name: 'series',
   components: {
     booklist
   },
-  computed: mapState([
-    'displayList',
-    'authorName',
-    'authorId',
-    'seriesTitle'
-  ]),
+  computed: {
+    ...mapState({
+      displayList: state => state.displayList,
+      authorName: state => state.authorName,
+      authorId: state => state.authorId,
+      seriesTitle: state => state.seriesTitle
+    })
+  },
   methods: {
     ...mapActions(['fetch_new_authorBooks']),
     authorBooks () {

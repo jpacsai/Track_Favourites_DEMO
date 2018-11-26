@@ -69,7 +69,9 @@ import search from './Search'
 import author from './Author'
 import pagenumbers from './PageNums'
 // import api from '@/api'
-import { mapState, mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('newBooks')
 
 export default {
   name: 'newbooks',
@@ -79,14 +81,16 @@ export default {
     author,
     pagenumbers
   },
-  computed: mapState([
-    'view',
-    'error',
-    'displayList',
-    'resultsFrom',
-    'resultsTo',
-    'allResults'
-  ]),
+  computed: {
+    ...mapState({
+      view: state => state.view,
+      error: state => state.error,
+      displayList: state => state.displayList,
+      resultsFrom: state => state.resultsFrom,
+      resultsTo: state => state.resultsTo,
+      allResults: state => state.allResults
+    })
+  },
   data () {
     return {
       newSearch: '',

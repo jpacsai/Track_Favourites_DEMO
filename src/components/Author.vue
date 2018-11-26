@@ -23,17 +23,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import booklist from './BookList'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState } = createNamespacedHelpers('newBooks')
 
 export default {
   name: 'author',
   components: {
     booklist
   },
-  computed: mapState([
-    'displayList',
-    'authorName'
-  ])
+  computed: {
+    ...mapState({
+      displayList: state => state.displayList,
+      authorName: state => state.authorName
+    })
+  }
 }
 </script>

@@ -39,16 +39,20 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import * as d3 from 'd3'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('newBooks')
 
 export default {
   name: 'booklist',
-  computed: mapState([
-    'view',
-    'authorName',
-    'authorId'
-  ]),
+  computed: {
+    ...mapState({
+      view: state => state.view,
+      authorName: state => state.authorName,
+      authorId: state => state.authorId
+    })
+  },
   props: {
     num: Number,
     id: Number,
