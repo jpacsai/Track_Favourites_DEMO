@@ -55,7 +55,7 @@ import newbooks from './NewBooks'
 // import { mapState, mapActions } from 'vuex'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('newBooks')
+const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
 
 export default {
   components: {

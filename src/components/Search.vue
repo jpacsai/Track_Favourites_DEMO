@@ -28,7 +28,7 @@
 import booklist from './BookList'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapState } = createNamespacedHelpers('newBooks')
+const { mapState } = createNamespacedHelpers('book/newBooks')
 
 export default {
   name: 'search',

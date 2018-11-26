@@ -42,7 +42,7 @@
 import * as d3 from 'd3'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('newBooks')
+const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
 
 export default {
   name: 'booklist',

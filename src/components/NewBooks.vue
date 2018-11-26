@@ -71,7 +71,7 @@ import pagenumbers from './PageNums'
 // import api from '@/api'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('newBooks')
+const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
 
 export default {
   name: 'newbooks',
