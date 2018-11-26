@@ -222,9 +222,9 @@ const actions = {
         return dispatch('getSeries', seriesId)
       })
       .then(seriesBook => {
-        console.log(seriesBook)
+        // console.log(seriesBook)
         const result = parseArr(seriesBook, state.today)
-        // console.log(result)
+        console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_series')
         dispatch('pageNumbers_series', seriesBook)
@@ -275,9 +275,9 @@ const actions = {
       })
       .then(jsonObj => {
         const arr = jsonObj.GoodreadsResponse.author.books.book
-        console.log(arr)
+        // console.log(arr)
         const result = parseArr(arr, state.today)
-        // console.log(result)
+        console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_author')
         dispatch('set_seriesTitle', null)

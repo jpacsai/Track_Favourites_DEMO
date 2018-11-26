@@ -1,8 +1,22 @@
 <template>
-  <div class="container book">
-    <h1 class="header">Book Manager</h1>
-    
-    <newbooks />
+  <div>
+    <div class="top">
+      <form @submit.prevent="searchBook" class="book_search-form">
+        <input type="text" v-model='newSearch' required class="book_search-input" />
+        <input type='submit' value="Search" class="book_search-submit" />
+      </form>
+      <p class="book_searchNums" v-if="this.allResults > 0">
+        <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span>
+      </p>
+    </div>
+
+    <search v-if="view === 'search'" />
+    <series v-if="view === 'series'" />
+    <author v-if="view === 'author'" />
+
+    <div v-if="view === 'error'" class="error"><p>{{ this.error }}</p></div>
+
+    <pagenumbers v-if="displayList.length > 0 && view !== 'series'" />
 
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -50,17 +64,28 @@
 </template>
 
 <script>
-import newbooks from './NewBooks'
+import series from './Series'
+import search from './Search'
+import author from './Author'
+import pagenumbers from './PageNums'
 // import api from '@/api'
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'newbooks',
   components: {
-    newbooks
+    series,
+    search,
+    author,
+    pagenumbers
   },
   computed: mapState([
     'view',
-    'error'
+    'error',
+    'displayList',
+    'resultsFrom',
+    'resultsTo',
+    'allResults'
   ]),
   data () {
     return {
@@ -69,20 +94,12 @@ export default {
       model: {}
     }
   },
-  created () {
-    const now = new Date()
-    now.setHours(0)
-    now.setMinutes(0)
-    now.setSeconds(0)
-    this.set_today(now)
-  },
   /*
   async created () {
     this.refreshBooks()
   }, */
   methods: {
     ...mapActions([
-      'set_today',
       'new_search',
       'search_series',
       'set_error'
