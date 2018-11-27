@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2>My Library</h2>
-    <ul>
-      <li v-for="(b, index) in bookList"
-        v-bind:key="b.id">hello {{ index }}
+    <ul class='library'>
+      <li v-for="(b) in bookList"
+        v-bind:key="b.id">{{ b.author }} - {{ b.title }}
       </li>
     </ul>
     <!--

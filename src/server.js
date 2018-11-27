@@ -44,7 +44,18 @@ let database = new Sequelize({
 // id, createdAt, and updatedAt are added by sequelize automatically
 let Book = database.define('books', {
   title: Sequelize.STRING,
-  body: Sequelize.TEXT
+  author: Sequelize.STRING,
+  authorId: Sequelize.INTEGER,
+  imgUrl: Sequelize.TEXT,
+  rating: Sequelize.FLOAT,
+  displayYear: Sequelize.TEXT,
+  displayDateString: Sequelize.TEXT,
+  dateObj: Sequelize.DATE,
+  future: Sequelize.BOOLEAN,
+  serie: Sequelize.BOOLEAN,
+  title_without_serie: Sequelize.TEXT,
+  serieTitle: Sequelize.TEXT,
+  position: Sequelize.TEXT
 })
 
 // Initialize epilogue
