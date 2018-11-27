@@ -40,20 +40,24 @@
 
 <script>
 import * as d3 from 'd3'
-import { createNamespacedHelpers } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
+// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
 
 export default {
   name: 'booklist',
   computed: {
-    ...mapState({
+    ...mapState('book/newBooks', {
       view: state => state.view,
       authorName: state => state.authorName,
       authorId: state => state.authorId
+    }),
+    ...mapState('book/library', {
+      library: state => state.myBooks
     })
   },
   props: {
+    book: Object,
     num: Number,
     id: Number,
     title: String,
@@ -77,10 +81,23 @@ export default {
   mounted () {
     this.addStarRating()
   },
+  created () {
+    const i = this.id
+    const incl = this.library.some(b => b.id === i)
+    if (incl === true) {
+      this.liked = true
+    }
+  },
   methods: {
-    ...mapActions(['search_series', 'fetch_new_authorBooks']),
+    ...mapActions('book/newBooks', ['search_series', 'fetch_new_authorBooks']),
+    ...mapActions('book/library', ['saveBook', 'deleteBook']),
     likeToggle () {
       this.liked = !this.liked
+      if (this.liked === true) {
+        this.saveBook(this.book)
+      } else {
+        this.deleteBook(this.book.id)
+      }
     },
     searchSeries () {
       this.search_series([this.id, this.serieTitle, this.authorName || this.author, this.authorId || this.authorid])

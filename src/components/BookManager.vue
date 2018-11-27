@@ -123,17 +123,7 @@ export default {
       }
       this.model = {} // reset form
       await this.refreshBooks()
-    },
-    async deleteBook (id) {
-      if (confirm('Are you sure you want to delete this book?')) {
-        // if we are editing a book we deleted, remove it from the form
-        if (this.model.id === id) {
-          this.model = {}
-        }
-        await api.deleteBook(id)
-        await this.refreshBooks()
-      }
-    } */
+    }, */
   }
 }
 </script>

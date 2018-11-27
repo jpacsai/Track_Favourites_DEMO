@@ -7,7 +7,7 @@ import scrollUp from './helpers/scrollUp.js'
 const parser = require('fast-xml-parser')
 
 const state = {
-  herokuNoCors: 'https://cors-escape.herokuapp.com/',
+  herokuNoCors: 'https://cors-anywhere.herokuapp.com/',
   today: null,
   searchText: null,
   error: null,

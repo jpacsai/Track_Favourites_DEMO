@@ -4,19 +4,20 @@
     <p>{{ authorName }}</p>
     <div class="search-results">
       <ul>
-        <booklist v-for="(s, index) in displayList"
-          v-bind:key='s.id'
+        <booklist v-for="(b, index) in displayList"
+          v-bind:key="b.id"
           v-bind:num="index"
-          v-bind:id="s.id"
-          v-bind:title="s.title"
-          v-bind:serieTitle="s.serie.serieTitle"
-          v-bind:image="s.imgUrl"
-          v-bind:rating="s.rating"
-          v-bind:year="s.release.displayYear"
-          v-bind:url="s.url"
-          v-bind:series="s.serie.serie"
-          v-bind:release="s.release.string"
-          v-bind:future="s.future"/>
+          v-bind:book="b"
+          v-bind:id="b.id"
+          v-bind:title="b.title"
+          v-bind:serieTitle="b.serie.serieTitle"
+          v-bind:image="b.imgUrl"
+          v-bind:rating="b.rating"
+          v-bind:year="b.release.displayYear"
+          v-bind:url="b.url"
+          v-bind:series="b.serie.serie"
+          v-bind:release="b.release.string"
+          v-bind:future="b.future"/>
       </ul>
     </div>
   </div>

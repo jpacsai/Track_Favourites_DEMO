@@ -5,8 +5,9 @@
     <div class="search-results">
       <ul>
         <booklist v-for="(b, index) in displayList"
-          v-bind:key='b.id'
+          v-bind:key="s.id"
           v-bind:num="index"
+          v-bind:book="b"
           v-bind:author="b.author"
           v-bind:title="b.serie.title_without_serie"
           v-bind:image="b.imgUrl"

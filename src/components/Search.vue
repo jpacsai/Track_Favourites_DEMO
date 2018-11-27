@@ -4,7 +4,8 @@
     <div class="search-results">
       <ul>
         <booklist v-for="(b, index) in displayList"
-          v-bind:key='b.id'
+          v-bind:key="b.id"
+          v-bind:book="b"
           v-bind:author="b.author"
           v-bind:authorid="b.authorId"
           v-bind:title="b.title"
