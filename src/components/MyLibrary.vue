@@ -1,13 +1,6 @@
 <template>
-  <div class="container book">
-    <header>
-      <h1 class="header">Book Manager</h1>
-      <h4 class="section-tabs" @click="setSection('library')">My books</h4>
-      <h4 class="section-tabs" @click="setSection('explore')">Find books</h4>
-    </header>
-    
-    <mylibrary v-if="this.section === 'library'" />
-    <newbooks v-if="this.section === 'explore'" />
+  <div>
+    <h2>My Library</h2>
 
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -55,54 +48,27 @@
 </template>
 
 <script>
-import mylibrary from './MyLibrary'
-import newbooks from './NewBooks'
 // import api from '@/api'
-import { mapState, mapActions, mapMutations } from 'vuex'
-
-// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  components: {
-    mylibrary,
-    newbooks
-  },
+  name: 'mylibrary',
+  components: {},
   computed: {
-    ...mapState('book/newBooks', {
-      today: state => state.today
-    }),
-    ...mapState('book', {
-      section: state => state.section
-    })
+    ...mapState({})
   },
   data () {
     return {
-      newSearch: '',
       loading: false,
       model: {}
     }
-  },
-  created () {
-    const now = new Date()
-    now.setHours(0)
-    now.setMinutes(0)
-    now.setSeconds(0)
-    this.set_today(now)
   },
   /*
   async created () {
     this.refreshBooks()
   }, */
   methods: {
-    ...mapActions('book/newBooks', [
-      'set_today'
-    ]),
-    ...mapMutations('book', [
-      'SET_SECTION'
-    ]),
-    setSection (payload) {
-      this.SET_SECTION(payload)
-    }
+    ...mapActions([])
     /*
     async refreshBooks () {
       this.loading = true
