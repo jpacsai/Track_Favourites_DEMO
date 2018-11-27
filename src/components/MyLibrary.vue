@@ -1,7 +1,11 @@
 <template>
   <div>
     <h2>My Library</h2>
-
+    <ul>
+      <li v-for="(b, index) in bookList"
+        v-bind:key="b.id">hello {{ index }}
+      </li>
+    </ul>
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
@@ -49,13 +53,18 @@
 
 <script>
 // import api from '@/api'
-import { mapState, mapActions } from 'vuex'
+// import { mapState, mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('book/library')
 
 export default {
   name: 'mylibrary',
   components: {},
   computed: {
-    ...mapState({})
+    ...mapState({
+      bookList: state => state.myBooks
+    })
   },
   data () {
     return {
@@ -63,12 +72,13 @@ export default {
       model: {}
     }
   },
-  /*
   async created () {
     this.refreshBooks()
-  }, */
+  },
   methods: {
-    ...mapActions([])
+    ...mapActions([
+      'refreshBooks'
+    ])
     /*
     async refreshBooks () {
       this.loading = true

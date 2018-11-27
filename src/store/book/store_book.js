@@ -12,7 +12,6 @@ const bookStore = {
   },
   mutations: {
     SET_SECTION (state, section) {
-      console.log('mutate: ' + section)
       state.section = section
     }
   }

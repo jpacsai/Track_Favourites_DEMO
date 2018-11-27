@@ -22,6 +22,7 @@ export default {
     })
   },
   getBooks () {
+    console.log('get library')
     const a = this.execute('get', '/books')
     console.log(a)
     return this.execute('get', '/books')

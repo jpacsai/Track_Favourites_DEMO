@@ -2,8 +2,8 @@
   <div class="container book">
     <header>
       <h1 class="header">Book Manager</h1>
-      <h4 class="section-tabs" @click="setSection('library')">My books</h4>
-      <h4 class="section-tabs" @click="setSection('explore')">Find books</h4>
+      <h4 class="section-tabs" :class="sectionClass('library')" @click="setSection('library')">My books</h4>
+      <h4 class="section-tabs" :class="sectionClass('explore')" @click="setSection('explore')">Find books</h4>
     </header>
     
     <mylibrary v-if="this.section === 'library'" />
@@ -102,6 +102,9 @@ export default {
     ]),
     setSection (payload) {
       this.SET_SECTION(payload)
+    },
+    sectionClass (btn) {
+      return this.section === btn ? 'section-tab_active' : ''
     }
     /*
     async refreshBooks () {
