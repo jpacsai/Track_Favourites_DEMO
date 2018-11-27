@@ -1,8 +1,12 @@
 <template>
   <div class="container book">
-    <h1 class="header">Book Manager</h1>
-
-    <newbooks />
+    <header>
+      <h1 class="header">Book Manager</h1>
+      <h4 class="section-tabs" @click="setSection('library')">My books</h4>
+      <h4 class="section-tabs" @click="setSection('explore')">Find books</h4>
+    </header>
+    
+    <newbooks v-if="this.section === 'explore'"/>
 
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
@@ -52,18 +56,20 @@
 <script>
 import newbooks from './NewBooks'
 // import api from '@/api'
-// import { mapState, mapActions } from 'vuex'
-import { createNamespacedHelpers } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
+// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
 
 export default {
   components: {
     newbooks
   },
   computed: {
-    ...mapState({
+    ...mapState('book/newBooks', {
       today: state => state.today
+    }),
+    ...mapState('book', {
+      section: state => state.section
     })
   },
   data () {
@@ -85,9 +91,15 @@ export default {
     this.refreshBooks()
   }, */
   methods: {
-    ...mapActions([
+    ...mapActions('book/newBooks', [
       'set_today'
-    ])
+    ]),
+    ...mapMutations('book', [
+      'SET_SECTION'
+    ]),
+    setSection (payload) {
+      this.SET_SECTION(payload)
+    }
     /*
     async refreshBooks () {
       this.loading = true
