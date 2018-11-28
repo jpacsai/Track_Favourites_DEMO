@@ -32,7 +32,7 @@
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <div v-if='this.section === "library"' class="heart-container">
-        <img class='heart' v-bind:src="removeIcon" @mouseover="removeIconToggle" @mouseout="removeIconToggle" alt="remove icon" />
+        <img class='heart' v-bind:src="removeIcon" @mouseover="removeIconToggle" @mouseout="removeIconToggle" alt="remove icon" @click='removeBook'/>
       </div>
       <div v-if='this.section !== "library"' class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
@@ -116,6 +116,9 @@ export default {
       } else {
         this.deleteBook(this.book.id)
       }
+    },
+    removeBook () {
+      this.deleteBook(this.book.id)
     },
     searchSeries () {
       if (this.section === 'library') {
