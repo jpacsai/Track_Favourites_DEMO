@@ -32,9 +32,11 @@
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <form v-if='this.liked === true || this.section === "library"' class="shelf-container">
-        <input type="radio" name="shelf" value="want" checked> Want to read<br>
-        <input type="radio" name="shelf" value="reading"> Currently reading<br>
-        <input type="radio" name="shelf" value="read"> Already read  
+        <select>
+          <option value="want">Want to read</option>
+          <option value="reading">Currently reading</option>
+          <option value="read">Read</option>
+        </select>
       </form> 
       <div v-if='this.section === "library"' class="heart-container">
         <img class='heart' v-bind:src="removeIcon" @mouseover="removeIconToggle" @mouseout="removeIconToggle" alt="remove icon" @click='removeBook'/>
