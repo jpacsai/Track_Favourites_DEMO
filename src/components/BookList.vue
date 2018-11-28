@@ -115,6 +115,9 @@ export default {
       this.search_series([this.id, this.serieTitle, this.authorName || this.author, this.authorId || this.authorid])
     },
     authorBooks () {
+      if (this.section === 'library') {
+        this.setSection('explorer')
+      }
       this.fetch_new_authorBooks([this.author, this.authorid])
     },
     addStarRating () {
