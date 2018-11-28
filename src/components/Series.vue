@@ -9,6 +9,7 @@
           v-bind:num="index"
           v-bind:book="b"
           v-bind:author="b.author"
+          v-bind:id="b.id"
           v-bind:title="b.title_without_serie"
           v-bind:image="b.imgUrl"
           v-bind:rating="b.rating"
