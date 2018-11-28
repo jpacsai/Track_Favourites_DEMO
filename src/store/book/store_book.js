@@ -4,7 +4,7 @@ import libraryStore from './store_library'
 const bookStore = {
   namespaced: true,
   state: {
-    section: 'library'
+    section: 'library' // 'library' or 'explorer'
   },
   modules: {
     library: libraryStore,

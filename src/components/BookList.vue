@@ -31,7 +31,7 @@
         <p v-if="view === 'series'" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
-      <div class="heart-container">
+      <div v-if='this.section !== "library"' class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
         <img class='heart' v-if='this.liked === true' src="../assets/heart_red.svg" alt="heart" @click='likeToggle'>
       </div>
@@ -47,13 +47,16 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'booklist',
   computed: {
+    ...mapState('book', {
+      section: state => state.section
+    }),
+    ...mapState('book/library', {
+      library: state => state.myBooks
+    }),
     ...mapState('book/newBooks', {
       view: state => state.view,
       authorName: state => state.authorName,
       authorId: state => state.authorId
-    }),
-    ...mapState('book/library', {
-      library: state => state.myBooks
     })
   },
   props: {
@@ -82,10 +85,12 @@ export default {
     this.addStarRating()
   },
   created () {
-    const i = this.id
-    const incl = this.library.some(b => b.id === i)
-    if (incl === true) {
-      this.liked = true
+    if (this.section !== 'library') {
+      const i = this.id
+      const incl = this.library.some(b => b.id === i)
+      if (incl === true) {
+        this.liked = true
+      }
     }
   },
   methods: {

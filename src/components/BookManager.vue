@@ -3,11 +3,11 @@
     <header>
       <h1 class="header">Book Manager</h1>
       <h4 class="section-tabs" :class="sectionClass('library')" @click="setSection('library')">My books</h4>
-      <h4 class="section-tabs" :class="sectionClass('explore')" @click="setSection('explore')">Find books</h4>
+      <h4 class="section-tabs" :class="sectionClass('explorer')" @click="setSection('explorer')">Find books</h4>
     </header>
     
     <mylibrary v-if="this.section === 'library'" />
-    <newbooks v-if="this.section === 'explore'" />
+    <newbooks v-if="this.section === 'explorer'" />
 
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
