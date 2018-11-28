@@ -14,7 +14,7 @@ export default function parseArr (arr, today) {
       authorId: obj.best_book ? obj.best_book.author.id : obj.authors.author.id,
       imgUrl: obj.best_book ? obj.best_book.small_image_url || obj.best_book.image_url : obj.image_url,
       rating: obj.average_rating || +((obj.ratings_sum / obj.ratings_count).toFixed(2)) || 0,
-      url: obj.link || 'https://www.goodreads.com/book/show/' + obj.best_book.id,
+      goodreadsUrl: obj.link || 'https://www.goodreads.com/book/show/' + obj.best_book.id,
       displayYear: obj.original_publication_year ? String(obj.original_publication_year) : obj.publication_year ? String(obj.publication_year) : 'unknown',
       displayDateString: parseHelpers.releaseString(year, month, day),
       dateObj: parseHelpers.releaseDate(year, month, day),

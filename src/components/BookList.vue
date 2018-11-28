@@ -2,7 +2,7 @@
     <li :class="{ future: future }" class="book_li">
       <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
-        <a :href='url' target='_blank'><img :src="image"/></a>
+        <a :href='goodreadsUrl' target='_blank'><img :src="image"/></a>
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
@@ -71,7 +71,7 @@ export default {
     image: String,
     rating: Number,
     year: String,
-    url: String,
+    goodreadsUrl: String,
     series: Boolean,
     release: String,
     future: Boolean,
@@ -88,16 +88,10 @@ export default {
     }
   },
   mounted () {
-    this.addStarRating()
-  },
-  created () {
     if (this.section !== 'library') {
-      const i = this.id
-      const incl = this.library.some(b => b.id === i)
-      if (incl === true) {
-        this.liked = true
-      }
+      this.checkLike()
     }
+    this.addStarRating()
   },
   methods: {
     ...mapActions('book/newBooks', ['search_series', 'fetch_new_authorBooks']),
@@ -115,6 +109,13 @@ export default {
         this.saveBook(this.book)
       } else {
         this.deleteBook(this.book.id)
+      }
+    },
+    checkLike () {
+      const i = this.id
+      const incl = this.library.some(b => b.id === i)
+      if (incl === true) {
+        this.liked = true
       }
     },
     removeBook () {

@@ -89,10 +89,6 @@ export default {
     now.setSeconds(0)
     this.set_today(now)
   },
-  /*
-  async created () {
-    this.refreshBooks()
-  }, */
   methods: {
     ...mapActions('book/newBooks', [
       'set_today'

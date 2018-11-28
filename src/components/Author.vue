@@ -14,7 +14,7 @@
           v-bind:image="b.imgUrl"
           v-bind:rating="b.rating"
           v-bind:year="b.displayYear"
-          v-bind:url="b.url"
+          v-bind:goodreadsUrl="b.goodreadsUrl"
           v-bind:series="b.serie"
           v-bind:release="b.displayDateString"
           v-bind:future="b.future"/>

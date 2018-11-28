@@ -13,7 +13,7 @@
           v-bind:image="b.imgUrl"
           v-bind:rating="b.rating"
           v-bind:year="b.displayYear"
-          v-bind:url="b.url"
+          v-bind:goodreadsUrl="b.goodreadsUrl"
           v-bind:series="b.serie"
           v-bind:id="b.id"
           v-bind:num="index"
