@@ -31,6 +31,9 @@
         <p v-if="view === 'series' && section === 'explorer'" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
+      <div v-if='this.section === "library"' class="heart-container">
+        <img class='heart' v-bind:src="removeIcon" @mouseover="removeIconToggle" @mouseout="removeIconToggle" alt="remove icon" />
+      </div>
       <div v-if='this.section !== "library"' class="heart-container">
         <img class='heart' v-if='this.liked === false' src="../assets/heart_empty.svg" alt="heart" @click='likeToggle'>
         <img class='heart' v-if='this.liked === true' src="../assets/heart_red.svg" alt="heart" @click='likeToggle'>
@@ -78,7 +81,10 @@ export default {
   },
   data () {
     return {
-      liked: false
+      liked: false,
+      removeIcon: require('../assets/remove_empty.svg'),
+      emptyIcon: require('../assets/remove_empty.svg'),
+      fullIcon: require('../assets/remove_full.svg')
     }
   },
   mounted () {
@@ -99,6 +105,9 @@ export default {
     ...mapMutations('book', ['SET_SECTION']),
     setSection (payload) {
       this.SET_SECTION(payload)
+    },
+    removeIconToggle () {
+      this.removeIcon = this.removeIcon === this.fullIcon ? this.emptyIcon : this.fullIcon
     },
     likeToggle () {
       this.liked = !this.liked
