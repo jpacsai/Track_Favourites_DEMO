@@ -28,7 +28,7 @@
       </div>
       <div class="details">
         <button v-if="this.section === 'library' || this.series === true && view !== 'series'" class="series-btn" @click='searchSeries'> Series</button>
-        <p v-if="view === 'series' && section === 'explorer'" class="serie-position">BOOK <span>{{ this.position }}</span></p>
+        <p v-if="view === 'series' && section === 'explorer' && this.position" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <div v-if='this.section === "library"' class="heart-container">

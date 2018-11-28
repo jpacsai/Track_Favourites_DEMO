@@ -10,7 +10,7 @@
           v-bind:book="b"
           v-bind:author="b.author"
           v-bind:id="b.id"
-          v-bind:title="b.title_without_serie"
+          v-bind:title="b.title_without_serie || b.title"
           v-bind:image="b.imgUrl"
           v-bind:rating="b.rating"
           v-bind:year="b.displayYear"
