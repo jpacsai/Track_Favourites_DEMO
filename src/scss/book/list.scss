@@ -102,6 +102,10 @@
     }
   }
 
+  .shelf-container {
+    grid-column: 5;
+  }
+
   .heart-container {
     display: flex;
     justify-content: center;
