@@ -1,11 +1,26 @@
 <template>
   <div>
     <h2>My Library</h2>
-    <ul class='library'>
-      <li v-for="(b) in bookList"
-        v-bind:key="b.id">{{ b.author }} - {{ b.title }}
-      </li>
-    </ul>
+    <div class="search-results">
+      <ul>
+        <booklist v-for="(b, index) in bookList"
+          v-bind:key="b.id"
+          v-bind:book="b"
+          v-bind:author="b.author"
+          v-bind:authorid="b.authorId"
+          v-bind:title="b.title"
+          v-bind:serieTitle="b.serieTitle"
+          v-bind:image="b.imgUrl"
+          v-bind:rating="b.rating"
+          v-bind:year="b.displayYear"
+          v-bind:url="b.url"
+          v-bind:series="b.serie"
+          v-bind:id="b.id"
+          v-bind:num="index"
+          v-bind:release="b.displayDateString"
+          v-bind:future="b.future" />          
+      </ul>
+    </div>
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
     <b-row>
@@ -53,6 +68,7 @@
 
 <script>
 // import api from '@/api'
+import booklist from './BookList'
 // import { mapState, mapActions } from 'vuex'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -60,7 +76,9 @@ const { mapState, mapActions } = createNamespacedHelpers('book/library')
 
 export default {
   name: 'mylibrary',
-  components: {},
+  components: {
+    booklist
+  },
   computed: {
     ...mapState({
       bookList: state => state.myBooks
