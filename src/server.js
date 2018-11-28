@@ -43,6 +43,7 @@ let database = new Sequelize({
 // Define our Book model
 // id, createdAt, and updatedAt are added by sequelize automatically
 let Book = database.define('books', {
+  shelf: Sequelize.TEXT,
   title: Sequelize.STRING,
   author: Sequelize.STRING,
   authorId: Sequelize.INTEGER,

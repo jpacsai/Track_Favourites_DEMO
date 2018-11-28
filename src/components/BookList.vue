@@ -64,6 +64,7 @@ export default {
   },
   props: {
     book: Object,
+    shelf: String,
     num: Number,
     id: Number,
     title: String,
@@ -106,7 +107,9 @@ export default {
     likeToggle () {
       this.liked = !this.liked
       if (this.liked === true) {
-        this.saveBook(this.book)
+        const bookObj = Object.assign({shelf: 'want'}, this.book)
+        console.log(bookObj)
+        this.saveBook(bookObj)
       } else {
         this.deleteBook(this.book.id)
       }
