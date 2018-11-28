@@ -6,7 +6,7 @@
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
-        <p v-if="view === 'search'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year }}</p>
+        <p v-if="view === 'search' || section === 'library'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year }}</p>
         <p v-if="view !== 'search'" class="author">{{ this.year }}</p>
         <div class="ratings" >
           <svg width="100px" height="25px" viewBox="0 0 100 25" >
@@ -27,8 +27,8 @@
         </div> 
       </div>
       <div class="details">
-        <button v-if="this.series === true && view !== 'series'" class="series-btn" @click='searchSeries'> Series</button>
-        <p v-if="view === 'series'" class="serie-position">BOOK <span>{{ this.position }}</span></p>
+        <button v-if="this.section === 'library' || this.series === true && view !== 'series'" class="series-btn" @click='searchSeries'> Series</button>
+        <p v-if="view === 'series' && section === 'explorer'" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <div v-if='this.section !== "library"' class="heart-container">
@@ -40,7 +40,7 @@
 
 <script>
 import * as d3 from 'd3'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 // const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
 
@@ -96,6 +96,10 @@ export default {
   methods: {
     ...mapActions('book/newBooks', ['search_series', 'fetch_new_authorBooks']),
     ...mapActions('book/library', ['saveBook', 'deleteBook']),
+    ...mapMutations('book', ['SET_SECTION']),
+    setSection (payload) {
+      this.SET_SECTION(payload)
+    },
     likeToggle () {
       this.liked = !this.liked
       if (this.liked === true) {
@@ -105,6 +109,9 @@ export default {
       }
     },
     searchSeries () {
+      if (this.section === 'library') {
+        this.setSection('explorer')
+      }
       this.search_series([this.id, this.serieTitle, this.authorName || this.author, this.authorId || this.authorid])
     },
     authorBooks () {
