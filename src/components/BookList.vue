@@ -32,7 +32,7 @@
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <form v-if='this.liked === true || this.section === "library"' class="shelf-container">
-        <select>
+        <select v-model="this.shelf">
           <option value="want">Want to read</option>
           <option value="reading">Currently reading</option>
           <option value="read">Read</option>
@@ -114,7 +114,7 @@ export default {
     likeToggle () {
       this.liked = !this.liked
       if (this.liked === true) {
-        const bookObj = Object.assign({shelf: 'want'}, this.book)
+        const bookObj = Object.assign({shelf: 'reading'}, this.book)
         console.log(bookObj)
         this.saveBook(bookObj)
       } else {
