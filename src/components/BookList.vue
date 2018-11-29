@@ -52,8 +52,6 @@
 import * as d3 from 'd3'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
-// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
-
 export default {
   name: 'booklist',
   computed: {
@@ -110,10 +108,8 @@ export default {
     },
     selectChange (e) {
       const value = e.target.value
-      console.log(value)
       const bookObj = Object.assign({}, this.book)
       bookObj.shelf = value
-      console.log(bookObj)
       this.updateBook([this.id, bookObj])
     },
     removeIconToggle () {
@@ -142,13 +138,19 @@ export default {
       if (this.section === 'library') {
         this.setSection('explorer')
       }
-      this.search_series([this.id, this.serieTitle, this.authorName || this.author, this.authorId || this.authorid])
+      this.search_series([
+        this.id,
+        this.serieTitle,
+        this.authorName || this.author,
+        this.authorId || this.authorid,
+        this.library
+      ])
     },
     authorBooks () {
       if (this.section === 'library') {
         this.setSection('explorer')
       }
-      this.fetch_new_authorBooks([this.author, this.authorid])
+      this.fetch_new_authorBooks([this.author, this.authorid, this.library])
     },
     addStarRating () {
       const color = this.rating >= 4 ? 'limegreen' : this.rating >= 3 ? 'palegreen' : this.rating >= 2 ? 'gold' : 'red'

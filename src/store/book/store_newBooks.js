@@ -204,7 +204,7 @@ const actions = {
         console.log('Looks like there was a problem: \n', error)
       })
   },
-  search_series ({dispatch}, [id, title, author, authorId]) {
+  search_series ({dispatch}, [id, title, author, authorId, library]) {
     console.log('FETCH - serie id: ' + id + ', title: ' + title + ', author: ' + author)
 
     dispatch('getWhichSeries', id)
@@ -218,7 +218,7 @@ const actions = {
       })
       .then(seriesBook => {
         console.log(seriesBook)
-        const result = parseArr(seriesBook, state.today)
+        const result = parseArr(seriesBook, library, state.today)
         // console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_series')
@@ -254,14 +254,14 @@ const actions = {
         console.log('Looks like there was a problem: \n', error)
       })
   },
-  fetch_new_authorBooks ({dispatch}, [authorName, authorId]) {
+  fetch_new_authorBooks ({dispatch}, [authorName, authorId, library]) {
     dispatch('set_authorName', authorName)
     dispatch('set_authorId', authorId)
     dispatch('fetch_authorDetails')
-    dispatch('fetch_authorBooks', [authorName, authorId])
+    dispatch('fetch_authorBooks', library)
     scrollUp()
   },
-  fetch_authorBooks ({dispatch}) {
+  fetch_authorBooks ({dispatch}, library) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
 
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)
@@ -271,7 +271,7 @@ const actions = {
       .then(jsonObj => {
         const arr = jsonObj.GoodreadsResponse.author.books.book
         // console.log(arr)
-        const result = parseArr(arr, state.today)
+        const result = parseArr(arr, library, state.today)
         console.log(result)
         dispatch('set_display', result)
         dispatch('set_viewState_author')
