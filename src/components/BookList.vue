@@ -115,7 +115,6 @@ export default {
       this.liked = !this.liked
       if (this.liked === true) {
         const bookObj = Object.assign({shelf: 'reading'}, this.book)
-        console.log(bookObj)
         this.saveBook(bookObj)
       } else {
         this.deleteBook(this.book.id)

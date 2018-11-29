@@ -165,13 +165,13 @@ const actions = {
   set_noError ({commit}) {
     commit('NO_ERROR')
   },
-  new_search ({dispatch}, text) {
+  new_search ({dispatch}, [text, library]) {
     dispatch('set_searchText', text)
     dispatch('set_pageNumbers_null')
     dispatch('set_noError')
-    dispatch('search_book', text)
+    dispatch('search_book', [text, library])
   },
-  search_book ({dispatch}, text) {
+  search_book ({dispatch}, [text, library]) {
     console.log('FETCH - search books')
 
     fetch(
@@ -187,7 +187,7 @@ const actions = {
         if (res === undefined) {
           dispatch('set_error_noResult')
         } else {
-          const result = Array.isArray(res) === false ? parseArr([res], state.today) : parseArr(res, state.today)
+          const result = Array.isArray(res) === false ? parseArr([res], library, state.today) : parseArr(res, library, state.today)
           console.log(result)
           dispatch('set_display', result)
           if (state.view !== 'search') {

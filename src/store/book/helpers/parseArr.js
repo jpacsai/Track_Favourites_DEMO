@@ -1,15 +1,17 @@
 import parseHelpers from './parseHelpers'
 
-export default function parseArr (arr, today) {
+export default function parseArr (arr, library, today) {
   const parsed = arr.map(obj => {
     const day = obj.original_publication_day || obj.publication_day || 1
     const month = obj.original_publication_month || obj.publication_month || 1
     const year = obj.original_publication_year || obj.publication_year || 1900
     const titleDecode = parseHelpers.decodeTitle(obj.best_book ? obj.best_book.title : obj.title)
+    const bookId = obj.best_book ? obj.id : obj.work.id
+    const inLibrary = library.find(b => b.id === bookId)
 
     const book = {
       title: titleDecode,
-      id: obj.best_book ? obj.id : obj.work.id,
+      id: bookId,
       author: obj.best_book ? obj.best_book.author.name : obj.authors.author.name,
       authorId: obj.best_book ? obj.best_book.author.id : obj.authors.author.id,
       imgUrl: obj.best_book ? obj.best_book.small_image_url || obj.best_book.image_url : obj.image_url,
@@ -22,7 +24,8 @@ export default function parseArr (arr, today) {
       serie: titleDecode.includes('#'),
       get title_without_serie () { return this.serie === true ? parseHelpers.noSeriesTitle(titleDecode) : null },
       get serieTitle () { return this.serie === true ? parseHelpers.serieTitle(titleDecode) : null },
-      get position () { return this.serie === true ? obj.position : null }
+      get position () { return this.serie === true ? obj.position : null },
+      shelf: inLibrary ? inLibrary.shelf : null
     }
     return book
   })
