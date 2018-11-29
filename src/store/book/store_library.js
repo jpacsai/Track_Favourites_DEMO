@@ -44,6 +44,11 @@ const actions = {
     } */
     await api.deleteBook(id)
     await dispatch('refreshBooks')
+  },
+  async updateBook ({dispatch}, [id, obj]) {
+    console.log(obj)
+    await api.updateBook(id, obj)
+    await dispatch('refreshBooks')
   }
 }
 

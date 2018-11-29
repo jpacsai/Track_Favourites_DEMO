@@ -5,6 +5,7 @@
       <ul>
         <booklist v-for="(b, index) in displayList"
           v-bind:key="b.id"
+          v-bind:shelf="b.shelf"
           v-bind:book="b"
           v-bind:author="b.author"
           v-bind:authorid="b.authorId"

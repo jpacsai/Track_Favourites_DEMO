@@ -31,13 +31,13 @@
         <p v-if="view === 'series' && section === 'explorer' && this.position" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
-      <form v-if='this.liked === true || this.section === "library"' class="shelf-container">
-        <select v-model="this.shelf">
+      <div v-if='this.liked === true || this.section === "library"' class="shelf-container" >
+        <select :value="this.shelf" @change="selectChange">
           <option value="want">Want to read</option>
           <option value="reading">Currently reading</option>
           <option value="read">Read</option>
         </select>
-      </form> 
+      </div> 
       <div v-if='this.section === "library"' class="heart-container">
         <img class='heart' v-bind:src="removeIcon" @mouseover="removeIconToggle" @mouseout="removeIconToggle" alt="remove icon" @click='removeBook'/>
       </div>
@@ -103,10 +103,18 @@ export default {
   },
   methods: {
     ...mapActions('book/newBooks', ['search_series', 'fetch_new_authorBooks']),
-    ...mapActions('book/library', ['saveBook', 'deleteBook']),
+    ...mapActions('book/library', ['saveBook', 'deleteBook', 'updateBook']),
     ...mapMutations('book', ['SET_SECTION']),
     setSection (payload) {
       this.SET_SECTION(payload)
+    },
+    selectChange (e) {
+      const value = e.target.value
+      console.log(value)
+      const bookObj = Object.assign({}, this.book)
+      bookObj.shelf = value
+      console.log(bookObj)
+      this.updateBook([this.id, bookObj])
     },
     removeIconToggle () {
       this.removeIcon = this.removeIcon === this.fullIcon ? this.emptyIcon : this.fullIcon
