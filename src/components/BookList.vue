@@ -37,6 +37,7 @@
           <option value="reading">Currently reading</option>
           <option value="read">Read</option>
         </select>
+        <input type="checkbox" name="ownership" :checked="this.owned" @change="ownerChange"> I have it<br>
       </div> 
       <div v-if='this.section === "library"' class="heart-container">
         <img class='heart' v-bind:src="removeIcon" @mouseover="removeIconToggle" @mouseout="removeIconToggle" alt="remove icon" @click='removeBook'/>
@@ -70,6 +71,7 @@ export default {
   props: {
     book: Object,
     shelf: String,
+    owned: Boolean,
     num: Number,
     id: Number,
     title: String,
@@ -110,6 +112,12 @@ export default {
       const value = e.target.value
       const bookObj = Object.assign({}, this.book)
       bookObj.shelf = value
+      this.updateBook([this.id, bookObj])
+    },
+    ownerChange () {
+      const bookObj = Object.assign({}, this.book)
+      bookObj.owned = !bookObj.owned
+      console.log(bookObj.owned)
       this.updateBook([this.id, bookObj])
     },
     removeIconToggle () {

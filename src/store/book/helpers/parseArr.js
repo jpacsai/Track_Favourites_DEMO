@@ -25,7 +25,8 @@ export default function parseArr (arr, library, today) {
       get title_without_serie () { return this.serie === true ? parseHelpers.noSeriesTitle(titleDecode) : null },
       get serieTitle () { return this.serie === true ? parseHelpers.serieTitle(titleDecode) : null },
       get position () { return this.serie === true ? obj.position : null },
-      shelf: inLibrary ? inLibrary.shelf : null
+      shelf: inLibrary ? inLibrary.shelf : null,
+      owned: inLibrary ? inLibrary.owned : false
     }
     return book
   })

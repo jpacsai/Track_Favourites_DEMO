@@ -7,6 +7,7 @@
           v-bind:key="b.id"
           v-bind:book="b"
           v-bind:shelf="b.shelf"
+          v-bind:owned="b.owned"
           v-bind:author="b.author"
           v-bind:authorid="b.authorId"
           v-bind:title="b.title"
