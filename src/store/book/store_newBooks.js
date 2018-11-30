@@ -165,6 +165,12 @@ const actions = {
   set_noError ({commit}) {
     commit('NO_ERROR')
   },
+  reset_search ({dispatch}) {
+    dispatch('set_display', [])
+    dispatch('set_pageNumbers_null')
+    dispatch('set_noError')
+    dispatch('set_viewState_search')
+  },
   new_search ({dispatch}, [text, library]) {
     dispatch('set_searchText', text)
     dispatch('set_pageNumbers_null')
