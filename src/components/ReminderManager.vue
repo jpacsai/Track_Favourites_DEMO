@@ -3,13 +3,18 @@
     <header>
       <h1 class="header">Reminder Manager</h1>
     </header>
+    <div>
+      <button @click="myAction">My library</button>
+    </div>
   </div>
 </template>
 
 <script>
 // import { mapState, mapActions, mapMutations } from 'vuex'
 
-// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapActions } = createNamespacedHelpers('reminders')
 
 export default {
   name: 'ReminderManager',
@@ -23,6 +28,9 @@ export default {
   created () {
   },
   methods: {
+    ...mapActions([
+      'myAction'
+    ])
   }
 }
 </script>

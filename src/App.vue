@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
@@ -31,12 +32,14 @@ export default {
   },
   async created () {
     await this.refreshActiveUser()
+    this.refreshBooks()
   },
   watch: {
     // everytime a route is changed refresh the activeUser
     '$route': 'refreshActiveUser'
   },
   methods: {
+    ...mapActions('book/library', ['refreshBooks']),
     login () {
       this.$auth.loginRedirect()
     },
