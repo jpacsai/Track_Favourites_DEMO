@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import BookManager from '@/components/BookManager'
+import ReminderManager from '@/components/ReminderManager'
 import Auth from '@okta/okta-vue'
 import keys from '../../apiKeys.js'
 
@@ -30,6 +31,14 @@ let router = new Router({
       path: '/book-manager',
       name: 'BookManager',
       component: BookManager,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/reminders',
+      name: 'ReminderManager',
+      component: ReminderManager,
       meta: {
         requiresAuth: true
       }
