@@ -32,7 +32,8 @@ export default {
   },
   async created () {
     await this.refreshActiveUser()
-    this.refreshBooks()
+    await this.refreshBooks()
+    this.bookReminders()
   },
   watch: {
     // everytime a route is changed refresh the activeUser
@@ -40,6 +41,7 @@ export default {
   },
   methods: {
     ...mapActions('book/library', ['refreshBooks']),
+    ...mapActions('reminders', ['bookReminders']),
     login () {
       this.$auth.loginRedirect()
     },
