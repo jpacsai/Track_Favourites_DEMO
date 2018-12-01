@@ -332,23 +332,23 @@ const actions = {
     }
     dispatch('set_pageNumbers_author', numbers)
   },
-  pageForward ({dispatch}) {
+  pageForward ({dispatch}, library) {
     if (state.page < state.allPage) {
       dispatch('page_forward')
-      dispatch('turnPage')
+      dispatch('turnPage', library)
     }
   },
-  pageBackward ({dispatch}) {
+  pageBackward ({dispatch}, library) {
     if (state.page > 1) {
       dispatch('page_backward')
-      dispatch('turnPage')
+      dispatch('turnPage', library)
     }
   },
-  turnPage ({dispatch}) {
+  turnPage ({dispatch}, library) {
     if (state.view === 'search') {
-      dispatch('search_book', state.searchText)
+      dispatch('search_book', [state.searchText, library])
     } else if (state.view === 'author') {
-      dispatch('fetch_authorBooks')
+      dispatch('fetch_authorBooks', library)
     }
     scrollUp()
   },

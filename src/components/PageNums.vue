@@ -12,23 +12,30 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
+// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
+
 export default {
   name: 'pagenumbers',
-  computed: mapState([
-    'view',
-    'page',
-    'allPage'
-  ]),
+  computed: {
+    ...mapState('book/newBooks', [
+      'view',
+      'page',
+      'allPage'
+    ]),
+    ...mapState('book/library', {
+      bookList: state => state.myBooks
+    })
+  },
   methods: {
-    ...mapActions([
+    ...mapActions('book/newBooks', [
       'pageForward',
       'pageBackward'
     ]),
     pageForw () {
-      this.pageForward()
+      this.pageForward(this.bookList)
     },
     pageBackw () {
-      this.pageBackward()
+      this.pageBackward(this.bookList)
     }
   }
 }

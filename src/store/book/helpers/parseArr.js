@@ -7,7 +7,7 @@ export default function parseArr (arr, library, today) {
     const year = obj.original_publication_year || obj.publication_year || 1900
     const titleDecode = parseHelpers.decodeTitle(obj.best_book ? obj.best_book.title : obj.title)
     const bookId = obj.best_book ? obj.id : obj.work.id
-    const inLibrary = library.find(b => b.id === bookId)
+    const inLibrary = library.find(b => b.id === bookId) || []
 
     const book = {
       title: titleDecode,
