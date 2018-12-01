@@ -6,7 +6,7 @@
 // import { mapState } from 'vuex'
 
 export default {
-  name: 'reminderbooks',
+  name: 'reminders',
   props: {
     book: Object,
     title: String,

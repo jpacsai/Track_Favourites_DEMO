@@ -4,7 +4,7 @@
       <h1 class="header">Reminder Manager</h1>
     </header>
     <div>
-      <reminderbooks v-for="b in reminders_book"
+      <reminders v-for="b in reminders_book"
           v-bind:key="b.id"
           v-bind:author="b.author"
           v-bind:title="b.title"
@@ -16,13 +16,16 @@
 
 <script>
 import { mapState } from 'vuex'
-import reminderbooks from './ReminderBooks'
+import reminders from './Reminders'
 
 export default {
   name: 'ReminderManager',
   components: {
-    reminderbooks
-  },
+    reminders
+  }, /*
+  async created () {
+    this.refreshBooks()
+  }, */
   methods: {
     filterBooks (arr) {
       return arr.filter(b => b.future === true)
