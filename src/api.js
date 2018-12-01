@@ -21,6 +21,7 @@ export default {
       return req.data
     })
   },
+  /* BOOKS operations */
   getBooks () {
     console.log('get library')
     const a = this.execute('get', '/books')
@@ -38,5 +39,24 @@ export default {
   },
   deleteBook (id) {
     return this.execute('delete', `/books/${id}`)
+  },
+  /* REMINDERS operations */
+  getReminders () {
+    console.log('get reminders')
+    const a = this.execute('get', '/reminders')
+    console.log(a)
+    return this.execute('get', '/reminders')
+  },
+  getReminder (id) {
+    return this.execute('get', `/reminders/${id}`)
+  },
+  createReminder (data) {
+    return this.execute('post', '/reminders', data)
+  },
+  updateReminder (id, data) {
+    return this.execute('put', `/reminders/${id}`, data)
+  },
+  deleteReminder (id) {
+    return this.execute('delete', `/reminders/${id}`)
   }
 }
