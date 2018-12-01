@@ -40,6 +40,11 @@ let database = new Sequelize({
   storage: './test.sqlite'
 })
 
+let reminderDb = new Sequelize({
+  dialect: 'sqlite',
+  storage: './test.sqlite'
+})
+
 // Define our Book model
 // id, createdAt, and updatedAt are added by sequelize automatically
 let Book = database.define('books', {
@@ -61,6 +66,10 @@ let Book = database.define('books', {
   owned: Sequelize.BOOLEAN
 })
 
+let reminder = reminderDb.define('reminds', {
+  hello: Sequelize.STRING
+})
+
 // Initialize epilogue
 epilogue.initialize({
   app: app,
@@ -73,10 +82,16 @@ let userResource = epilogue.resource({
   endpoints: ['/books', '/books/:id']
 })
 
+let userResource2 = epilogue.resource({
+  model: reminder,
+  endpoints: ['/reminders', '/reminders/:id']
+})
+
 // Resets the database and launches the express app on :8081
 
 database
   .sync(/* { force: true } */)
+  .then(() => reminderDb.sync())
   .then(() => {
     app.listen(8081, () => {
       console.log('listening to port localhost:8081')
