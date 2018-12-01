@@ -13,8 +13,8 @@ const reminderStore = {
   actions: {
     async refreshReminders ({dispatch}) {
       console.log('refresh')
-      const books = await api.getReminders()
-      dispatch('set_books', books)
+      const reminders = await api.getReminders()
+      dispatch('set_reminders', reminders)
     },
     set_reminders ({commit}, arr) {
       console.log(arr)

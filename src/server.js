@@ -49,8 +49,8 @@ let reminderDb = new Sequelize({
 // id, createdAt, and updatedAt are added by sequelize automatically
 let Book = database.define('books', {
   shelf: Sequelize.TEXT,
-  title: Sequelize.STRING,
-  author: Sequelize.STRING,
+  title: Sequelize.TEXT,
+  author: Sequelize.TEXT,
   authorId: Sequelize.INTEGER,
   imgUrl: Sequelize.TEXT,
   rating: Sequelize.FLOAT,
@@ -67,7 +67,13 @@ let Book = database.define('books', {
 })
 
 let reminder = reminderDb.define('reminds', {
-  hello: Sequelize.STRING
+  type: Sequelize.TEXT,
+  imgUrl: Sequelize.TEXT,
+  title: Sequelize.TEXT,
+  author: Sequelize.TEXT,
+  sourceUrl: Sequelize.TEXT,
+  dateObj: Sequelize.DATE,
+  displayDateString: Sequelize.TEXT
 })
 
 // Initialize epilogue

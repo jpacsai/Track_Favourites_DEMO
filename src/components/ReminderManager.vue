@@ -4,40 +4,38 @@
       <h1 class="header">Reminder Manager</h1>
     </header>
     <div>
-      <reminders v-for="b in reminders_book"
-          v-bind:key="b.id"
-          v-bind:author="b.author"
-          v-bind:title="b.title"
-          v-bind:release="b.displayDateString"
-          v-bind:future="b.future" />
+      <reminders v-for="r in reminderList"
+          v-bind:key="r.id"
+          v-bind:author="r.author"
+          v-bind:title="r.title"
+          v-bind:release="r.displayDateString" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import reminders from './Reminders'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('reminder')
 
 export default {
   name: 'ReminderManager',
   components: {
     reminders
-  }, /*
+  },
   async created () {
-    this.refreshBooks()
-  }, */
-  methods: {
-    filterBooks (arr) {
-      return arr.filter(b => b.future === true)
-    }
+    this.refreshReminders()
   },
   computed: {
-    ...mapState('book/library', {
-      bookList: state => state.myBooks
-    }),
-    reminders_book () {
-      return this.filterBooks(this.bookList)
-    }
+    ...mapState({
+      reminderList: state => state.myReminders
+    })
+  },
+  methods: {
+    ...mapActions([
+      'refreshReminders'
+    ])
   }
 }
 </script>
