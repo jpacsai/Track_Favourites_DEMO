@@ -24,8 +24,7 @@ export default {
   /* BOOKS operations */
   getBooks () {
     console.log('get library')
-    const a = this.execute('get', '/books')
-    console.log(a)
+    // const a = this.execute('get', '/books')
     return this.execute('get', '/books')
   },
   getBook (id) {
@@ -43,8 +42,7 @@ export default {
   /* REMINDERS operations */
   getReminders () {
     console.log('get reminders')
-    const a = this.execute('get', '/reminders')
-    console.log(a)
+    // const a = this.execute('get', '/reminders')
     return this.execute('get', '/reminders')
   },
   getReminder (id) {

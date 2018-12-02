@@ -1,5 +1,6 @@
 import api from '@/api'
 import parseReminder from './helpers/parseReminder'
+import addDate from './helpers/addDate'
 
 const reminderStore = {
   namespaced: true,
@@ -19,7 +20,8 @@ const reminderStore = {
     async refreshReminders ({dispatch}) {
       console.log('refresh')
       const reminders = await api.getReminders()
-      dispatch('set_reminders', reminders)
+      const withDate = addDate(reminders)
+      dispatch('set_reminders', withDate)
     },
     set_reminders ({commit}, arr) {
       console.log(arr)

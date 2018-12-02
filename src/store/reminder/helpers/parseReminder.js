@@ -5,7 +5,9 @@ export default function parseReminder (obj, type) {
     author: obj.author || null,
     sourceUrl: obj.sourceUrl,
     imgUrl: obj.imgUrl,
-    dateObj: obj.dateObj,
+    year: (obj.dateObj).getUTCFullYear(),
+    month: (obj.dateObj).getUTCMonth(),
+    day: (obj.dateObj).getUTCDate(),
     displayDateString: obj.displayDateString,
     id: obj.id,
     hidden: false

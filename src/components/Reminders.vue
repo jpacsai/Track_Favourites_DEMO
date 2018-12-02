@@ -28,7 +28,7 @@ export default {
     sourceUrl: String,
     num: Number,
     type: String,
-    date: String,
+    date: Date,
     hidden: Boolean
   }
 }

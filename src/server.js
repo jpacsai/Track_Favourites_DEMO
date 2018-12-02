@@ -72,7 +72,9 @@ let reminder = reminderDb.define('reminders', {
   title: Sequelize.TEXT,
   author: Sequelize.TEXT,
   sourceUrl: Sequelize.TEXT,
-  dateObj: Sequelize.DATE,
+  year: Sequelize.INTEGER,
+  month: Sequelize.INTEGER,
+  day: Sequelize.INTEGER,
   displayDateString: Sequelize.TEXT,
   id: { type: Sequelize.INTEGER, primaryKey: true }, // check when movies etc. added
   hidden: Sequelize.BOOLEAN
