@@ -1,0 +1,48 @@
+.reminder_li {
+  border-bottom: 1px solid #dfdfdf;
+  padding: 10px 0;
+  display: grid;
+  grid-template: 90px / 30px 70px 1fr 175px 150px 140px;
+  width: 100%;
+  box-sizing: border-box;
+
+  .order-num {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80%;
+    color: gray;
+  }
+
+  .img-container {
+    padding-top: 6px;
+    text-align: center;
+  }
+
+  img {
+    object-fit: contain;
+    max-height: 75px;
+    width: 50px;
+  }
+
+  .info {
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-weight: bold;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 500px;
+    }
+
+    .author {
+      font-weight: normal;
+      margin: 0;
+      font-size: 80%;
+    }
+  }
+}

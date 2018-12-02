@@ -4,11 +4,16 @@
       <h1 class="header">Reminder Manager</h1>
     </header>
     <div>
-      <reminders v-for="r in reminderList"
+      <reminders v-for="(r, index) in reminderList"
           v-bind:key="r.id"
           v-bind:author="r.author"
           v-bind:title="r.title"
-          v-bind:release="r.displayDateString" />
+          v-bind:image="r.imgUrl"
+          v-bind:sourceUrl="r.sourceUrl"
+          v-bind:release="r.displayDateString"
+          v-bind:date="r.dateObj"
+          v-bind:type="r.type"
+          v-bind:num="index" />
     </div>
   </div>
 </template>
