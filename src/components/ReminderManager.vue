@@ -13,6 +13,7 @@
           v-bind:release="r.displayDateString"
           v-bind:date="r.dateObj"
           v-bind:type="r.type"
+          v-bind:hidden="r.hidden"
           v-bind:num="index" />
     </div>
   </div>

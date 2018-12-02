@@ -1,13 +1,12 @@
 <template>
-  <li class="reminder_li">
+  <li class="reminder_li" v-if="this.hidden === false">
     <p class="order-num">{{ this.num }}</p>
     <div class="img-container">
         <a :href='sourceUrl' target='_blank'><img :src="image"/></a>
     </div>
     <div class="info">
-      <p class="title">{{ this.title }}
+      <p class="title">{{ this.title }}</p>
       <p v-if="type === 'book'" class="author">by {{ this.author }}</p>
-    </p>
     </div>
     <p>{{ this.release }}</p>
     <p></p>
@@ -29,7 +28,8 @@ export default {
     sourceUrl: String,
     num: Number,
     type: String,
-    date: Object
+    date: String,
+    hidden: Boolean
   }
 }
 </script>
