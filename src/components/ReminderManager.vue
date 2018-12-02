@@ -4,25 +4,20 @@
       <h1 class="header">Reminder Manager</h1>
       <div>There {{ this.countReminders === 1 ? 'is' : 'are' }} {{ this.countReminders }} reminder{{ this.countReminders === 1 ? '' : 's' }}</div>
     </header>
-    <button @click="con">click</button>
     <div>
-      <reminders v-for="(r, index) in reminderList"
-          v-bind:key="r.id"
-          v-bind:author="r.author"
-          v-bind:title="r.title"
-          v-bind:image="r.imgUrl"
-          v-bind:sourceUrl="r.sourceUrl"
-          v-bind:release="r.displayDateString"
-          v-bind:date="r.dateObj"
-          v-bind:type="r.type"
-          v-bind:hidden="r.hidden"
-          v-bind:num="index" />
+      <ul>
+        <remindermonth  v-for="(month, index) in dateGroups"
+          :key="`month-${index}`"
+          :month="Object.keys(month)[0]"
+          :list="month[Object.keys(month)[0]]"
+          />
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import reminders from './Reminders'
+import remindermonth from './ReminderMonth'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapState, mapActions, mapGetters } = createNamespacedHelpers('reminder')
@@ -30,7 +25,7 @@ const { mapState, mapActions, mapGetters } = createNamespacedHelpers('reminder')
 export default {
   name: 'ReminderManager',
   components: {
-    reminders
+    remindermonth
   },
   async created () {
     this.refreshReminders()
