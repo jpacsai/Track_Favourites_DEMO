@@ -7,6 +7,11 @@ const reminderStore = {
   state: {
     myReminders: []
   },
+  getters: {
+    countReminders: state => {
+      return state.myReminders.length
+    }
+  },
   mutations: {
     SET_REMINDERS (state, arr) {
       state.myReminders = arr

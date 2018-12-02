@@ -1,7 +1,8 @@
 <template>
-  <div class="container book">
+  <div class="container reminder">
     <header>
       <h1 class="header">Reminder Manager</h1>
+      <div>There {{ this.countReminders === 1 ? 'is' : 'are' }} {{ this.countReminders }} reminder{{ this.countReminders === 1 ? '' : 's' }}</div>
     </header>
     <div>
       <reminders v-for="(r, index) in reminderList"
@@ -23,7 +24,7 @@
 import reminders from './Reminders'
 import { createNamespacedHelpers } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('reminder')
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers('reminder')
 
 export default {
   name: 'ReminderManager',
@@ -36,7 +37,10 @@ export default {
   computed: {
     ...mapState({
       reminderList: state => state.myReminders
-    })
+    }),
+    ...mapGetters([
+      'countReminders'
+    ])
   },
   methods: {
     ...mapActions([
