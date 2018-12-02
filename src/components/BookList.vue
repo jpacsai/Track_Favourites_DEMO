@@ -2,7 +2,7 @@
     <li :class="{ future: future }" class="book_li">
       <p class="order-num">{{ this.num }}</p>
       <div class="img-container">
-        <a :href='goodreadsUrl' target='_blank'><img :src="image"/></a>
+        <a :href='sourceUrl' target='_blank'><img :src="image"/></a>
       </div>
       <div class='info'>
         <p class='title'>{{ this.title }}</p>
@@ -79,7 +79,7 @@ export default {
     image: String,
     rating: Number,
     year: String,
-    goodreadsUrl: String,
+    sourceUrl: String,
     series: Boolean,
     release: String,
     future: Boolean,
@@ -104,6 +104,7 @@ export default {
   methods: {
     ...mapActions('book/newBooks', ['search_series', 'fetch_new_authorBooks']),
     ...mapActions('book/library', ['saveBook', 'deleteBook', 'updateBook']),
+    ...mapActions('reminder', ['extractReminder', 'deleteReminder']),
     ...mapMutations('book', ['SET_SECTION']),
     setSection (payload) {
       this.SET_SECTION(payload)
@@ -128,8 +129,14 @@ export default {
       if (this.liked === true) {
         const bookObj = Object.assign({shelf: 'reading'}, this.book)
         this.saveBook(bookObj)
+        if (this.future === true) {
+          this.extractReminder([bookObj, 'book'])
+        }
       } else {
-        this.deleteBook(this.book.id)
+        this.removeBook()
+        if (this.future === true) {
+          this.removeReminder()
+        }
       }
     },
     checkLike () {
@@ -141,6 +148,9 @@ export default {
     },
     removeBook () {
       this.deleteBook(this.book.id)
+    },
+    removeReminder () {
+      this.deleteReminder(this.book.id)
     },
     searchSeries () {
       if (this.section === 'library') {

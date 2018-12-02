@@ -1,4 +1,5 @@
 import api from '@/api'
+import parseReminder from './helpers/parseReminder'
 
 const reminderStore = {
   namespaced: true,
@@ -11,6 +12,10 @@ const reminderStore = {
     }
   },
   actions: {
+    extractReminder ({dispatch}, [obj, type]) {
+      const reminder = parseReminder(obj, type)
+      dispatch('saveReminder', reminder)
+    },
     async refreshReminders ({dispatch}) {
       console.log('refresh')
       const reminders = await api.getReminders()

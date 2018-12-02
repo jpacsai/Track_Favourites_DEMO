@@ -73,7 +73,9 @@ let reminder = reminderDb.define('reminders', {
   author: Sequelize.TEXT,
   sourceUrl: Sequelize.TEXT,
   dateObj: Sequelize.DATE,
-  displayDateString: Sequelize.TEXT
+  displayDateString: Sequelize.TEXT,
+  id: { type: Sequelize.INTEGER, primaryKey: true }, // check when movies etc. added
+  hidden: Sequelize.BOOLEAN
 })
 
 // Initialize epilogue
