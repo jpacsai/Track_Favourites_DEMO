@@ -66,7 +66,7 @@ let Book = database.define('books', {
   owned: Sequelize.BOOLEAN
 })
 
-let reminder = reminderDb.define('reminds', {
+let reminder = reminderDb.define('reminders', {
   type: Sequelize.TEXT,
   imgUrl: Sequelize.TEXT,
   title: Sequelize.TEXT,
@@ -97,7 +97,7 @@ let userResource2 = epilogue.resource({
 
 database
   .sync(/* { force: true } */)
-  .then(() => reminderDb.sync())
+  .then(() => reminderDb.sync(/* { force: true } */))
   .then(() => {
     app.listen(8081, () => {
       console.log('listening to port localhost:8081')
