@@ -4,6 +4,7 @@
       <h1 class="header">Reminder Manager</h1>
       <div>There {{ this.countReminders === 1 ? 'is' : 'are' }} {{ this.countReminders }} reminder{{ this.countReminders === 1 ? '' : 's' }}</div>
     </header>
+    <button @click="con">click</button>
     <div>
       <reminders v-for="(r, index) in reminderList"
           v-bind:key="r.id"
@@ -39,13 +40,17 @@ export default {
       reminderList: state => state.myReminders
     }),
     ...mapGetters([
-      'countReminders'
+      'countReminders',
+      'dateGroups'
     ])
   },
   methods: {
     ...mapActions([
       'refreshReminders'
-    ])
+    ]),
+    con () {
+      console.log(this.dateGroups)
+    }
   }
 }
 </script>

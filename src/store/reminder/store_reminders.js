@@ -1,6 +1,7 @@
 import api from '@/api'
 import parseReminder from './helpers/parseReminder'
 import addDate from './helpers/addDate'
+import groupByDate from './helpers/groupByDate'
 
 const reminderStore = {
   namespaced: true,
@@ -10,6 +11,9 @@ const reminderStore = {
   getters: {
     countReminders: state => {
       return state.myReminders.length
+    },
+    dateGroups: state => {
+      return groupByDate(state.myReminders)
     }
   },
   mutations: {
