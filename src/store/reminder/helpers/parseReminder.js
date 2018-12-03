@@ -8,7 +8,9 @@ export default function parseReminder (obj, type) {
     year: (obj.dateObj).getUTCFullYear(),
     month: (obj.dateObj).getUTCMonth(),
     day: (obj.dateObj).getUTCDate(),
-    displayDateString: (obj.dateObj).getUTCDate() + '/' + ((obj.dateObj).getUTCMonth() + 1),
+    get displayDateString () {
+      return (this.day < 10 ? '0' + this.day : this.day) + '/' + ((this.month + 1) < 10 ? '0' + (this.month + 1) : (this.month + 1))
+    },
     id: obj.id,
     hidden: false
   }

@@ -8,8 +8,8 @@
       <ul>
         <remindermonth  v-for="(month, index) in dateGroups"
           :key="`month-${index}`"
-          :month="Object.keys(month)[0]"
-          :list="month[Object.keys(month)[0]]"
+          :month="month.title"
+          :list="month.arr"
           />
       </ul>
     </div>

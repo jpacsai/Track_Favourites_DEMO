@@ -4,10 +4,12 @@ export default function groupByDate (arr) {
 
   for (let i = 0; i < arr.length; i++) {
     const month = monthNames[arr[i].month] + ' ' + arr[i].year
-    if (dates.includes(d => d === month) === false) {
-      dates.push({ [month]: [arr[i]] })
+    const index = dates.findIndex(date => date.title === month)
+    if (index === -1) {
+      dates.push({ title: month, arr: [arr[i]] })
     } else {
-      dates[month].push(arr[i])
+      dates[index].arr.push(arr[i])
+      dates[index].arr.sort((a, b) => a.day - b.day)
     }
   }
   return dates
