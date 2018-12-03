@@ -1,4 +1,6 @@
 export default function parseReminder (obj, type) {
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
   const parsed = {
     type,
     title: obj.title,
@@ -7,9 +9,13 @@ export default function parseReminder (obj, type) {
     imgUrl: obj.imgUrl,
     year: (obj.dateObj).getUTCFullYear(),
     month: (obj.dateObj).getUTCMonth(),
+    get monthText () {
+      return monthNames[this.month]
+    },
     day: (obj.dateObj).getUTCDate(),
     get displayDateString () {
-      return (this.day < 10 ? '0' + this.day : this.day) + '/' + ((this.month + 1) < 10 ? '0' + (this.month + 1) : (this.month + 1))
+      const day = ('0' + this.day).slice(-2)
+      return day + ' ' + this.monthText.slice(0, 3)
     },
     id: obj.id,
     hidden: false
