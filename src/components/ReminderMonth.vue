@@ -1,7 +1,7 @@
 <template>
   <li>
     <h2>{{ this.month}}</h2>
-    <reminders v-for="(r, index) in list"
+    <reminders v-for="r in list"
           v-bind:key="r.id"
           v-bind:author="r.author"
           v-bind:title="r.title"
@@ -10,8 +10,7 @@
           v-bind:release="r.displayDateString"
           v-bind:date="r.dateObj"
           v-bind:type="r.type"
-          v-bind:hidden="r.hidden"
-          v-bind:num="index" />
+          v-bind:hidden="r.hidden" />
   </li>
 </template>
 
