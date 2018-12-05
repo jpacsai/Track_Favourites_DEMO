@@ -5,7 +5,7 @@
         <input type="text" v-model='newSearch' required class="book_search-input" />
         <input type='submit' value="Search" class="book_search-submit" />
       </form>
-      <b-alert :show="loading" variant="info">Loading...</b-alert>
+      <b-alert :show="loading" variant="info" class="loading_indicator">Loading...</b-alert>
       <p class="book_searchNums" v-if="this.allResults > 0 && loading === false">
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span>
       </p>
