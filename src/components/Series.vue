@@ -3,25 +3,7 @@
     <h3>Series view</h3>
     <p><span class="author-link" @click='authorBooks'>{{ authorName }}</span> - {{ seriesTitle }}</p>
     <div class="search-results">
-      <ul>
-        <booklist v-for="(b, index) in displayList"
-          v-bind:key="b.id"
-          v-bind:shelf="b.shelf"
-          v-bind:owned="b.owned"
-          v-bind:num="index"
-          v-bind:book="b"
-          v-bind:author="b.author"
-          v-bind:id="b.id"
-          v-bind:title="b.title_without_serie || b.title"
-          v-bind:image="b.imgUrl"
-          v-bind:rating="b.rating"
-          v-bind:year="b.displayYear"
-          v-bind:sourceUrl="b.sourceUrl"
-          v-bind:position="b.position"
-          v-bind:future="b.future"
-          v-bind:release="b.displayDateString"
-          />
-      </ul>
+      <booklist v-bind:list="displayList"/>
     </div>
   </div>
 </template>

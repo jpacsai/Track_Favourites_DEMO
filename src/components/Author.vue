@@ -4,22 +4,7 @@
     <p>{{ authorName }}</p>
     <div class="search-results">
       <ul>
-        <booklist v-for="(b, index) in displayList"
-          v-bind:key="b.id"
-          v-bind:shelf="b.shelf"
-          v-bind:owned="b.owned"
-          v-bind:num="index"
-          v-bind:book="b"
-          v-bind:id="b.id"
-          v-bind:title="b.title"
-          v-bind:serieTitle="b.serieTitle"
-          v-bind:image="b.imgUrl"
-          v-bind:rating="b.rating"
-          v-bind:year="b.displayYear"
-          v-bind:goodreadsUrl="b.goodreadsUrl"
-          v-bind:series="b.serie"
-          v-bind:release="b.displayDateString"
-          v-bind:future="b.future"/>
+        <booklist v-bind:list="displayList"/>
       </ul>
     </div>
   </div>
@@ -27,9 +12,7 @@
 
 <script>
 import booklist from './BookList'
-import { createNamespacedHelpers } from 'vuex'
-
-const { mapState } = createNamespacedHelpers('book/newBooks')
+import { mapState } from 'vuex'
 
 export default {
   name: 'author',
@@ -37,7 +20,7 @@ export default {
     booklist
   },
   computed: {
-    ...mapState({
+    ...mapState('book/newBooks', {
       displayList: state => state.displayList,
       authorName: state => state.authorName
     })
