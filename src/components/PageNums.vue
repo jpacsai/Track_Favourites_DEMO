@@ -12,8 +12,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
-// const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
-
 export default {
   name: 'pagenumbers',
   computed: {

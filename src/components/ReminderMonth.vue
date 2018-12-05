@@ -16,7 +16,6 @@
 
 <script>
 import reminders from './Reminders'
-// import { mapState } from 'vuex'
 
 export default {
   name: 'remindermonth',

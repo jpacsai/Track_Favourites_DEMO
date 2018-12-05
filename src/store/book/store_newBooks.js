@@ -287,7 +287,6 @@ const actions = {
   },
   fetch_authorBooks ({dispatch}, library) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
-    console.log(library)
     dispatch('set_loading_true')
 
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)

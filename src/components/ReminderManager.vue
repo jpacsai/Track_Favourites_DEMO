@@ -42,10 +42,7 @@ export default {
   methods: {
     ...mapActions([
       'refreshReminders'
-    ]),
-    con () {
-      console.log(this.dateGroups)
-    }
+    ])
   }
 }
 </script>
