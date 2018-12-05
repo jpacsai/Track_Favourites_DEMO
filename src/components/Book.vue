@@ -10,9 +10,11 @@
         <!-- TITLE -->
         <p class='title'>{{ this.title }}<span v-if="this.series === true && (this.section === 'library' || this.series === true && view !== 'series')" @click="searchSeries"> {{ this.serieDisplay }}</span></p>
         <!-- AUTHOR -->
-        <p v-if="view === 'search' || section === 'library'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year }}</p>
+        <p v-if="view === 'search' || section === 'library'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span><span v-if="this.future === false"> - {{ this.year }}</span><span class="future-release future-release-small" v-if='this.future === true'>Coming on {{ this.release }}</span></p>
         <!-- RELEASE YEAR -->
-        <p v-if="view !== 'search'" class="author">{{ this.year }}</p>
+        <p v-if="view !== 'search' && this.future === false" class="author">{{ this.year }}</p>
+        <!-- FUTURE RELEASE DATE -->
+        <p class="future-release future-release-big" v-if="view !== 'search' && this.future === true">Coming on {{ this.release }}</p>
         <!-- / -  -  -  -  - / - RATINGS - / -  -  -  -  - / -->
         <div class="ratings" >
           <!-- STAR RATING -->
@@ -38,8 +40,6 @@
       <div class="details">
         <!-- BOOK'S POSITON IN SERIES -->
         <p v-if="view === 'series' && section === 'explorer' && this.position" class="serie-position">BOOK <span>{{ this.position }}</span></p>
-        <!-- FUTURE RELEASE DATE -->
-        <p class="future-release" v-if='this.future === true'>Coming on {{ this.release }}</p>
       </div>
       <!-- / -  -  -  -  - / - LIBRARY DETAILS SETTINGS - / -  -  -  -  - / -->
       <div v-if='this.liked === true || this.section === "library"' class="shelf-container" >
