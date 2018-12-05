@@ -41,6 +41,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 500px;
+
+    span {
+      color: gray;
+    }
+
+    span:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 
   .author {

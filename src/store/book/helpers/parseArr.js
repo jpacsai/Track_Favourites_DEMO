@@ -23,7 +23,7 @@ export default function parseArr (arr, library, today) {
       get future () { return this.dateObj > today },
       serie: titleDecode.includes('#'),
       get title_without_serie () {
-        return this.serie === true ? parseHelpers.noSeriesTitle(titleDecode) : null
+        return this.serie === true ? parseHelpers.noSeriesTitle(titleDecode) : titleDecode
       },
       get serieDisplay () {
         return this.serie ? titleDecode.slice(this.title_without_serie.length).trim() : null

@@ -8,7 +8,7 @@
       <!-- / -  -  -  -  - / - INFO SECTION - / -  -  -  -  - / -->
       <div class='info'>
         <!-- TITLE -->
-        <p class='title'>{{ this.title }}</p>
+        <p class='title'>{{ this.title }}<span v-if="this.series === true && (this.section === 'library' || this.series === true && view !== 'series')" @click="searchSeries"> {{ this.serieDisplay }}</span></p>
         <!-- AUTHOR -->
         <p v-if="view === 'search' || section === 'library'" class="author">by <span class='author-link' @click='authorBooks'>{{ this.author }}</span> - {{ this.year }}</p>
         <!-- RELEASE YEAR -->
@@ -36,8 +36,6 @@
       </div>
       <!-- / -  -  -  -  - / - DETAIL SECTION - / -  -  -  -  - / -->
       <div class="details">
-        <!-- SERIES BUTTON -->
-        <button v-if="this.series === true && (this.section === 'library' || this.series === true && view !== 'series')" class="series-btn" @click='searchSeries'> Series</button>
         <!-- BOOK'S POSITON IN SERIES -->
         <p v-if="view === 'series' && section === 'explorer' && this.position" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <!-- FUTURE RELEASE DATE -->
@@ -95,6 +93,7 @@ export default {
     id: Number,
     title: String,
     serieTitle: String,
+    serieDisplay: String,
     image: String,
     rating: Number,
     year: String,
