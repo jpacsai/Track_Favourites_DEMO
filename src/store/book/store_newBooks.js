@@ -21,12 +21,19 @@ const state = {
   authorName: null,
   authorId: null,
   seriesTitle: null,
-  seriesId: null
+  seriesId: null,
+  loading: false
 }
 
 const mutations = {
   TODAY (state, date) {
     state.today = date
+  },
+  LOADING_TRUE (state) {
+    state.loading = true
+  },
+  LOADING_FALSE (state) {
+    state.loading = false
   },
   SET_SEARCH_TEXT (state, text) {
     state.searchText = text
@@ -107,6 +114,12 @@ const actions = {
   set_today ({commit}, date) {
     commit('TODAY', date)
   },
+  set_loading_true ({commit}) {
+    commit('LOADING_TRUE')
+  },
+  set_loading_false ({commit}) {
+    commit('LOADING_FALSE')
+  },
   set_searchText ({commit}, text) {
     commit('SET_SEARCH_TEXT', text)
   },
@@ -179,7 +192,7 @@ const actions = {
   },
   search_book ({dispatch}, [text, library]) {
     console.log('FETCH - search books')
-
+    dispatch('set_loading_true')
     fetch(
       state.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
         keys.bookKey + '&q=' + text + '&page=' + state.page
@@ -188,6 +201,7 @@ const actions = {
         return dispatch('convertXML', data)
       })
       .then(jsonObj => {
+        dispatch('set_loading_false')
         dispatch('pageNumbers_search', jsonObj)
         const res = jsonObj.GoodreadsResponse.search.results.work
         if (res === undefined) {
@@ -212,7 +226,7 @@ const actions = {
   },
   search_series ({dispatch}, [id, title, author, authorId, library]) {
     console.log('FETCH - serie id: ' + id + ', title: ' + title + ', author: ' + author)
-
+    dispatch('set_loading_true')
     dispatch('getWhichSeries', id)
       .then(data => {
         dispatch('set_authorName', author)
@@ -224,6 +238,7 @@ const actions = {
       })
       .then(seriesBook => {
         console.log(seriesBook)
+        dispatch('set_loading_false')
         const result = parseArr(seriesBook, library, state.today)
         // console.log(result)
         dispatch('set_display', result)
@@ -269,12 +284,14 @@ const actions = {
   },
   fetch_authorBooks ({dispatch}, library) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
+    dispatch('set_loading_true')
 
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)
       .then(data => {
         return dispatch('convertXML', data)
       })
       .then(jsonObj => {
+        dispatch('set_loading_false')
         const arr = jsonObj.GoodreadsResponse.author.books.book
         // console.log(arr)
         const result = parseArr(arr, library, state.today)
