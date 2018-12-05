@@ -54,7 +54,7 @@ let Book = database.define('books', {
   authorId: Sequelize.INTEGER,
   imgUrl: Sequelize.TEXT,
   rating: Sequelize.FLOAT,
-  goodreadsUrl: Sequelize.TEXT,
+  sourceUrl: Sequelize.TEXT,
   displayYear: Sequelize.TEXT,
   displayDateString: Sequelize.TEXT,
   dateObj: Sequelize.DATE,
@@ -62,6 +62,7 @@ let Book = database.define('books', {
   serie: Sequelize.BOOLEAN,
   title_without_serie: Sequelize.TEXT,
   serieTitle: Sequelize.TEXT,
+  serieDisplay: Sequelize.TEXT,
   position: Sequelize.TEXT,
   owned: Sequelize.BOOLEAN
 })
@@ -101,8 +102,8 @@ let userResource2 = epilogue.resource({
 // Resets the database and launches the express app on :8081
 
 database
-  .sync(/* { force: true } */)
-  .then(() => reminderDb.sync(/* { force: true } */))
+  .sync({ force: true })
+  .then(() => reminderDb.sync({ force: true }))
   .then(() => {
     app.listen(8081, () => {
       console.log('listening to port localhost:8081')

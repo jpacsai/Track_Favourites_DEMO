@@ -3,7 +3,7 @@
       <p class="order-num">{{ this.num }}</p>
       <!-- BOOK THUMBNAIL IMAGE -->
       <div class="img-container">
-        <a :href='sourceUrl' target='_blank'><img :src="image"/></a>
+        <a :href="sourceUrl" target='_blank'><img :src="image"/></a>
       </div>
       <!-- / -  -  -  -  - / - INFO SECTION - / -  -  -  -  - / -->
       <div class='info'>
