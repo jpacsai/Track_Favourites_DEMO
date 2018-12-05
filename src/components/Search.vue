@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h3>Search results</h3>
-    <b-alert :show="loading" variant="info">Loading...</b-alert>
     <div class="search-results">
       <ul>
         <booklist v-for="(b, index) in list"
@@ -41,8 +40,7 @@ export default {
   },
   computed: {
     ...mapState({
-      list: state => state.displayList,
-      loading: state => state.loading
+      list: state => state.displayList
     })
   }
 }

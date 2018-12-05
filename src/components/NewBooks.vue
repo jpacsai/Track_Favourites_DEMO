@@ -9,7 +9,7 @@
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span>
       </p>
     </div>
-
+    <b-alert :show="loading" variant="info">Loading...</b-alert>
     <search v-if="view === 'search'" />
     <series v-if="view === 'series'" />
     <author v-if="view === 'author'" />
@@ -87,6 +87,7 @@ export default {
       library: state => state.myBooks
     }),
     ...mapState('book/newBooks', {
+      loading: state => state.loading,
       view: state => state.view,
       error: state => state.error,
       displayList: state => state.displayList,
@@ -97,9 +98,7 @@ export default {
   },
   data () {
     return {
-      newSearch: '',
-      loading: false,
-      model: {}
+      newSearch: ''
     }
   },
   /*

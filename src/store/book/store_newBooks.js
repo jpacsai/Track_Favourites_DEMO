@@ -31,9 +31,11 @@ const mutations = {
   },
   LOADING_TRUE (state) {
     state.loading = true
+    console.log('loading TRUE' + state.loading)
   },
   LOADING_FALSE (state) {
     state.loading = false
+    console.log('loading FALSE' + state.loading)
   },
   SET_SEARCH_TEXT (state, text) {
     state.searchText = text
@@ -227,6 +229,7 @@ const actions = {
   search_series ({dispatch}, [id, title, author, authorId, library]) {
     console.log('FETCH - serie id: ' + id + ', title: ' + title + ', author: ' + author)
     dispatch('set_loading_true')
+
     dispatch('getWhichSeries', id)
       .then(data => {
         dispatch('set_authorName', author)
@@ -284,6 +287,7 @@ const actions = {
   },
   fetch_authorBooks ({dispatch}, library) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
+    console.log(library)
     dispatch('set_loading_true')
 
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)

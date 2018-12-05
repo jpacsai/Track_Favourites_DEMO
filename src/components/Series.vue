@@ -28,9 +28,7 @@
 
 <script>
 import booklist from './BookList'
-import { createNamespacedHelpers } from 'vuex'
-
-const { mapState, mapActions } = createNamespacedHelpers('book/newBooks')
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'series',
@@ -38,7 +36,10 @@ export default {
     booklist
   },
   computed: {
-    ...mapState({
+    ...mapState('book/library', {
+      library: state => state.myBooks
+    }),
+    ...mapState('book/newBooks', {
       displayList: state => state.displayList,
       authorName: state => state.authorName,
       authorId: state => state.authorId,
@@ -46,9 +47,9 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['fetch_new_authorBooks']),
+    ...mapActions('book/newBooks', ['fetch_new_authorBooks']),
     authorBooks () {
-      this.fetch_new_authorBooks([this.authorName, this.authorId])
+      this.fetch_new_authorBooks([this.authorName, this.authorId, this.library])
     }
   }
 }
