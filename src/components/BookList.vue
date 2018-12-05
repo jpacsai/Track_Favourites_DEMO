@@ -37,7 +37,7 @@
       <!-- / -  -  -  -  - / - DETAIL SECTION - / -  -  -  -  - / -->
       <div class="details">
         <!-- SERIES BUTTON -->
-        <button v-if="this.section === 'library' || this.series === true && view !== 'series'" class="series-btn" @click='searchSeries'> Series</button>
+        <button v-if="this.series === true && (this.section === 'library' || this.series === true && view !== 'series')" class="series-btn" @click='searchSeries'> Series</button>
         <!-- BOOK'S POSITON IN SERIES -->
         <p v-if="view === 'series' && section === 'explorer' && this.position" class="serie-position">BOOK <span>{{ this.position }}</span></p>
         <!-- FUTURE RELEASE DATE -->
