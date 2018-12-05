@@ -5,18 +5,18 @@
         <input type="text" v-model='newSearch' required class="book_search-input" />
         <input type='submit' value="Search" class="book_search-submit" />
       </form>
-      <p class="book_searchNums" v-if="this.allResults > 0">
+      <b-alert :show="loading" variant="info">Loading...</b-alert>
+      <p class="book_searchNums" v-if="this.allResults > 0 && loading === false">
         <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span>
       </p>
     </div>
-    <b-alert :show="loading" variant="info">Loading...</b-alert>
-    <search v-if="view === 'search'" />
-    <series v-if="view === 'series'" />
-    <author v-if="view === 'author'" />
+    <search v-if="view === 'search' && loading === false && displayList.length > 0" />
+    <series v-if="view === 'series' && loading === false" />
+    <author v-if="view === 'author' && loading === false" />
 
     <div v-if="view === 'error'" class="error"><p>{{ this.error }}</p></div>
 
-    <pagenumbers v-if="displayList.length > 0 && view !== 'series'" />
+    <pagenumbers v-if="displayList.length > 0 && view !== 'series' && loading === false" />
 
     <!--
     <b-alert :show="loading" variant="info">Loading...</b-alert>
