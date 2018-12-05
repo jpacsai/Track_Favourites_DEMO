@@ -148,6 +148,9 @@ export default {
     },
     removeBook () {
       this.deleteBook(this.book.id)
+      if (this.future === true) {
+        this.removeReminder()
+      }
     },
     removeReminder () {
       this.deleteReminder(this.book.id)
