@@ -32,7 +32,10 @@ export default function parseArr (arr, library, today) {
       get position () { return this.serie === true ? obj.position : null },
       shelf: inLibrary ? inLibrary.shelf : null,
       owned: inLibrary ? inLibrary.owned : false,
-      tags: inLibrary ? parseHelpers.extractTags(inLibrary.tags) : ['romantic', 'fiction']
+      tagString: inLibrary ? inLibrary.tagString : 'romantic,fiction',
+      get tags () {
+        return inLibrary ? parseHelpers.extractTags(inLibrary.tagString) : []
+      }
     }
     return book
   })

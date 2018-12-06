@@ -65,7 +65,7 @@ let Book = database.define('books', {
   serieDisplay: Sequelize.TEXT,
   position: Sequelize.TEXT,
   owned: Sequelize.BOOLEAN,
-  tags: Sequelize.TEXT
+  tagString: Sequelize.TEXT
 })
 
 let reminder = reminderDb.define('reminders', {

@@ -23,6 +23,14 @@ const parseHelpers = {
   },
   extractTags (text) {
     return text.split(',')
+  },
+  addTags (arr) {
+    const parsed = arr.map(obj => {
+      const tags = this.extractTags(obj.tagString)
+      return Object.assign({tags}, obj)
+    }
+    )
+    return parsed
   }
 }
 

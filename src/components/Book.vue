@@ -40,6 +40,13 @@
       <div class="details">
         <!-- BOOK'S POSITON IN SERIES -->
         <p v-if="view === 'series' && section === 'explorer' && this.position" class="serie-position">BOOK <span>{{ this.position }}</span></p>
+        <!-- TAGS -->
+        <ul v-if="this.liked || this.section === 'library'">
+          <li v-for="(tag, index) in tags"
+            :key="`tag-${index}`">
+            {{ tag }}
+          </li>
+        </ul> 
       </div>
       <!-- / -  -  -  -  - / - LIBRARY DETAILS SETTINGS - / -  -  -  -  - / -->
       <div v-if='this.liked === true || this.section === "library"' class="shelf-container" >
@@ -103,7 +110,8 @@ export default {
     future: Boolean,
     author: String,
     authorid: Number,
-    position: String
+    position: String,
+    tags: Array
   },
   data () {
     return {

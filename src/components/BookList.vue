@@ -18,7 +18,8 @@
       v-bind:id="b.id"
       v-bind:num="index"
       v-bind:release="b.displayDateString"
-      v-bind:future="b.future" />          
+      v-bind:future="b.future"
+      v-bind:tags="b.tags" />          
   </ul>
 </template>
 

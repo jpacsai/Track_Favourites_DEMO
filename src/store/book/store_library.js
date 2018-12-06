@@ -1,4 +1,5 @@
 import api from '@/api'
+import parseHelpers from './helpers/parseHelpers'
 
 const state = {
   myBooks: []
@@ -14,7 +15,8 @@ const actions = {
   async refreshBooks ({dispatch}) {
     console.log('refresh')
     const books = await api.getBooks()
-    dispatch('set_books', books)
+    const parseLibrary = parseHelpers.addTags(books)
+    dispatch('set_books', parseLibrary)
   },
   set_books ({commit}, arr) {
     console.log(arr)
