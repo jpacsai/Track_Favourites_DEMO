@@ -7,7 +7,7 @@ export default function parseArr (arr, library, today) {
     const year = obj.original_publication_year || obj.publication_year || 1900
     const titleDecode = parseHelpers.decodeTitle(obj.best_book ? obj.best_book.title : obj.title)
     const bookId = obj.best_book ? obj.id : obj.work.id
-    const inLibrary = library.find(b => b.id === bookId) || []
+    const inLibrary = library.find(b => b.id === bookId) || false
 
     const book = {
       title: titleDecode,
@@ -31,7 +31,8 @@ export default function parseArr (arr, library, today) {
       get serieTitle () { return this.serie === true ? parseHelpers.serieTitle(titleDecode) : null },
       get position () { return this.serie === true ? obj.position : null },
       shelf: inLibrary ? inLibrary.shelf : null,
-      owned: inLibrary ? inLibrary.owned : false
+      owned: inLibrary ? inLibrary.owned : false,
+      tags: inLibrary ? parseHelpers.extractTags(inLibrary.tags) : ['romantic', 'fiction']
     }
     return book
   })

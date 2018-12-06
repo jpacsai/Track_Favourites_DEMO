@@ -20,6 +20,9 @@ const parseHelpers = {
     const t = title.substring(start)
     const end = t.search(/[,#]/)
     return t.substring(0, end).trim()
+  },
+  extractTags (text) {
+    return text.split(',')
   }
 }
 
