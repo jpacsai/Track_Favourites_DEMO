@@ -12,7 +12,7 @@ In the future a Movie/Series and a Blog section will be added.
 * [Credits](#-credits)
 
 ## 🔗 Live link  
-Open the page directly from [here](https://jpacsai.github.io/Neighborhood-App/)  
+
 
 ## 🏁 Getting started
 
