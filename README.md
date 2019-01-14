@@ -1,4 +1,4 @@
-# Favourite [Book] Tracker 🎬
+# Favourite [Book] Tracker - DEMO version 🎬
 
 A CRUD app with Vue.js and Node.js API to track favourite books, organize them and have a reminder of future releases.
 
