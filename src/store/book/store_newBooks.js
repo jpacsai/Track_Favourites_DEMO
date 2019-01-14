@@ -76,6 +76,7 @@ const mutations = {
     state.seriesId = id
   },
   SET_ALL_RESULT (state, num) {
+    console.log(num)
     state.allResults = num
   },
   SET_ALL_PAGE (state, page) {
@@ -241,6 +242,7 @@ const actions = {
       dispatch('set_error_noResult')
     } else {
       dispatch('set_display', arr)
+      dispatch('set_allResult', arr.length)
       if (state.view !== 'search') {
         dispatch('set_viewState_search')
         dispatch('set_seriesTitle', null)
