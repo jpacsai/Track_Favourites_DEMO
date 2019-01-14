@@ -76,15 +76,14 @@ const mutations = {
     state.seriesId = id
   },
   SET_ALL_RESULT (state, num) {
-    console.log(num)
     state.allResults = num
-  },
+  } /* ,
   SET_ALL_PAGE (state, page) {
     state.allPage = page
   },
   SET_PAGE_NUMBER (state, num) {
     state.allPage = num
-  }/* ,
+  },
   SET_PAGE_NUMBERS_NULL (state) {
     state.page = 1
     state.allPage = 1
@@ -141,10 +140,10 @@ const actions = {
   },
   set_viewState_author ({commit}) {
     commit('VIEW_AUTHOR')
-  },
+  }, /*
   set_pageNumber ({commit}, num) {
     commit('SET_PAGE_NUMBER', num)
-  }, /*
+  },
   set_pageNumbers_null ({commit}) {
     commit('SET_PAGE_NUMBERS_NULL')
   },
@@ -254,7 +253,7 @@ const actions = {
         scrollUp()
       }
     }
-    dispatch('set_pageNumber', arr.length)
+    dispatch('set_allResult', arr.length)
     console.log(arr)
   },
   search_series ({dispatch}, [id, title, author, authorId, library]) {
@@ -312,14 +311,15 @@ const actions = {
   fetch_new_authorBooks ({dispatch}, [authorName, authorId, library]) {
     dispatch('set_authorName', authorName)
     dispatch('set_authorId', authorId)
-    dispatch('fetch_authorDetails')
+    // dispatch('fetch_authorDetails')
     dispatch('fetch_authorBooks', library)
     scrollUp()
   },
   fetch_authorBooks ({dispatch}, library) {
     console.log('FETCH - all books ' + state.authorName + ' : ' + state.authorId + ', page ' + state.page)
-    dispatch('set_loading_true')
+    // dispatch('set_loading_true')
 
+    /*
     fetch(state.herokuNoCors + 'https://www.goodreads.com/author/list/' + state.authorId + '?format=xml&key=' + keys.bookKey + '&page=' + state.page)
       .then(data => {
         return dispatch('convertXML', data)
@@ -338,8 +338,15 @@ const actions = {
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
-      })
-  },
+      }) */
+
+    const arr = state.bookDB.filter((book) => book.authorId === state.authorId)
+    console.log(arr)
+    dispatch('set_display', arr)
+    dispatch('set_viewState_author')
+    dispatch('set_seriesTitle', null)
+    dispatch('set_seriesId', null)
+  }/* ,
   fetch_authorDetails ({dispatch}) {
     console.log('FETCH - author id ' + state.authorId)
 
@@ -356,7 +363,7 @@ const actions = {
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
       })
-  }/* ,
+  },
   pageNumbers_search ({dispatch}, obj) {
     const numbers = {
       all: obj.GoodreadsResponse.search['total-results'],
