@@ -3,18 +3,20 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const Sequelize = require('sequelize')
 const epilogue = require('epilogue')
-const OktaJwtVerifier = require('@okta/jwt-verifier')
-const {id, domain} = require('../apiKeys')
 
+// const OktaJwtVerifier = require('@okta/jwt-verifier')
+// const {id, domain} = require('../apiKeys')
+
+/*
 const oktaJwtVerifier = new OktaJwtVerifier({
   clientId: id,
   issuer: 'https://' + domain + '/oauth2/default'
-})
+}) */
 
 let app = express()
 app.use(cors())
 app.use(bodyParser.json())
-
+/*
 // verify JWT token middleware
 app.use((req, res, next) => {
   // require every request to have an authorization header
@@ -33,7 +35,7 @@ app.use((req, res, next) => {
     })
     .catch(next) // jwt did not verify!
 })
-
+*/
 // For ease of this tutorial, we are going to use SQLite to limit dependencies
 let database = new Sequelize({
   dialect: 'sqlite',

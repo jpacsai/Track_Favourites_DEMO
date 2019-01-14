@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import axios from 'axios'
 
 const client = axios.create({
@@ -9,14 +9,14 @@ const client = axios.create({
 export default {
   async execute (method, resource, data) {
     // inject the accessToken for each request
-    let accessToken = await Vue.prototype.$auth.getAccessToken()
+    // let accessToken = await Vue.prototype.$auth.getAccessToken()
     return client({
       method,
       url: resource,
-      data,
+      data /*,
       headers: {
         Authorization: `Bearer ${accessToken}`
-      }
+      } */
     }).then(req => {
       return req.data
     })
@@ -42,7 +42,6 @@ export default {
   /* REMINDERS operations */
   getReminders () {
     console.log('get reminders')
-    // const a = this.execute('get', '/reminders')
     return this.execute('get', '/reminders')
   },
   getReminder (id) {

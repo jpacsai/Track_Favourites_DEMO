@@ -1,22 +1,25 @@
 import keys from '../../../apiKeys'
-import handleUpload from './helpers/convertStream'
+// import handleUpload from './helpers/convertStream'
 import parseArr from './helpers/parseArr'
 import extractSeries from './helpers/extractSerieTitle'
 import transformSeries from './helpers/transformSeries'
 import scrollUp from './helpers/scrollUp.js'
-const parser = require('fast-xml-parser')
+import data from '../../../bookData.json'
+
+// const parser = require('fast-xml-parser')
 
 const state = {
-  herokuNoCors: 'https://cors-anywhere.herokuapp.com/',
+  bookDB: data,
   today: null,
   searchText: null,
   error: null,
   view: 'search',
   displayList: [],
+  /*
   page: 1,
   allPage: 1,
   resultsFrom: 0,
-  resultsTo: 0,
+  resultsTo: 0, */
   allResults: 0,
   authorName: null,
   authorId: null,
@@ -31,11 +34,9 @@ const mutations = {
   },
   LOADING_TRUE (state) {
     state.loading = true
-    console.log('loading TRUE' + state.loading)
   },
   LOADING_FALSE (state) {
     state.loading = false
-    console.log('loading FALSE' + state.loading)
   },
   SET_SEARCH_TEXT (state, text) {
     state.searchText = text
@@ -80,6 +81,9 @@ const mutations = {
   SET_ALL_PAGE (state, page) {
     state.allPage = page
   },
+  SET_PAGE_NUMBER (state, num) {
+    state.allPage = num
+  }/* ,
   SET_PAGE_NUMBERS_NULL (state) {
     state.page = 1
     state.allPage = 1
@@ -109,7 +113,7 @@ const mutations = {
   },
   PAGE_BACKWARD (state) {
     state.page--
-  }
+  } */
 }
 
 const actions = {
@@ -137,6 +141,9 @@ const actions = {
   set_viewState_author ({commit}) {
     commit('VIEW_AUTHOR')
   },
+  set_pageNumber ({commit}, num) {
+    commit('SET_PAGE_NUMBER', num)
+  }, /*
   set_pageNumbers_null ({commit}) {
     commit('SET_PAGE_NUMBERS_NULL')
   },
@@ -154,7 +161,7 @@ const actions = {
   },
   page_backward ({commit}) {
     commit('PAGE_BACKWARD')
-  },
+  }, */
   set_allResult ({commit}, num) {
     commit('SET_ALL_RESULT', num)
   },
@@ -182,18 +189,20 @@ const actions = {
   },
   reset_search ({dispatch}) {
     dispatch('set_display', [])
-    dispatch('set_pageNumbers_null')
+    // dispatch('set_pageNumbers_null')
     dispatch('set_noError')
     dispatch('set_viewState_search')
   },
   new_search ({dispatch}, [text, library]) {
     dispatch('set_searchText', text)
-    dispatch('set_pageNumbers_null')
+    // dispatch('set_pageNumbers_null')
     dispatch('set_noError')
     dispatch('search_book', [text, library])
   },
   search_book ({dispatch}, [text, library]) {
     console.log('FETCH - search books')
+
+    /*
     dispatch('set_loading_true')
     fetch(
       state.herokuNoCors + 'https://www.goodreads.com/search/index.xml?key=' +
@@ -224,7 +233,25 @@ const actions = {
       })
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
-      })
+      }) */
+
+    const match = new RegExp(text, 'i')
+    const arr = state.bookDB.filter((book) => match.test(book.title) || match.test(book.author || book.serieTitle))
+    if (arr.length === 0) {
+      dispatch('set_error_noResult')
+    } else {
+      dispatch('set_display', arr)
+      if (state.view !== 'search') {
+        dispatch('set_viewState_search')
+        dispatch('set_seriesTitle', null)
+        dispatch('set_seriesId', null)
+        dispatch('set_authorName', null)
+        dispatch('set_authorId', null)
+        scrollUp()
+      }
+    }
+    dispatch('set_pageNumber', arr.length)
+    console.log(arr)
   },
   search_series ({dispatch}, [id, title, author, authorId, library]) {
     console.log('FETCH - serie id: ' + id + ', title: ' + title + ', author: ' + author)
@@ -325,7 +352,7 @@ const actions = {
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
       })
-  },
+  }/* ,
   pageNumbers_search ({dispatch}, obj) {
     const numbers = {
       all: obj.GoodreadsResponse.search['total-results'],
@@ -383,7 +410,7 @@ const actions = {
       .catch(function (error) {
         console.log('Looks like there was a problem: \n', error)
       })
-  }
+  } */
 }
 
 const newBookStore = {

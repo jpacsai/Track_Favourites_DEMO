@@ -3,15 +3,16 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import BookManager from '@/components/BookManager'
 import ReminderManager from '@/components/ReminderManager'
-import Auth from '@okta/okta-vue'
-import keys from '../../apiKeys.js'
+// import Auth from '@okta/okta-vue'
+// import keys from '../../apiKeys.js'
 
+/*
 Vue.use(Auth, {
   issuer: 'https://' + keys.domain + '/oauth2/default',
   client_id: keys.id,
   redirect_uri: 'http://localhost:8080/implicit/callback',
   scope: 'openid profile email'
-})
+}) */
 
 Vue.use(Router)
 
@@ -22,11 +23,11 @@ let router = new Router({
       path: '/',
       name: 'Hello',
       component: Hello
-    },
+    }, /*
     {
       path: '/implicit/callback',
       component: Auth.handleCallback()
-    },
+    }, */
     {
       path: '/book-manager',
       name: 'BookManager',
@@ -46,6 +47,6 @@ let router = new Router({
   ]
 })
 
-router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
+// router.beforeEach(Vue.prototype.$auth.authRedirectGuard())
 
 export default router

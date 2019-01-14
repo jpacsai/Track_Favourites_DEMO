@@ -7,9 +7,11 @@
         <b-navbar-nav>
           <b-nav-item to="/">Home</b-nav-item>
           <b-nav-item to="/reminders">Reminders</b-nav-item>
-          <b-nav-item to="/book-manager">Books</b-nav-item>
+          <b-nav-item to="/book-manager">Books</b-nav-item> 
+          <!--
           <b-nav-item href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
           <b-nav-item href="#" @click.prevent="logout" v-else>Logout</b-nav-item>
+          -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -26,12 +28,12 @@ export default {
   name: 'app',
   data () {
     return {
-      activeUser: null,
+      // activeUser: null,
       today: null
     }
   },
   async created () {
-    await this.refreshActiveUser()
+    // await this.refreshActiveUser()
     await this.refreshBooks()
   },
   watch: {
@@ -39,7 +41,7 @@ export default {
     '$route': 'refreshActiveUser'
   },
   methods: {
-    ...mapActions('book/library', ['refreshBooks']),
+    ...mapActions('book/library', ['refreshBooks']) /*,
     login () {
       this.$auth.loginRedirect()
     },
@@ -50,7 +52,7 @@ export default {
       await this.$auth.logout()
       await this.refreshActiveUser()
       this.$router.push('/')
-    }
+    } */
   }
 }
 </script>

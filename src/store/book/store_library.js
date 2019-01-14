@@ -19,7 +19,6 @@ const actions = {
     dispatch('set_books', parseLibrary)
   },
   set_books ({commit}, arr) {
-    console.log(arr)
     commit('SET_BOOKS', arr)
   },
   async saveBook ({dispatch}, book) {

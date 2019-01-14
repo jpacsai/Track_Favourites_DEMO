@@ -7,7 +7,9 @@
       </form>
       <b-alert :show="loading" variant="info" class="loading_indicator">Loading...</b-alert>
       <p class="book_searchNums" v-if="this.allResults > 0 && loading === false">
-        <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span>
+        <!--
+        <span>results from {{ this.resultsFrom}} to {{ this.resultsTo }} out of {{ this.allResults }}</span> -->
+        <span>total results {{ this.allResults }}</span>
       </p>
     </div>
     <search v-if="view === 'search' && loading === false && displayList.length > 0" />
@@ -44,9 +46,9 @@ export default {
       loading: state => state.loading,
       view: state => state.view,
       error: state => state.error,
-      displayList: state => state.displayList,
+      displayList: state => state.displayList, /*
       resultsFrom: state => state.resultsFrom,
-      resultsTo: state => state.resultsTo,
+      resultsTo: state => state.resultsTo, */
       allResults: state => state.allResults
     })
   },
